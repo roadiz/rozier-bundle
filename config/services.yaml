@@ -1,0 +1,37 @@
+---
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $inheritanceType: '%roadiz_core.inheritance_type%'
+
+    RZ\Roadiz\RozierBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+            - '../src/Event/'
+
+    Themes\Rozier\:
+        resource: '%kernel.project_dir%/vendor/roadiz/rozier/src/'
+        autowire: true
+        autoconfigure: true
+        exclude:
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Services/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Traits/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Widgets/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Explorer/'
+
+    Themes\Rozier\Controllers\:
+        resource: '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
+        autowire: true
+        autoconfigure: true
+        tags:
+            - container.service_subscriber
+
+    Themes\Rozier\Widgets\TreeWidgetFactory:
