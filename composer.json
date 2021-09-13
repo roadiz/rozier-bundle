@@ -20,8 +20,8 @@
     "require": {
         "php": ">=7.4",
         "symfony/framework-bundle": "5.3.*",
-        "roadiz/rozier": "*",
-        "roadiz/compat-bundle": "*"
+        "roadiz/rozier": "dev-develop",
+        "roadiz/compat-bundle": "dev-main"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.4",

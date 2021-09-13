@@ -6,6 +6,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $inheritanceType: '%roadiz_core.inheritance_type%'
+            $backofficeMenuEntries: '%roadiz_rozier.backoffice_menu_configuration%'
 
     RZ\Roadiz\RozierBundle\:
         resource: '../src/'
