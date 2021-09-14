@@ -21,7 +21,8 @@
         "php": ">=7.4",
         "symfony/framework-bundle": "5.3.*",
         "roadiz/rozier": "dev-develop",
-        "roadiz/compat-bundle": "dev-main"
+        "roadiz/compat-bundle": "dev-main",
+        "rezozero/intervention-request-bundle":    "dev-master"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.4",

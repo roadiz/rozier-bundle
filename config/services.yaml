@@ -7,6 +7,10 @@ services:
         bind:
             $inheritanceType: '%roadiz_core.inheritance_type%'
             $backofficeMenuEntries: '%roadiz_rozier.backoffice_menu_configuration%'
+            $documentPlatforms: '%roadiz_core.medias.supported_platforms%'
+            $webpSupported: '%roadiz_core.assets_processing.supports_webp%'
+            $nodeFormTypeClass: '%roadiz_rozier.node_form.class%'
+            $addNodeFormTypeClass: '%roadiz_rozier.add_node_form.class%'
 
     RZ\Roadiz\RozierBundle\:
         resource: '../src/'
@@ -23,6 +27,7 @@ services:
         autoconfigure: true
         exclude:
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Services/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Events/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Traits/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Widgets/'

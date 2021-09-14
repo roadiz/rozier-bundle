@@ -22,5 +22,7 @@ class RoadizRozierExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('roadiz_rozier.backoffice_menu_configuration', $config['entries']);
+        $container->setParameter('roadiz_rozier.node_form.class', $config['node_form']);
+        $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
     }
 }

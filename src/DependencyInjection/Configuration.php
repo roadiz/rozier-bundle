@@ -5,6 +5,8 @@ namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Themes\Rozier\Forms\Node\AddNodeType;
+use Themes\Rozier\Forms\NodeType;
 
 class Configuration implements ConfigurationInterface
 {
@@ -14,6 +16,8 @@ class Configuration implements ConfigurationInterface
         $builder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('node_form')->defaultValue(NodeType::class)->end()
+                ->scalarNode('add_node_form')->defaultValue(AddNodeType::class)->end()
                 ->arrayNode('entries')
                     ->defaultValue([])
                     ->info('Rozier backoffice default menu entries.')
