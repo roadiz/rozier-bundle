@@ -105,8 +105,15 @@ security:
 - Add custom routes:
 ```yaml
 # config/routes.yaml
+roadiz_core:
+    resource: "@RoadizCoreBundle/Resources/config/routing.yaml"
+
 roadiz_rozier:
     resource: "@RoadizRozierBundle/Resources/config/routing.yaml"
+
+rz_intervention_request:
+    resource: "@RZInterventionRequestBundle/Resources/config/routing.yml"
+    prefix:   /
 ```
 - Add custom translations
 ```yaml

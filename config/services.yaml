@@ -40,4 +40,4 @@ services:
         tags:
             - container.service_subscriber
 
-    Themes\Rozier\Widgets\TreeWidgetFactory:
+    Themes\Rozier\Widgets\TreeWidgetFactory: ~
