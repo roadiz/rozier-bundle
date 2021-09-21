@@ -1,5 +1,0 @@
-framework:
-    assets:
-        packages:
-            Rozier:
-                base_urls: '%kernel.project_dir%/themes/Rozier/static'
