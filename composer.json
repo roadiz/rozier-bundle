@@ -15,12 +15,12 @@
         }
     ],
     "type": "symfony-bundle",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=7.4",
         "symfony/framework-bundle": "5.3.*",
-        "roadiz/rozier": "~1.7.0 || dev-develop",
+        "roadiz/rozier": "dev-develop",
         "roadiz/compat-bundle": "dev-main",
         "rezozero/intervention-request-bundle": "dev-master"
     },
