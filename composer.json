@@ -39,6 +39,9 @@
     "autoload": {
         "psr-4": {
             "RZ\\Roadiz\\RozierBundle\\": "src/"
-        }
+        },
+        "files": [
+            "deprecated.php"
+        ]
     }
 }
