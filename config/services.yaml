@@ -40,6 +40,8 @@ services:
             - container.service_subscriber
 
     Themes\Rozier\Widgets\TreeWidgetFactory: ~
+    Themes\Rozier\RozierServiceRegistry:
+        public: true
 
     roadiz_rozier.twig_loader:
         class: Twig\Loader\FilesystemLoader
