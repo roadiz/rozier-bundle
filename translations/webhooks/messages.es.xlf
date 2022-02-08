@@ -2,10 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="es-ES">
     <body>
-      <trans-unit xml:space="preserve" id="webhooks">
-                <source>webhooks</source>
-                <target state="translated">webhooks</target>
-            </trans-unit>
       <trans-unit xml:space="preserve" id="manage.webhooks">
                 <source>manage.webhooks</source>
                 <target state="translated">Andministrar webhooks</target>
