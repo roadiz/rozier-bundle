@@ -29,7 +29,7 @@ abstract class BackendController extends AppController
     protected static bool $backendTheme = true;
     public static int $priority = -10;
 
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
             'securityAuthenticationUtils' => AuthenticationUtils::class,
