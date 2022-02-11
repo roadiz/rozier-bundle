@@ -50,3 +50,22 @@ services:
             -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'Rozier' ]
             -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views' ]
         tags: [ 'twig.loader' ]
+
+    # Customized OpenIdAuthenticator for Rozier backoffice entry points
+    roadiz_rozier.authenticator.open_id:
+        class: RZ\Roadiz\CoreBundle\Security\Authentication\OpenIdAuthenticator
+        autoconfigure: false
+        arguments:
+            - '@security.http_utils'
+            - '@?RZ\Roadiz\OpenId\Discovery'
+            - '@RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy'
+            - '@RZ\Roadiz\OpenId\OpenIdJwtConfigurationFactory'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '@RZ\Roadiz\CoreBundle\Security\Authentication\Manager\LoginAttemptManager'
+            - 'loginPage'
+            - 'adminHomePage'
+            - '%roadiz_core.open_id.oauth_client_id%'
+            - '%roadiz_core.open_id.oauth_client_secret%'
+            - '%roadiz_core.open_id.openid_username_claim%'
+            - '_target_path'
+            - '%roadiz_core.open_id.granted_roles%'
