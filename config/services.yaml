@@ -39,6 +39,13 @@ services:
         tags:
             - container.service_subscriber
 
+    Themes\Rozier\Explorer\FoldersProvider:
+        public: true
+    Themes\Rozier\Explorer\SettingsProvider:
+        public: true
+    Themes\Rozier\Explorer\UsersProvider:
+        public: true
+
     Themes\Rozier\Widgets\TreeWidgetFactory: ~
     Themes\Rozier\RozierServiceRegistry:
         public: true
