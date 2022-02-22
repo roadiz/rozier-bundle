@@ -54,8 +54,7 @@ services:
         class: Twig\Loader\FilesystemLoader
         calls:
             -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/documents/src/Roadiz/Resources/views' ]
-            -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'Rozier' ]
-            -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views' ]
+            -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
     # Customized OpenIdAuthenticator for Rozier backoffice entry points
