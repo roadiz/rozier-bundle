@@ -76,4 +76,5 @@ services:
             - '_target_path'
             - '%roadiz_core.open_id.granted_roles%'
 
-    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+    RZ\Roadiz\RozierBundle\Controller\PingController:
+        arguments: ['@?profiler']
