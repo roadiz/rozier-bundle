@@ -75,3 +75,5 @@ services:
             - '%roadiz_core.open_id.openid_username_claim%'
             - '_target_path'
             - '%roadiz_core.open_id.granted_roles%'
+
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
