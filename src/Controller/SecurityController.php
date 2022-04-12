@@ -68,7 +68,7 @@ class SecurityController extends AbstractController
                 );
             }
         } catch (DiscoveryNotAvailableException $exception) {
-            $this->logger->error($exception->getMessage());
+            $this->logger->notice($exception->getMessage());
         }
 
         return $this->render('@RoadizRozier/security/login.html.twig', $assignation);
