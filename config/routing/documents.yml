@@ -66,5 +66,5 @@ documentsBulkDownloadPage:
 documentsUnusedPage:
     path:     /orphans
     defaults:
-        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::unusedAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentUnusedController::unusedAction
 
