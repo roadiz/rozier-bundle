@@ -171,3 +171,16 @@ nodesHistoryPage:
     requirements:
         nodeId : "[0-9]+"
         page : "[0-9]+"
+
+nodesRealmsPage:
+    path:     /realms/{id}
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\RealmNodeController::defaultAction
+    requirements: { id : "[0-9]+" }
+nodesRealmsDeletePage:
+    path:     /realms/{id}/delete/{realmNodeId}
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\RealmNodeController::deleteAction
+    requirements:
+        id : "[0-9]+"
+        realmNodeId : "[0-9]+"

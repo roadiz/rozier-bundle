@@ -141,6 +141,15 @@ redirectionsRoutes:
     resource: "routing/redirections.yml"
     prefix: /rz-admin/redirections
 
+
+# REALMS
+realmsHomePage:
+    path:     /rz-admin/realms
+    controller: RZ\Roadiz\RozierBundle\Controller\Realm\RealmController::defaultAction
+realmsRoutes:
+    resource: "routing/realms.yml"
+    prefix: /rz-admin/realms
+
 # ROLES
 rolesHomePage:
     path:     /rz-admin/roles
