@@ -17,6 +17,11 @@ customFormsExportPage:
     requirements: { id : "[0-9]+" }
     defaults:
         _controller: Themes\Rozier\Controllers\CustomForms\CustomFormsUtilsController::exportAction
+customFormsUsagePage:
+    path:     /usage/{id}
+    requirements: { id : "[0-9]+" }
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\CustomForm\CustomFormUsageController::usageAction
 customFormsDuplicatePage:
     path:     /duplicate/{id}
     requirements: { id : "[0-9]+" }
