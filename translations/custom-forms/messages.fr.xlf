@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file original="/[roadiz.rozier-bundle] main/translations/custom-forms/messages.xlf" source-language="en" target-language="fr" datatype="plaintext">
+    <body>
+      <trans-unit id="14180" resname="custom-form.usage" approved="yes">
+        <source>custom-form.usage</source>
+        <target state="final">Utilisation</target>
+        <note from="Crowdin" priority="2">custom-form.usage&#13;
+Custom form nav-bar item &quot;Usage&quot; label</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
