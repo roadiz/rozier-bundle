@@ -25,27 +25,34 @@
                     <tr>
                         <th>{% trans %}name{% endtrans %}</th>
                         <th>{% trans %}realm.type{% endtrans %}</th>
+                        <th>{% trans %}realm.behaviour{% endtrans %}</th>
                         <th>{% trans %}realm.inheritanceType{% endtrans %}</th>
                         <th class="table-actions-row">{% trans %}actions{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% set accessRealms = is_granted('ROLE_ACCESS_REALMS') %}
                     {% for nodeRealm in nodeRealms %}
                         <tr>
                             <td>
                                 {% if nodeRealm.realm %}
-                                    <a href="{{ path('realmsEditPage', { id: nodeRealm.realm.id }) }}">
+                                    {% if accessRealms %}
+                                        <a href="{{ path('realmsEditPage', { id: nodeRealm.realm.id }) }}">
+                                            {{ nodeRealm.realm.name }}
+                                        </a>
+                                    {% else %}
                                         {{ nodeRealm.realm.name }}
-                                    </a>
+                                    {% endif %}
                                 {% else %}
                                     {% trans %}node.no_realm{% endtrans %}
                                 {% endif %}
                             </td>
                             <td>{{ nodeRealm.realm.type ? ('realm.' ~ nodeRealm.realm.type)|trans : '' }}</td>
+                            <td>{{ nodeRealm.realm.behaviour ? ('realm.behaviour_' ~ nodeRealm.realm.behaviour)|trans : '' }}</td>
                             <td>{{ ('realm_node.' ~ nodeRealm.inheritanceType)|trans }}</td>
                             <td class="table-actions-row">
                                 {% apply spaceless %}
-                                {% if nodeRealm.realm %}
+                                {% if nodeRealm.realm and accessRealms %}
                                     <a class="uk-button uk-button-content uk-button-small"
                                        href="{{ path('realmsEditPage', {
                                            id: nodeRealm.realm.id,
