@@ -169,8 +169,29 @@
                 <source>node.%node%.joined.%realm%</source>
                 <target></target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="node.%node%.joined.%realm%">
+            <trans-unit xml:space="preserve" id="node.%node%.left.%realm%">
                 <source>node.%node%.left.%realm%</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit xml:space="preserve" id="realm.behaviour">
+                <source>realm.behaviour</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="realm.behaviour.help">
+                <source>realm.behaviour.help</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="realm.behaviour_none">
+                <source>realm.behaviour_none</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="realm.behaviour_deny">
+                <source>realm.behaviour_deny</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="realm.behaviour_hide_blocks">
+                <source>realm.behaviour_hide_blocks</source>
                 <target></target>
             </trans-unit>
         </body>
