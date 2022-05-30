@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file original="" source-language="en" datatype="plaintext" target-language="en">
         <body>
+            <trans-unit xml:space="preserve" id="realms">
+                <source>realms</source>
+                <target></target>
+                <note></note>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="add.a.realm">
+                <source>add.a.realm</source>
+                <target></target>
+                <note></note>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="delete.realm.%name%">
+                <source>delete.realm.%name%</source>
+                <target></target>
+                <note></note>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="are_you_sure.delete.realm">
+                <source>are_you_sure.delete.realm</source>
+                <target></target>
+                <note></note>
+            </trans-unit>
             <trans-unit xml:space="preserve" id="edit.realm.%name%">
                 <source>edit.realm.%name%</source>
                 <target></target>
