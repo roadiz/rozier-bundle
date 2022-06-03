@@ -67,4 +67,8 @@ documentsUnusedPage:
     path:     /orphans
     defaults:
         _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentUnusedController::unusedAction
+documentsDuplicatesPage:
+    path:     /duplicates
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentDuplicatesController::duplicatedAction
 

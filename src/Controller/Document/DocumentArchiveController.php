@@ -40,7 +40,7 @@ final class DocumentArchiveController extends RozierApp
      *
      * @return Response
      */
-    public function bulkDownloadAction(Request $request)
+    public function bulkDownloadAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 

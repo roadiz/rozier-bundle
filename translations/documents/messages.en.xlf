@@ -6,6 +6,26 @@
                 <source>document.externalUrl</source>
                 <target>External URL</target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="no_document">
+                <source>no_document</source>
+                <target>No document</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unused_documents.help">
+                <source>unused_documents.help</source>
+                <target>
+Document are listed as “unused” when they are not linked to any node, tag, setting or attribute anymore.
+
+**Notice**: if you are using a Document URL directly in a Markdown text or from an external website,
+*this document will be flagged as unused.*</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all.documents">
+                <source>all.documents</source>
+                <target>All documents</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="duplicated_documents">
+                <source>duplicated_documents</source>
+                <target>Duplicated documents</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

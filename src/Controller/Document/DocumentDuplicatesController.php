@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;
 use Themes\Rozier\Utils\SessionListFilters;
 
-final class DocumentUnusedController extends RozierApp
+final class DocumentDuplicatesController extends RozierApp
 {
     private ManagerRegistry $managerRegistry;
 
@@ -26,22 +26,20 @@ final class DocumentUnusedController extends RozierApp
     }
 
     /**
-     * See unused documents.
-     *
      * @param  Request $request
      * @return Response
      */
-    public function unusedAction(Request $request): Response
+    public function duplicatedAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
-        $this->assignation['orphans'] = true;
+        $this->assignation['duplicates'] = true;
         /** @var DocumentRepository $documentRepository */
         $documentRepository = $this->managerRegistry->getRepository(Document::class);
 
         $listManager = new QueryBuilderListManager(
             $request,
-            $documentRepository->getAllUnusedQueryBuilder(),
+            $documentRepository->getDuplicatesQueryBuilder(),
             'd'
         );
         $listManager->setItemPerPage(static::DEFAULT_ITEM_PER_PAGE);
@@ -49,7 +47,7 @@ final class DocumentUnusedController extends RozierApp
         /*
          * Stored in session
          */
-        $sessionListFilter = new SessionListFilters('unused_documents_item_per_page');
+        $sessionListFilter = new SessionListFilters('duplicated_documents_item_per_page');
         $sessionListFilter->handleItemPerPage($request, $listManager);
 
         $listManager->handle();
@@ -65,6 +63,6 @@ final class DocumentUnusedController extends RozierApp
             'loading' => 'lazy',
         ];
 
-        return $this->render('@RoadizRozier/documents/unused.html.twig', $this->assignation);
+        return $this->render('@RoadizRozier/documents/duplicated.html.twig', $this->assignation);
     }
 }

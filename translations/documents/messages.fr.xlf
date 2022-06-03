@@ -6,6 +6,26 @@
                 <source>document.externalUrl</source>
                 <target>URL externe</target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="no_document">
+                <source>no_document</source>
+                <target>Aucun document</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unused_documents.help">
+                <source>unused_documents.help</source>
+                <target>
+Les documents sont considérés comme inutilisés s'ils ne sont pas liés à un nœud, une étiquette, un paramètre général ou un attribut.
+
+**Attention** si vous utilisez directement l'URL de votre document :
+dans un texte Markdown, un site externe, *le document sera considéré comme inutilisé.*</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all.documents">
+                <source>all.documents</source>
+                <target>Tous les documents</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="duplicated_documents">
+                <source>duplicated_documents</source>
+                <target>Doublons</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
