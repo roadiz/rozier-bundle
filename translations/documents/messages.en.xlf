@@ -2,9 +2,29 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="en">
     <body>
-      <trans-unit xml:space="preserve" id="document.externalUrl">
+      <trans-unit xml:space="preserve" id="document.externalUrl" approved="yes">
                 <source>document.externalUrl</source>
-                <target state="translated">External URL</target>
+                <target state="final">External URL</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="no_document" approved="yes">
+                <source>no_document</source>
+                <target state="final">No document</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="unused_documents.help" approved="yes">
+                <source>unused_documents.help</source>
+                <target state="final">
+Document are listed as “unused” when they are not linked to any node, tag, setting or attribute anymore.
+
+**Notice**: if you are using a Document URL directly in a Markdown text or from an external website,
+*this document will be flagged as unused.*</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="all.documents" approved="yes">
+                <source>all.documents</source>
+                <target state="final">All documents</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="duplicated_documents" approved="yes">
+                <source>duplicated_documents</source>
+                <target state="final">Duplicated documents</target>
             </trans-unit>
     </body>
   </file>
