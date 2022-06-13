@@ -1,4 +1,5 @@
-# rozier-bundle
+# Roadiz Rozier bundle
+**Legacy administration interface port to Roadiz v2**
 
 Installation
 ============
