@@ -67,7 +67,6 @@ services:
             - '@RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy'
             - '@RZ\Roadiz\OpenId\OpenIdJwtConfigurationFactory'
             - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
-            - '@RZ\Roadiz\CoreBundle\Security\Authentication\Manager\LoginAttemptManager'
             - 'loginPage'
             - 'adminHomePage'
             - '%roadiz_core.open_id.oauth_client_id%'
