@@ -25,6 +25,7 @@ services:
         autowire: true
         autoconfigure: true
         exclude:
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Services/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Events/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/'
@@ -38,6 +39,8 @@ services:
         autoconfigure: true
         tags:
             - container.service_subscriber
+        exclude:
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/LoginRequestController.php'
 
     Themes\Rozier\Explorer\FoldersProvider:
         public: true
