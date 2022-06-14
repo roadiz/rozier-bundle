@@ -6,6 +6,10 @@
                 <source>user.lastLogin</source>
                 <target></target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="user.neverLoggedIn">
+                <source>user.neverLoggedIn</source>
+                <target></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
