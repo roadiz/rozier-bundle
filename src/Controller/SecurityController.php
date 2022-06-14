@@ -23,11 +23,6 @@ class SecurityController extends AbstractController
     private Settings $settingsBag;
     private RozierServiceRegistry $rozierServiceRegistry;
 
-    /**
-     * @param OAuth2LinkGenerator $oAuth2LinkGenerator
-     * @param LoggerInterface $logger
-     * @param Settings $settingsBag
-     */
     public function __construct(
         OAuth2LinkGenerator $oAuth2LinkGenerator,
         LoggerInterface $logger,
