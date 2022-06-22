@@ -25,6 +25,7 @@ services:
         autowire: true
         autoconfigure: true
         exclude:
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Services/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Events/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/'
@@ -38,6 +39,15 @@ services:
         autoconfigure: true
         tags:
             - container.service_subscriber
+        exclude:
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/LoginRequestController.php'
+
+    Themes\Rozier\Explorer\FoldersProvider:
+        public: true
+    Themes\Rozier\Explorer\SettingsProvider:
+        public: true
+    Themes\Rozier\Explorer\UsersProvider:
+        public: true
 
     Themes\Rozier\Widgets\TreeWidgetFactory: ~
     Themes\Rozier\RozierServiceRegistry:
@@ -47,6 +57,26 @@ services:
         class: Twig\Loader\FilesystemLoader
         calls:
             -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/documents/src/Roadiz/Resources/views' ]
-            -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'Rozier' ]
-            -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views' ]
+            -   addPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'RoadizRozier' ]
         tags: [ 'twig.loader' ]
+
+    # Customized OpenIdAuthenticator for Rozier backoffice entry points
+    roadiz_rozier.authenticator.open_id:
+        class: RZ\Roadiz\CoreBundle\Security\Authentication\OpenIdAuthenticator
+        autoconfigure: false
+        arguments:
+            - '@security.http_utils'
+            - '@?RZ\Roadiz\OpenId\Discovery'
+            - '@RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy'
+            - '@RZ\Roadiz\OpenId\OpenIdJwtConfigurationFactory'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - 'loginPage'
+            - 'adminHomePage'
+            - '%roadiz_core.open_id.oauth_client_id%'
+            - '%roadiz_core.open_id.oauth_client_secret%'
+            - '%roadiz_core.open_id.openid_username_claim%'
+            - '_target_path'
+            - '%roadiz_core.open_id.granted_roles%'
+
+    RZ\Roadiz\RozierBundle\Controller\PingController:
+        arguments: ['@?profiler']

@@ -1,10 +1,10 @@
 ---
 loginRequestPage:
     path:     /login/request
-    controller: Themes\Rozier\Controllers\LoginRequestController::indexAction
+    controller: RZ\Roadiz\RozierBundle\Controller\Login\LoginRequestController::indexAction
 loginRequestConfirmPage:
     path:     /login/request/confirm
-    controller: Themes\Rozier\Controllers\LoginRequestController::confirmAction
+    controller: RZ\Roadiz\RozierBundle\Controller\Login\LoginRequestController::confirmAction
 loginResetConfirmPage:
     path:     /login/reset/confirm
     controller: Themes\Rozier\Controllers\LoginResetController::confirmAction

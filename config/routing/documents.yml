@@ -62,9 +62,13 @@ documentsBulkDeletePage:
 documentsBulkDownloadPage:
     path: /bulk-download
     defaults:
-        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::bulkDownloadAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentArchiveController::bulkDownloadAction
 documentsUnusedPage:
     path:     /orphans
     defaults:
-        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::unusedAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentUnusedController::unusedAction
+documentsDuplicatesPage:
+    path:     /duplicates
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentDuplicatesController::duplicatedAction
 

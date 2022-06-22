@@ -6,6 +6,22 @@
                 <source>document.externalUrl</source>
                 <target></target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="no_document">
+                <source>no_document</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unused_documents.help">
+                <source>unused_documents.help</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all.documents">
+                <source>all.documents</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="duplicated_documents">
+                <source>duplicated_documents</source>
+                <target></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

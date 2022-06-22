@@ -17,6 +17,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Themes\Rozier\Explorer\FoldersProvider;
+use Themes\Rozier\Explorer\SettingsProvider;
+use Themes\Rozier\Explorer\UsersProvider;
 use Themes\Rozier\RozierServiceRegistry;
 
 /**
@@ -44,7 +47,10 @@ abstract class BackendController extends AppController
             'csrfTokenManager' => CsrfTokenManagerInterface::class,
             OAuth2LinkGenerator::class => OAuth2LinkGenerator::class,
             FileAwareInterface::class => FileAwareInterface::class,
-            RozierServiceRegistry::class => RozierServiceRegistry::class
+            RozierServiceRegistry::class => RozierServiceRegistry::class,
+            UsersProvider::class => UsersProvider::class,
+            SettingsProvider::class => SettingsProvider::class,
+            FoldersProvider::class => FoldersProvider::class,
         ]);
     }
 
