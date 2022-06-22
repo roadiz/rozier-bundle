@@ -2,8 +2,14 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="fr">
     <body>
-            
-            
-        </body>
+      <trans-unit xml:space="preserve" id="user.lastLogin">
+                <source>user.lastLogin</source>
+                <target state="translated">Dernière connexion</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="user.neverLoggedIn">
+                <source>user.neverLoggedIn</source>
+                <target state="translated">Jamais</target>
+            </trans-unit>
+    </body>
   </file>
 </xliff>
