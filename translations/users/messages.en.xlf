@@ -1,15 +1,9 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file original="" source-language="en" datatype="plaintext" target-language="en">
-        <body>
-            <trans-unit xml:space="preserve" id="user.lastLogin">
-                <source>user.lastLogin</source>
-                <target>Last login</target>
-            </trans-unit>
-            <trans-unit xml:space="preserve" id="user.neverLoggedIn">
-                <source>user.neverLoggedIn</source>
-                <target>Never</target>
-            </trans-unit>
+  <file original="" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+            
+            
         </body>
-    </file>
+  </file>
 </xliff>

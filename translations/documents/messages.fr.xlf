@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file original="" source-language="en" datatype="plaintext" target-language="fr">
-        <body>
-            <trans-unit xml:space="preserve" id="document.externalUrl">
+  <file original="" source-language="en" datatype="plaintext" target-language="fr">
+    <body>
+      <trans-unit xml:space="preserve" id="document.externalUrl" approved="yes">
                 <source>document.externalUrl</source>
-                <target>URL externe</target>
+                <target state="final">URL externe</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="no_document">
+      <trans-unit xml:space="preserve" id="no_document" approved="yes">
                 <source>no_document</source>
-                <target>Aucun document</target>
+                <target state="final">Aucun document</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="unused_documents.help">
+      <trans-unit xml:space="preserve" id="unused_documents.help" approved="yes">
                 <source>unused_documents.help</source>
-                <target>
+                <target state="final">
 Les documents sont considérés comme inutilisés s'ils ne sont pas liés à un nœud, une étiquette, un paramètre général ou un attribut.
 
 **Attention** si vous utilisez directement l'URL de votre document :
 dans un texte Markdown, un site externe, *le document sera considéré comme inutilisé.*</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="all.documents">
+      <trans-unit xml:space="preserve" id="all.documents" approved="yes">
                 <source>all.documents</source>
-                <target>Tous les documents</target>
+                <target state="final">Tous les documents</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="duplicated_documents">
+      <trans-unit xml:space="preserve" id="duplicated_documents" approved="yes">
                 <source>duplicated_documents</source>
-                <target>Doublons</target>
+                <target state="final">Doublons</target>
             </trans-unit>
-        </body>
-    </file>
+    </body>
+  </file>
 </xliff>

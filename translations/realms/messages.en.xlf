@@ -1,219 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file original="" source-language="en" datatype="plaintext" target-language="en">
-        <body>
-            <trans-unit xml:space="preserve" id="realms">
+  <file original="" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+      <trans-unit xml:space="preserve" id="realms" approved="yes">
                 <source>realms</source>
-                <target>Secure realms</target>
-                <note></note>
+                <target state="final">Secure realms</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="add.a.realm">
+      <trans-unit xml:space="preserve" id="add.a.realm" approved="yes">
                 <source>add.a.realm</source>
-                <target>Create a secure realm</target>
-                <note></note>
+                <target state="final">Create a secure realm</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="delete.realm.%name%">
+      <trans-unit xml:space="preserve" id="delete.realm.%name%" approved="yes">
                 <source>delete.realm.%name%</source>
-                <target>Delete “%name%” realm</target>
-                <note></note>
+                <target state="final">Delete “%name%” realm</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="are_you_sure.delete.realm">
+      <trans-unit xml:space="preserve" id="are_you_sure.delete.realm" approved="yes">
                 <source>are_you_sure.delete.realm</source>
-                <target>Are you sure you want to delete this secure realm? This will disable every nodes security from this realm.</target>
-                <note></note>
+                <target state="final">Are you sure you want to delete this secure realm? This will disable every nodes security from this realm.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="edit.realm.%name%">
+      <trans-unit xml:space="preserve" id="edit.realm.%name%" approved="yes">
                 <source>edit.realm.%name%</source>
-                <target>%name%</target>
-                <note></note>
+                <target state="final">%name%</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="edit.realm">
+      <trans-unit xml:space="preserve" id="edit.realm" approved="yes">
                 <source>edit.realm</source>
-                <target>Edit</target>
-                <note></note>
+                <target state="final">Edit</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="back_to.realms">
+      <trans-unit xml:space="preserve" id="back_to.realms" approved="yes">
                 <source>back_to.realms</source>
-                <target>Back to realms</target>
-                <note></note>
+                <target state="final">Back to realms</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.type">
+      <trans-unit xml:space="preserve" id="realm.type" approved="yes">
                 <source>realm.type</source>
-                <target>Authentication type</target>
-                <note></note>
+                <target state="final">Authentication type</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.type.help">
+      <trans-unit xml:space="preserve" id="realm.type.help" approved="yes">
                 <source>realm.type.help</source>
-                <target>Allow choosing between several authentication types: from simple clear password to a more robust and complete authentication scheme using Role or user accounts</target>
-                <note></note>
+                <target state="final">Allow choosing between several authentication types: from simple clear password to a more robust and complete authentication scheme using Role or user accounts</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.plain_password">
+      <trans-unit xml:space="preserve" id="realm.plain_password" approved="yes">
                 <source>realm.plain_password</source>
-                <target>Clear password</target>
-                <note></note>
+                <target state="final">Clear password</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.bearer_role">
+      <trans-unit xml:space="preserve" id="realm.bearer_role" approved="yes">
                 <source>realm.bearer_role</source>
-                <target>Role-based authentication</target>
-                <note></note>
+                <target state="final">Role-based authentication</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.bearer_user">
+      <trans-unit xml:space="preserve" id="realm.bearer_user" approved="yes">
                 <source>realm.bearer_user</source>
-                <target>User-based authentication</target>
-                <note></note>
+                <target state="final">User-based authentication</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.plainPassword">
+      <trans-unit xml:space="preserve" id="realm.plainPassword" approved="yes">
                 <source>realm.plainPassword</source>
-                <target>Clear password</target>
-                <note></note>
+                <target state="final">Clear password</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.plainPassword.help">
+      <trans-unit xml:space="preserve" id="realm.plainPassword.help" approved="yes">
                 <source>realm.plainPassword.help</source>
-                <target>Clear password will be used against “Clear password” authentication type. It is unique for the whole realm.</target>
-                <note></note>
+                <target state="final">Clear password will be used against “Clear password” authentication type. It is unique for the whole realm.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.serializationGroup">
+      <trans-unit xml:space="preserve" id="realm.serializationGroup" approved="yes">
                 <source>realm.serializationGroup</source>
-                <target>Serialization group</target>
-                <note></note>
+                <target state="final">Serialization group</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.serializationGroup.help">
+      <trans-unit xml:space="preserve" id="realm.serializationGroup.help" approved="yes">
                 <source>realm.serializationGroup.help</source>
-                <target>Each realm provides a serialization group which allows to filter out API fields from nodes or any entities. Use this group when you are creating node types.</target>
-                <note></note>
+                <target state="final">Each realm provides a serialization group which allows to filter out API fields from nodes or any entities. Use this group when you are creating node types.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.role">
+      <trans-unit xml:space="preserve" id="realm.role" approved="yes">
                 <source>realm.role</source>
-                <target>Role</target>
-                <note></note>
+                <target state="final">Role</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.role.help">
+      <trans-unit xml:space="preserve" id="realm.role.help" approved="yes">
                 <source>realm.role.help</source>
-                <target>This role will be checked when using “Role-based authentication” authentication type. You can create a new role on-purpose for this realm.</target>
-                <note></note>
+                <target state="final">This role will be checked when using “Role-based authentication” authentication type. You can create a new role on-purpose for this realm.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.role.placeholder">
+      <trans-unit xml:space="preserve" id="realm.role.placeholder" approved="yes">
                 <source>realm.role.placeholder</source>
-                <target>-- No role --</target>
-                <note></note>
+                <target state="final">-- No role --</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.users">
+      <trans-unit xml:space="preserve" id="realm.users" approved="yes">
                 <source>realm.users</source>
-                <target>Specific user accounts</target>
-                <note></note>
+                <target state="final">Specific user accounts</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.users.help">
+      <trans-unit xml:space="preserve" id="realm.users.help" approved="yes">
                 <source>realm.users.help</source>
-                <target>Grant access only to specific user accounts. You must select “User-based authentication” authentication type.</target>
-                <note></note>
+                <target state="final">Grant access only to specific user accounts. You must select “User-based authentication” authentication type.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="manage.realms">
+      <trans-unit xml:space="preserve" id="manage.realms" approved="yes">
                 <source>manage.realms</source>
-                <target>Secure realms</target>
-                <note></note>
+                <target state="final">Secure realms</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="edit.node.%name%.realms">
+      <trans-unit xml:space="preserve" id="edit.node.%name%.realms" approved="yes">
                 <source>edit.node.%name%.realms</source>
-                <target>Secure realms</target>
-                <note></note>
+                <target state="final">Secure realms</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_nodes">
+      <trans-unit xml:space="preserve" id="realm_nodes" approved="yes">
                 <source>realm_nodes</source>
-                <target>Joined secure realms</target>
-                <note></note>
+                <target state="final">Joined secure realms</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="join.a.realm">
+      <trans-unit xml:space="preserve" id="join.a.realm" approved="yes">
                 <source>join.a.realm</source>
-                <target>Join a realm</target>
-                <note></note>
+                <target state="final">Join a realm</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.realm">
+      <trans-unit xml:space="preserve" id="realm_node.realm" approved="yes">
                 <source>realm_node.realm</source>
-                <target>Secure realm</target>
-                <note></note>
+                <target state="final">Secure realm</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.realm.help">
+      <trans-unit xml:space="preserve" id="realm_node.realm.help">
                 <source>realm_node.realm.help</source>
-                <target></target>
-                <note></note>
+                <target state="translated">Choose a previously created secure domain to apply to this node and its tree.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.realm.placeholder">
+      <trans-unit xml:space="preserve" id="realm_node.realm.placeholder" approved="yes">
                 <source>realm_node.realm.placeholder</source>
-                <target>-- No realm selected --</target>
-                <note></note>
+                <target state="final">-- No realm selected --</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.inheritanceType">
+      <trans-unit xml:space="preserve" id="realm_node.inheritanceType" approved="yes">
                 <source>realm_node.inheritanceType</source>
-                <target>Inheritance type</target>
-                <note></note>
+                <target state="final">Inheritance type</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.inheritanceType.help">
+      <trans-unit xml:space="preserve" id="realm_node.inheritanceType.help" approved="yes">
                 <source>realm_node.inheritanceType.help</source>
-                <target>Define how secure realm will be applied to node hierarchy. Use “Realm root” to start a realm area, or “No propagation” to cancel parent node realm.</target>
-                <note></note>
+                <target state="final">Define how secure realm will be applied to node hierarchy. Use “Realm root” to start a realm area, or “No propagation” to cancel parent node realm.</target>
+                <note/>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.root">
+      <trans-unit xml:space="preserve" id="realm_node.root" approved="yes">
                 <source>realm_node.root</source>
-                <target>Realm root</target>
+                <target state="final">Realm root</target>
                 <note>Define realm inheritance root node</note>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.auto">
+      <trans-unit xml:space="preserve" id="realm_node.auto" approved="yes">
                 <source>realm_node.auto</source>
-                <target>Automatic</target>
+                <target state="final">Automatic</target>
                 <note>Auto inheritance from ancestors realms</note>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm_node.none">
+      <trans-unit xml:space="preserve" id="realm_node.none" approved="yes">
                 <source>realm_node.none</source>
-                <target>No propagation</target>
+                <target state="final">No propagation</target>
                 <note>Prevent any inheritance from ancestors realms</note>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="join.realm">
+      <trans-unit xml:space="preserve" id="join.realm" approved="yes">
                 <source>join.realm</source>
-                <target>Join secure realm</target>
+                <target state="final">Join secure realm</target>
                 <note>Button label to submit new relation between a node and a realm</note>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="node.no_realm">
+      <trans-unit xml:space="preserve" id="node.no_realm" approved="yes">
                 <source>node.no_realm</source>
-                <target>No realm</target>
+                <target state="final">No realm</target>
                 <note>Message when node is linked to an empty realm</note>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="leave.realm">
+      <trans-unit xml:space="preserve" id="leave.realm" approved="yes">
                 <source>leave.realm</source>
-                <target>Leave realm</target>
+                <target state="final">Leave realm</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="are_you_sure.leave.realm">
+      <trans-unit xml:space="preserve" id="are_you_sure.leave.realm" approved="yes">
                 <source>are_you_sure.leave.realm</source>
-                <target>Are you sure you want to leave this secure realm? All node children with “Automatic” inheritance type will leave this realm too.</target>
+                <target state="final">Are you sure you want to leave this secure realm? All node children with “Automatic” inheritance type will leave this realm too.</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="node.%node%.joined.%realm%">
+      <trans-unit xml:space="preserve" id="node.%node%.joined.%realm%" approved="yes">
                 <source>node.%node%.joined.%realm%</source>
-                <target>Node “%node%” joined “%realm%” realm.</target>
+                <target state="final">Node “%node%” joined “%realm%” realm.</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="node.%node%.left.%realm%">
+      <trans-unit xml:space="preserve" id="node.%node%.left.%realm%" approved="yes">
                 <source>node.%node%.left.%realm%</source>
-                <target>Node “%node%” left “%realm%” realm.</target>
+                <target state="final">Node “%node%” left “%realm%” realm.</target>
             </trans-unit>
-
-            <trans-unit xml:space="preserve" id="realm.behaviour">
+      <trans-unit xml:space="preserve" id="realm.behaviour" approved="yes">
                 <source>realm.behaviour</source>
-                <target>Behaviour on WebResponse</target>
+                <target state="final">Behaviour on WebResponse</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.behaviour.help">
+      <trans-unit xml:space="preserve" id="realm.behaviour.help" approved="yes">
                 <source>realm.behaviour.help</source>
-                <target>Define realm behaviour on WebResponses: API fields conditional serialization applies regardless of the chosen behavior</target>
+                <target state="final">Define realm behaviour on WebResponses: API fields conditional serialization applies regardless of the chosen behavior</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.behaviour_none">
+      <trans-unit xml:space="preserve" id="realm.behaviour_none" approved="yes">
                 <source>realm.behaviour_none</source>
-                <target>No effect</target>
+                <target state="final">No effect</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.behaviour_deny">
+      <trans-unit xml:space="preserve" id="realm.behaviour_deny" approved="yes">
                 <source>realm.behaviour_deny</source>
-                <target>Reject requests (error 401)</target>
+                <target state="final">Reject requests (error 401)</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="realm.behaviour_hide_blocks">
+      <trans-unit xml:space="preserve" id="realm.behaviour_hide_blocks" approved="yes">
                 <source>realm.behaviour_hide_blocks</source>
-                <target>Hide blocks</target>
+                <target state="final">Hide blocks</target>
             </trans-unit>
-        </body>
-    </file>
+    </body>
+  </file>
 </xliff>

@@ -187,7 +187,7 @@
             </trans-unit>
       <trans-unit xml:space="preserve" id="OpenId">
                 <source>OpenId</source>
-                <target state="translated">OpenId</target>
+                <target state="translated">OpenID</target>
                 <note>Setting group name</note>
             </trans-unit>
       <trans-unit xml:space="preserve" id="Site informations">
