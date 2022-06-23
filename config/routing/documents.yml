@@ -8,6 +8,11 @@ documentsEditPage:
     defaults:
         _controller: Themes\Rozier\Controllers\Documents\DocumentsController::editAction
     requirements: { documentId : "[0-9]+" }
+documentsLimitationsPage:
+    path:     /limitations/{id}
+    defaults:
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentLimitationsController::limitationsAction
+    requirements: { id : "[0-9]+" }
 documentsMetaPage:
     path:     /meta/{documentId}/{translationId}
     defaults:

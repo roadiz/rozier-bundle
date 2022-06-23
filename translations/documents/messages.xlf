@@ -6,6 +6,23 @@
                 <source>document.externalUrl</source>
                 <target></target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="document.limitations">
+                <source>document.limitations</source>
+                <target></target>
+                <note>Documents limitations backoffice section label</note>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="document.copyrightHolder">
+                <source>document.copyrightHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="document.copyrightValidSince">
+                <source>document.copyrightValidSince</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="document.copyrightValidUntil">
+                <source>document.copyrightValidUntil</source>
+                <target></target>
+            </trans-unit>
             <trans-unit xml:space="preserve" id="no_document">
                 <source>no_document</source>
                 <target></target>

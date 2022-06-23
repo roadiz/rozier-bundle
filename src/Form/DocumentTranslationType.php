@@ -29,7 +29,7 @@ class DocumentTranslationType extends AbstractType
                 'required' => false,
             ])
             ->add('copyright', TextType::class, [
-                'label' => 'copyright',
+                'label' => 'document.copyrightHolder',
                 'required' => false,
             ])
             ->add('externalUrl', TextType::class, [
