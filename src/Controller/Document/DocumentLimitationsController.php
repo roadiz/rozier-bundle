@@ -27,7 +27,7 @@ final class DocumentLimitationsController extends RozierApp
 
     public function limitationsAction(Request $request, Document $document): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
+        $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS_LIMITATIONS');
 
         /** @var FormInterface $form */
         $form = $this->createForm(DocumentLimitationsType::class, $document, [
