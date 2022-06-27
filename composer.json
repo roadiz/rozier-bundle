@@ -20,8 +20,7 @@
         "php": ">=7.4",
         "symfony/framework-bundle": "5.4.*",
         "roadiz/rozier": "dev-develop",
-        "roadiz/compat-bundle": "dev-main",
-        "rezozero/intervention-request-bundle": "dev-master"
+        "roadiz/compat-bundle": "dev-main"
     },
     "require-dev": {
         "roadiz/core-bundle": "*",
