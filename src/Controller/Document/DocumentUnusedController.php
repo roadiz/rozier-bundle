@@ -8,10 +8,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\ListManager\QueryBuilderListManager;
 use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
+use RZ\Roadiz\RozierBundle\ListManager\SessionListFilters;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;
-use Themes\Rozier\Utils\SessionListFilters;
 
 final class DocumentUnusedController extends RozierApp
 {
