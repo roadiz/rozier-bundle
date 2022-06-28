@@ -60,23 +60,24 @@ services:
             -   addPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
-    # Customized OpenIdAuthenticator for Rozier backoffice entry points
-    roadiz_rozier.authenticator.open_id:
-        class: RZ\Roadiz\CoreBundle\Security\Authentication\OpenIdAuthenticator
-        autoconfigure: false
+
+    #
+    # Open ID
+    #
+    RZ\Roadiz\OpenId\OAuth2LinkGenerator:
         arguments:
-            - '@security.http_utils'
-            - '@?RZ\Roadiz\OpenId\Discovery'
-            - '@RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy'
-            - '@RZ\Roadiz\OpenId\OpenIdJwtConfigurationFactory'
-            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
-            - 'loginPage'
-            - 'adminHomePage'
-            - '%roadiz_core.open_id.oauth_client_id%'
-            - '%roadiz_core.open_id.oauth_client_secret%'
-            - '%roadiz_core.open_id.openid_username_claim%'
-            - '_target_path'
-            - '%roadiz_core.open_id.granted_roles%'
+            - '@?roadiz_rozier.open_id.discovery'
+            - '@security.csrf.token_manager'
+            - '%roadiz_rozier.open_id.hosted_domain%'
+            - '%roadiz_rozier.open_id.oauth_client_id%'
+            - '%roadiz_rozier.open_id.scopes%'
+
+    RZ\Roadiz\OpenId\Authentication\Provider\SettingsRoleStrategy:
+        arguments: [ '@RZ\Roadiz\CoreBundle\Bag\Settings' ]
+        tags: [ 'roadiz_rozier.jwt_role_strategy' ]
+
+    RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy: ~
+    RZ\Roadiz\OpenId\Authentication\Provider\OpenIdAccountProvider: ~
 
     RZ\Roadiz\RozierBundle\Controller\PingController:
         arguments: ['@?profiler']

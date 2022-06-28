@@ -92,3 +92,41 @@ rz_intervention_request:
     resource: "@RZInterventionRequestBundle/Resources/config/routing.yml"
     prefix:   /
 ```
+
+### OpenID
+
+This bundle can allow users to log in to backoffice using OpenID:
+
+```yaml
+#config/packages/roadiz_rozier.yaml
+roadiz_rozier:
+    #...
+    open_id:
+        # Verify User info in JWT at each login
+        verify_user_info: false
+        # Standard OpenID autodiscovery URL, required to enable OpenId login in Roadiz CMS.
+        discovery_url: '%env(string:OPEN_ID_DISCOVERY_URL)%'
+        # For public identity providers (such as Google), restrict users emails by their domain.
+        hosted_domain: '%env(string:OPEN_ID_HOSTED_DOMAIN)%'
+        # OpenID identity provider OAuth2 client ID
+        oauth_client_id: '%env(string:OPEN_ID_CLIENT_ID)%'
+        # OpenID identity provider OAuth2 client secret
+        oauth_client_secret: '%env(string:OPEN_ID_CLIENT_SECRET)%'
+        granted_roles:
+            - ROLE_USER
+            - ROLE_BACKEND_USER
+```
+
+Then add custom authenticator `roadiz_rozier.open_id.authenticator` to your security configuration:
+
+
+```yaml
+#config/packages/security.yaml
+security:
+    firewalls:
+        main:
+            # ...
+            custom_authenticator:
+                - RZ\Roadiz\RozierBundle\Security\RozierAuthenticator
+                - roadiz_rozier.open_id.authenticator
+```
