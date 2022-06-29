@@ -120,15 +120,6 @@ nodesUndeletePage:
     defaults:
         _controller: Themes\Rozier\Controllers\Nodes\NodesController::undeleteAction
     requirements: { nodeId : "[0-9]+" }
-nodesExportPage:
-    path:     /export/{nodeId}
-    defaults:
-        _controller: Themes\Rozier\Controllers\Nodes\NodesUtilsController::exportAction
-    requirements: { nodeId : "[0-9]+" }
-nodesExportAllPage:
-    path:     /export
-    defaults:
-        _controller: Themes\Rozier\Controllers\Nodes\NodesUtilsController::exportAllAction
 
 nodesExportAllXlsxPage:
     path:     /export/xlsx/{translationId}
