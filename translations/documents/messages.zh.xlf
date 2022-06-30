@@ -2,15 +2,14 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="zh-CN">
     <body>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        </body>
+      <trans-unit xml:space="preserve" id="no_document">
+                <source>no_document</source>
+                <target state="translated">没有文档</target>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="all.documents">
+                <source>all.documents</source>
+                <target state="translated">所有文档</target>
+            </trans-unit>
+    </body>
   </file>
 </xliff>
