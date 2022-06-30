@@ -2,17 +2,21 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="zh-CN">
     <body>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        </body>
+      <trans-unit xml:space="preserve" id="custom-form.usage">
+                <source>custom-form.usage</source>
+                <target state="translated">使用情况</target>
+                <note>Custom form nav-bar item "Usage" label</note>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="customForm.retentionTime.always">
+                <source>customForm.retentionTime.always</source>
+                <target state="translated">不限制时长</target>
+                <note/>
+            </trans-unit>
+      <trans-unit xml:space="preserve" id="customForm.retentionTime.one_week">
+                <source>customForm.retentionTime.one_week</source>
+                <target state="translated">一星期</target>
+                <note/>
+            </trans-unit>
+    </body>
   </file>
 </xliff>
