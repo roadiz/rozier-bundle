@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.4",
         "symfony/framework-bundle": "5.4.*",
-        "roadiz/rozier": "~2.0.0",
+        "roadiz/rozier": "~2.0.0 || dev-develop",
         "roadiz/compat-bundle": "~2.0.0 || dev-main",
         "roadiz/openid": "~2.0.0"
     },
