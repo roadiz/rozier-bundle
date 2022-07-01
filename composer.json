@@ -19,12 +19,12 @@
     "require": {
         "php": ">=7.4",
         "symfony/framework-bundle": "5.4.*",
+        "roadiz/core-bundle": "~2.0.0 || dev-develop",
         "roadiz/rozier": "~2.0.0 || dev-develop",
-        "roadiz/compat-bundle": "~2.0.0 || dev-main",
+        "roadiz/compat-bundle": "~2.0.0 || dev-develop",
         "roadiz/openid": "~2.0.0"
     },
     "require-dev": {
-        "roadiz/core-bundle": "*",
         "php-coveralls/php-coveralls": "^2.4",
         "phpstan/phpstan": "^1.5.3",
         "phpstan/phpstan-symfony": "^1.1.8",
