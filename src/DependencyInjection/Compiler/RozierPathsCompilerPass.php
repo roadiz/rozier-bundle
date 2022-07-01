@@ -16,7 +16,7 @@ class RozierPathsCompilerPass implements CompilerPassInterface
     /**
      * @inheritDoc
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->hasDefinition('translator.default')) {
             $this->registerThemeTranslatorResources($container);
@@ -26,6 +26,10 @@ class RozierPathsCompilerPass implements CompilerPassInterface
     private function registerThemeTranslatorResources(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
+
+        if (!is_string($projectDir)) {
+            throw new \RuntimeException('kernel.project_dir is not a valid string');
+        }
 
         /*
          * add Assets package '%kernel.project_dir%/themes/Rozier/static'
@@ -50,7 +54,11 @@ class RozierPathsCompilerPass implements CompilerPassInterface
          * add translations paths
          */
         $translationFolder = realpath($projectDir . '/vendor/roadiz/rozier/src/Resources/translations');
-        if ($container->hasDefinition('translator.default') && file_exists($translationFolder)) {
+        if (
+            $container->hasDefinition('translator.default') &&
+            false !== $translationFolder &&
+            file_exists($translationFolder)
+        ) {
             $translator = $container->findDefinition('translator.default');
             $files = [];
             $finder = Finder::create()
@@ -72,8 +80,11 @@ class RozierPathsCompilerPass implements CompilerPassInterface
 
                 $files[$locale][] = (string) $file;
             }
+            /** @var array $options */
+            $options = $translator->getArgument(4);
+
             $options = array_merge_recursive(
-                $translator->getArgument(4),
+                $options,
                 [
                     'resource_files' => $files,
                     'scanned_directories' => $scannedDirectories = [$translationFolder],

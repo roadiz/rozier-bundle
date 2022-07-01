@@ -18,7 +18,7 @@ class RoadizRozierExtension extends Extension
     /**
      * @inheritDoc
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/../config'));
         $loader->load('services.yaml');
@@ -33,7 +33,7 @@ class RoadizRozierExtension extends Extension
         $this->registerOpenId($config, $container);
     }
 
-    private function registerOpenId(array $config, ContainerBuilder $container)
+    private function registerOpenId(array $config, ContainerBuilder $container): void
     {
         $container->setParameter('roadiz_rozier.open_id.verify_user_info', $config['open_id']['verify_user_info']);
         $container->setParameter('roadiz_rozier.open_id.discovery_url', $config['open_id']['discovery_url']);

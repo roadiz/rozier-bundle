@@ -6,6 +6,7 @@ namespace RZ\Roadiz\RozierBundle\Controller\Node;
 
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Node;
+use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\RealmNode;
 use RZ\Roadiz\CoreBundle\Event\Realm\NodeJoinedRealmEvent;
 use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
@@ -14,6 +15,7 @@ use RZ\Roadiz\CoreBundle\Model\RealmInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -35,7 +37,7 @@ final class RealmNodeController extends RozierApp
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function defaultAction(Request $request, int $id)
+    public function defaultAction(Request $request, int $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
         /** @var Node|null $node */
@@ -47,8 +49,11 @@ final class RealmNodeController extends RozierApp
         $realmNode = new RealmNode();
         $realmNode->setNode($node);
         $realmNode->setInheritanceType(RealmInterface::INHERITANCE_ROOT);
+        $nodeSource = $node->getNodeSources()->first();
+        if (!$nodeSource instanceof NodesSources) {
+            throw new ResourceNotFoundException();
+        }
 
-        /** @var FormInterface $form */
         $form = $this->createForm(RealmNodeType::class, $realmNode);
         $form->handleRequest($request);
 
@@ -63,10 +68,7 @@ final class RealmNodeController extends RozierApp
             $msg = $this->translator->trans(
                 'node.%node%.joined.%realm%',
                 [
-                    '%node%' => $node->getNodeSources()->first() ?
-                        $node->getNodeSources()->first()->getTitle() :
-                        $node->getNodeName()
-                    ,
+                    '%node%' => $nodeSource->getTitle(),
                     '%realm%' => $realmNode->getRealm() ?
                         $realmNode->getRealm()->getName() :
                         $this->translator->trans('node.no_realm')
@@ -81,16 +83,16 @@ final class RealmNodeController extends RozierApp
 
         $this->assignation['form'] = $form->createView();
         $this->assignation['node'] = $node;
-        $this->assignation['source'] = $node->getNodeSources()->first();
+        $this->assignation['source'] = $nodeSource;
         $this->assignation['nodeRealms'] = $this->managerRegistry
             ->getRepository(RealmNode::class)
             ->findByNode($node);
-        $this->assignation['translation'] = $node->getNodeSources()->first()->getTranslation();
+        $this->assignation['translation'] = $nodeSource->getTranslation();
 
         return $this->render('@RoadizRozier/nodes/realms.html.twig', $this->assignation);
     }
 
-    public function deleteAction(Request $request, int $id, int $realmNodeId)
+    public function deleteAction(Request $request, int $id, int $realmNodeId): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
         /** @var Node|null $node */
@@ -100,8 +102,11 @@ final class RealmNodeController extends RozierApp
         if (null === $node || null === $realmNode) {
             throw new ResourceNotFoundException();
         }
+        $nodeSource = $node->getNodeSources()->first();
+        if (!$nodeSource instanceof NodesSources) {
+            throw new ResourceNotFoundException();
+        }
 
-        /** @var FormInterface $form */
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
 
@@ -116,10 +121,7 @@ final class RealmNodeController extends RozierApp
             $msg = $this->translator->trans(
                 'node.%node%.left.%realm%',
                 [
-                    '%node%' => $node->getNodeSources()->first() ?
-                        $node->getNodeSources()->first()->getTitle() :
-                        $node->getNodeName()
-                    ,
+                    '%node%' => $nodeSource->getTitle(),
                     '%realm%' => $realmNode->getRealm() ?
                         $realmNode->getRealm()->getName() :
                         $this->translator->trans('node.no_realm')
@@ -134,9 +136,9 @@ final class RealmNodeController extends RozierApp
 
         $this->assignation['form'] = $form->createView();
         $this->assignation['node'] = $node;
-        $this->assignation['source'] = $node->getNodeSources()->first();
+        $this->assignation['source'] = $nodeSource;
         $this->assignation['realmNode'] = $realmNode;
-        $this->assignation['translation'] = $node->getNodeSources()->first()->getTranslation();
+        $this->assignation['translation'] = $nodeSource->getTranslation();
 
         return $this->render('@RoadizRozier/nodes/deleteRealm.html.twig', $this->assignation);
     }

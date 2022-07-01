@@ -45,7 +45,7 @@ final class DocumentArchiveController extends RozierApp
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
         $documentsIds = $request->get('documents', []);
-        if (count($documentsIds) <= 0) {
+        if (!is_array($documentsIds) || count($documentsIds) <= 0) {
             throw new ResourceNotFoundException('No selected documents to download.');
         }
 

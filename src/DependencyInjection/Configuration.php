@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Themes\Rozier\Forms\Node\AddNodeType;

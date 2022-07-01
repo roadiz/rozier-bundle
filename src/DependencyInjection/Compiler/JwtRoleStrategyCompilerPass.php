@@ -14,7 +14,7 @@ class JwtRoleStrategyCompilerPass implements CompilerPassInterface
     /**
      * @inheritDoc
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->has(ChainJwtRoleStrategy::class)) {
             $definition = $container->findDefinition(ChainJwtRoleStrategy::class);

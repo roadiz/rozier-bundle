@@ -1,6 +1,8 @@
 # Roadiz Rozier bundle
 **Legacy administration interface port to Roadiz v2**
 
+[![Build Status](https://app.travis-ci.com/roadiz/rozier-bundle.svg?branch=main)](https://app.travis-ci.com/roadiz/rozier-bundle)
+
 Installation
 ============
 

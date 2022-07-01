@@ -35,7 +35,7 @@ class CustomFormType extends AbstractType
         $this->security = $security;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('displayName', TextType::class, [
             'label' => 'customForm.displayName',
@@ -116,7 +116,7 @@ class CustomFormType extends AbstractType
         return 'customform';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'label' => false,
