@@ -1,3 +1,9 @@
+## 2.0.1 (2022-07-20)
+
+### Features
+
+* Override Rozier TranslateController to use new NodeTranslator service ([1a722c5](https://github.com/roadiz/rozier-bundle/commit/1a722c508db577845afef16f7136febd8c1685a7))
+
 ## 2.0.0 (2022-07-01)
 
 ### ⚠ BREAKING CHANGES

@@ -35,7 +35,7 @@ nodesTranstypePage:
 nodesTranslatePage:
     path:     /translate/{nodeId}
     defaults:
-        _controller: Themes\Rozier\Controllers\Nodes\TranslateController::translateAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\TranslateController::translateAction
     requirements: { nodeId : "[0-9]+" }
 nodesEditSourcePage:
     path:     /edit/{nodeId}/source/{translationId}
