@@ -63,7 +63,7 @@ class TranslateController extends RozierApp
                         $msg = $this->getTranslator()->trans('node.%name%.translated', [
                             '%name%' => $node->getNodeName(),
                         ]);
-                        $this->publishConfirmMessage($request, $msg, $node->getNodeSources()->first());
+                        $this->publishConfirmMessage($request, $msg, $node->getNodeSources()->first() ?: null);
                         return $this->redirectToRoute(
                             'nodesEditSourcePage',
                             ['nodeId' => $node->getId(), 'translationId' => $translation->getId()]

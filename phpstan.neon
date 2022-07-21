@@ -2,6 +2,8 @@ parameters:
     level: max
     paths:
         - src
+    doctrine:
+        repositoryClass: RZ\Roadiz\CoreBundle\Repository\EntityRepository
     excludePaths:
         - */node_modules/*
         - */bower_components/*
