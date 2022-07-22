@@ -51,6 +51,10 @@ final class SeoController extends RozierApp
             $translation = $translationId;
         }
 
+        if ($translation === false) {
+            throw new ResourceNotFoundException();
+        }
+
         $node = $nodeId;
         /** @var NodesSources|false $source */
         $source = $nodeId->getNodeSourcesByTranslation($translation)->first();
