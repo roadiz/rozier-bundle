@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller\Node;
 
 use RZ\Roadiz\CoreBundle\Entity\Node;
+use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Exception\EntityAlreadyExistsException;
 use RZ\Roadiz\CoreBundle\Node\NodeTranslator;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Themes\Rozier\Forms\Node\TranslateNodeType;
 use Themes\Rozier\RozierApp;
 
-class TranslateController extends RozierApp
+final class TranslateController extends RozierApp
 {
     private NodeTranslator $nodeTranslator;
 
@@ -63,7 +64,13 @@ class TranslateController extends RozierApp
                         $msg = $this->getTranslator()->trans('node.%name%.translated', [
                             '%name%' => $node->getNodeName(),
                         ]);
-                        $this->publishConfirmMessage($request, $msg, $node->getNodeSources()->first() ?: null);
+                        /** @var NodesSources|false $nodeSource */
+                        $nodeSource = $node->getNodeSources()->first();
+                        $this->publishConfirmMessage(
+                            $request,
+                            $msg,
+                            $nodeSource ?: null
+                        );
                         return $this->redirectToRoute(
                             'nodesEditSourcePage',
                             ['nodeId' => $node->getId(), 'translationId' => $translation->getId()]
