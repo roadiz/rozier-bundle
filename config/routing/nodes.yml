@@ -80,7 +80,7 @@ nodesRemoveStackTypePage:
 nodesEditSEOPage:
     path:     /edit/{nodeId}/seo/{translationId}
     defaults:
-        _controller: Themes\Rozier\Controllers\Nodes\UrlAliasesController::editAliasesAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\SeoController::editAliasesAction
     requirements: { nodeId : "[0-9]+" }
 nodesTreePage:
     path:     /tree/{nodeId}/{translationId}

@@ -22,7 +22,7 @@ documentsMetaPage:
 documentsPreviewPage:
     path:     /preview/{documentId}
     defaults:
-        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::previewAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentPreviewController::previewAction
     requirements: { documentId : "[0-9]+" }
 documentsDownloadPage:
     path:     /download/{documentId}

@@ -13,7 +13,6 @@ use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
 use RZ\Roadiz\CoreBundle\Form\RealmNodeType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -37,15 +36,11 @@ final class RealmNodeController extends RozierApp
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function defaultAction(Request $request, int $id): Response
+    public function defaultAction(Request $request, Node $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
-        /** @var Node|null $node */
-        $node = $this->managerRegistry->getRepository(Node::class)->find($id);
-        if (null === $node) {
-            throw new ResourceNotFoundException();
-        }
 
+        $node = $id;
         $realmNode = new RealmNode();
         $realmNode->setNode($node);
         $realmNode->setInheritanceType(RealmInterface::INHERITANCE_ROOT);

@@ -43,6 +43,18 @@ dans un texte Markdown, un site externe, *le document sera considéré comme in
                 <source>duplicated_documents</source>
                 <target state="final">Doublons</target>
             </trans-unit>
+        <trans-unit xml:space="preserve" id="document.video_sources" approved="yes">
+                <source>document.video_sources</source>
+            <target>Toutes les sources vidéos</target>
+            </trans-unit>
+        <trans-unit xml:space="preserve" id="document.audio_sources" approved="yes">
+                <source>document.audio_sources</source>
+            <target>Toutes les sources audios</target>
+            </trans-unit>
+        <trans-unit xml:space="preserve" id="document.picture_sources" approved="yes">
+                <source>document.picture_sources</source>
+            <target>Toutes les sources images</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
