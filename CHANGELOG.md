@@ -1,3 +1,10 @@
+## 2.0.2 (2022-07-29)
+
+### Features
+
+* Allow editing SEO info on non-reachable nodes ([9df4675](https://github.com/roadiz/rozier-bundle/commit/9df4675febbd61405a3264c6c77768d3302bdf4f))
+* **Documents:** Add all video, audio and picture sources in document preview page ([e1c51e3](https://github.com/roadiz/rozier-bundle/commit/e1c51e34735e12b2c86ca966926fcae788bb87bb))
+
 ## 2.0.1 (2022-07-20)
 
 ### Features
