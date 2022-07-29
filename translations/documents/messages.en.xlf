@@ -43,18 +43,6 @@ Document are listed as “unused” when they are not linked to any node, tag, s
                 <source>duplicated_documents</source>
                 <target state="final">Duplicated documents</target>
             </trans-unit>
-        <trans-unit xml:space="preserve" id="document.video_sources" approved="yes">
-                <source>document.video_sources</source>
-            <target>All video sources</target>
-            </trans-unit>
-        <trans-unit xml:space="preserve" id="document.audio_sources" approved="yes">
-                <source>document.audio_sources</source>
-            <target>All audio sources</target>
-            </trans-unit>
-        <trans-unit xml:space="preserve" id="document.picture_sources" approved="yes">
-                <source>document.picture_sources</source>
-            <target>All picture sources</target>
-        </trans-unit>
     </body>
   </file>
 </xliff>
