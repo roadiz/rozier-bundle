@@ -39,6 +39,18 @@
                 <source>duplicated_documents</source>
                 <target></target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="document.video_sources">
+                <source>document.video_sources</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="document.audio_sources">
+                <source>document.audio_sources</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="document.picture_sources">
+                <source>document.picture_sources</source>
+                <target></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

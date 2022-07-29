@@ -51,7 +51,7 @@ final class SeoController extends RozierApp
             $translation = $translationId;
         }
 
-        if ($translation === false) {
+        if ($translation === null) {
             throw new ResourceNotFoundException();
         }
 
