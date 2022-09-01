@@ -1,3 +1,9 @@
+## 2.0.3 (2022-09-01)
+
+### Bug Fixes
+
+* Missing help translation for folder form type ([9983db6](https://github.com/roadiz/rozier-bundle/commit/9983db65a6a9fc8867509a342e7383efe7b8c9e3))
+
 ## 2.0.2 (2022-07-29)
 
 ### Features
