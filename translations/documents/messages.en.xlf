@@ -6,22 +6,22 @@
                 <source>document.externalUrl</source>
                 <target state="final">External URL</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="document.limitations">
+      <trans-unit xml:space="preserve" id="document.limitations" approved="yes">
                 <source>document.limitations</source>
-                <target state="translated">Limitations</target>
+                <target state="final">Limitations</target>
                 <note>Documents limitations backoffice section label</note>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="document.copyrightHolder">
+      <trans-unit xml:space="preserve" id="document.copyrightHolder" approved="yes">
                 <source>document.copyrightHolder</source>
-                <target state="translated">Copyright holder</target>
+                <target state="final">Copyright holder</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="document.copyrightValidSince">
+      <trans-unit xml:space="preserve" id="document.copyrightValidSince" approved="yes">
                 <source>document.copyrightValidSince</source>
-                <target state="translated">Copyright valid since</target>
+                <target state="final">Copyright valid since</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="document.copyrightValidUntil">
+      <trans-unit xml:space="preserve" id="document.copyrightValidUntil" approved="yes">
                 <source>document.copyrightValidUntil</source>
-                <target state="translated">Copyright valid until</target>
+                <target state="final">Copyright valid until</target>
             </trans-unit>
       <trans-unit xml:space="preserve" id="no_document" approved="yes">
                 <source>no_document</source>
@@ -43,18 +43,18 @@ Document are listed as “unused” when they are not linked to any node, tag, s
                 <source>duplicated_documents</source>
                 <target state="final">Duplicated documents</target>
             </trans-unit>
-        <trans-unit xml:space="preserve" id="document.video_sources" approved="yes">
+      <trans-unit xml:space="preserve" id="document.video_sources" approved="yes">
                 <source>document.video_sources</source>
-            <target>All video sources</target>
+                <target state="final">All video sources</target>
             </trans-unit>
-        <trans-unit xml:space="preserve" id="document.audio_sources" approved="yes">
+      <trans-unit xml:space="preserve" id="document.audio_sources" approved="yes">
                 <source>document.audio_sources</source>
-            <target>All audio sources</target>
+                <target state="final">All audio sources</target>
             </trans-unit>
-        <trans-unit xml:space="preserve" id="document.picture_sources" approved="yes">
+      <trans-unit xml:space="preserve" id="document.picture_sources" approved="yes">
                 <source>document.picture_sources</source>
-            <target>All picture sources</target>
-        </trans-unit>
+                <target state="final">All picture sources</target>
+            </trans-unit>
     </body>
   </file>
 </xliff>
