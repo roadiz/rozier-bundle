@@ -20,7 +20,7 @@
         "php": ">=7.4",
         "symfony/framework-bundle": "5.4.*",
         "roadiz/core-bundle": "~2.0.0 || dev-develop",
-        "roadiz/rozier": "~2.0.0 || dev-develop",
+        "roadiz/rozier": "~2.0.6 || dev-develop",
         "roadiz/compat-bundle": "~2.0.0 || dev-develop",
         "roadiz/openid": "~2.0.0"
     },

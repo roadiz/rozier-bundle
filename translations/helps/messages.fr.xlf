@@ -22,9 +22,9 @@
                 <source>tag.locked.help</source>
                 <target state="translated">Une étiquette verrouillée n’est pas renommée lorsque vous modifiez son titre dans la traduction principale. Cela empêche aussi sa suppression.</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="tag.locked.help">
+      <trans-unit xml:space="preserve" id="folder.locked.help">
                 <source>folder.locked.help</source>
-                <target state="translated">Une étiquette verrouillée n’est pas renommée lorsque vous modifiez son titre dans la traduction principale. Cela empêche aussi sa suppression.</target>
+                <target state="translated">Un dossier verrouillé n’est pas renommé lorsque vous modifiez son titre dans la traduction principale. Cela empêche aussi sa suppression.</target>
             </trans-unit>
       <trans-unit xml:space="preserve" id="nodeSource.metaTitle.help">
                 <source>nodeSource.metaTitle.help</source>
