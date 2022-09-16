@@ -22,6 +22,10 @@
                 <source>tag.locked.help</source>
                 <target state="translated">Tag yang dikunci tidak diganti namanya setelah memperbarui judul yang diterjemahkan. Ini mencegah penghapusan juga.</target>
             </trans-unit>
+      <trans-unit xml:space="preserve" id="folder.locked.help">
+                <source>folder.locked.help</source>
+                <target state="translated">Tag yang dikunci tidak diganti namanya setelah memperbarui judul yang diterjemahkan. Ini mencegah penghapusan juga.</target>
+            </trans-unit>
       <trans-unit xml:space="preserve" id="nodeSource.metaTitle.help">
                 <source>nodeSource.metaTitle.help</source>
                 <target state="translated">Judul SEO memungkinkan Anda untuk menulis seluruh judul halaman Anda. Untuk tampilan optimal di mesin pencari, judulnya tidak boleh melebihi 55 hingga 65 karakter rata-rata.</target>

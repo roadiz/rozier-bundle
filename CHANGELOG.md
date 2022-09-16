@@ -1,3 +1,9 @@
+## 2.0.5 (2022-09-16)
+
+### Bug Fixes
+
+* Duplicated translation key ([63872ce](https://github.com/roadiz/rozier-bundle/commit/63872ce1629e532b29bf045fc8681c71fc807932))
+
 ## 2.0.4 (2022-09-16)
 
 ### Bug Fixes

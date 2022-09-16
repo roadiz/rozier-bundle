@@ -22,7 +22,7 @@
                 <source>tag.locked.help</source>
                 <target></target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="tag.locked.help">
+            <trans-unit xml:space="preserve" id="folder.locked.help">
                 <source>folder.locked.help</source>
                 <target></target>
             </trans-unit>
