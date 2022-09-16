@@ -22,7 +22,7 @@
                 <source>tag.locked.help</source>
                 <target state="translated">被锁定的标签不会在更新翻译称谓后被重命名。它也不会被删除。</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="tag.locked.help">
+      <trans-unit xml:space="preserve" id="folder.locked.help">
                 <source>folder.locked.help</source>
                 <target state="translated">被锁定的标签不会在更新翻译称谓后被重命名。它也不会被删除。</target>
             </trans-unit>
