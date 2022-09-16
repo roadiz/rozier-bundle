@@ -7,7 +7,6 @@ namespace RZ\Roadiz\RozierBundle\Form;
 use RZ\Roadiz\CoreBundle\Entity\CustomForm;
 use RZ\Roadiz\CoreBundle\Form\ColorType;
 use RZ\Roadiz\CoreBundle\Form\MarkdownType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,9 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CustomFormType extends AbstractType
@@ -39,13 +35,7 @@ class CustomFormType extends AbstractType
     {
         $builder->add('displayName', TextType::class, [
             'label' => 'customForm.displayName',
-            'constraints' => [
-                new NotNull(),
-                new NotBlank(),
-                new Length([
-                    'max' => 255,
-                ]),
-            ],
+            'empty_data' => '',
         ])
             ->add('description', MarkdownType::class, [
                 'label' => 'description',
@@ -125,11 +115,6 @@ class CustomFormType extends AbstractType
             'attr' => [
                 'class' => 'uk-form custom-form-form',
             ],
-            'constraints' => [
-                new UniqueEntity([
-                    'fields' => ['name']
-                ])
-            ]
         ]);
         $resolver->setAllowedTypes('name', 'string');
     }
