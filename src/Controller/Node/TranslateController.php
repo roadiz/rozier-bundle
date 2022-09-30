@@ -9,10 +9,10 @@ use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Exception\EntityAlreadyExistsException;
 use RZ\Roadiz\CoreBundle\Node\NodeTranslator;
+use RZ\Roadiz\RozierBundle\Form\TranslateNodeType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Themes\Rozier\Forms\Node\TranslateNodeType;
 use Themes\Rozier\RozierApp;
 
 final class TranslateController extends RozierApp
