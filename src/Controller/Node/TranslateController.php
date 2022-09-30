@@ -44,12 +44,14 @@ final class TranslateController extends RozierApp
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                /** @var Translation $translation */
-                $translation = $form->get('translation')->getData();
+                /** @var Translation $destinationTranslation */
+                $destinationTranslation = $form->get('translation')->getData();
+                /** @var Translation $sourceTranslation */
+                $sourceTranslation = $form->get('sourceTranslation')->getData();
                 $translateOffspring = (bool) $form->get('translate_offspring')->getData();
 
                 try {
-                    $this->nodeTranslator->translateNode($translation, $node, $translateOffspring);
+                    $this->nodeTranslator->translateNode($sourceTranslation, $destinationTranslation, $node, $translateOffspring);
                     $this->em()->flush();
                     $msg = $this->getTranslator()->trans('node.%name%.translated', [
                         '%name%' => $node->getNodeName(),
@@ -63,7 +65,7 @@ final class TranslateController extends RozierApp
                     );
                     return $this->redirectToRoute(
                         'nodesEditSourcePage',
-                        ['nodeId' => $node->getId(), 'translationId' => $translation->getId()]
+                        ['nodeId' => $node->getId(), 'translationId' => $destinationTranslation->getId()]
                     );
                 } catch (EntityAlreadyExistsException $e) {
                     $form->addError(new FormError($e->getMessage()));
