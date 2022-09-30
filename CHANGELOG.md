@@ -1,3 +1,16 @@
+## 2.0.6 (2022-09-30)
+
+### Features
+
+* Rename ROLE_PREVIOUS_ADMIN to IS_IMPERSONATOR ([811b794](https://github.com/roadiz/rozier-bundle/commit/811b7943cec1784d665f92d7174d22d2c9474c79))
+* **Translations:** Let user choose source and destination translations ([1581cd9](https://github.com/roadiz/rozier-bundle/commit/1581cd97efc922b88380c63b5a94b4dc948a22d7))
+* **Translations:** Moved controller and form-type from Rozier to RozierBundle ([9bbf6a7](https://github.com/roadiz/rozier-bundle/commit/9bbf6a76fe919890926131e2c01652acc476cf78))
+* **Translations:** Update help messages ([2c30a29](https://github.com/roadiz/rozier-bundle/commit/2c30a29300982fbbad714921d44cfae4a6fffbf9))
+
+### Bug Fixes
+
+* Bad merge commit ([1b697a8](https://github.com/roadiz/rozier-bundle/commit/1b697a8122bcd29cfa2418337d0b53b403cb5335))
+
 ## 2.0.5 (2022-09-16)
 
 ### Bug Fixes
