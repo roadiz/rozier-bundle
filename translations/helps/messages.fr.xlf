@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file original="" source-language="en" datatype="plaintext" target-language="fr">
-        <body>
-            <trans-unit xml:space="preserve" id="document.private.help">
+  <file original="" source-language="en" datatype="plaintext" target-language="fr">
+    <body>
+      <trans-unit xml:space="preserve" id="document.private.help">
                 <source>document.private.help</source>
             <target state="translated">Déplace le fichier dans un dossier du serveur non-accessible publiquement. Cette option désactive l’affichage du document dans votre site.</target></trans-unit>
       <trans-unit xml:space="preserve" id="document.imageAverageColor.help">
