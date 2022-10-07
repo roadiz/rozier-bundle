@@ -47,6 +47,9 @@
       <trans-unit xml:space="preserve" id="translate_offspring.help">
                 <source>translate_offspring.help</source>
             <target state="translated">This will propagate translation to every node children when they are not translated yet in destination language.</target></trans-unit>
+      <trans-unit xml:space="preserve" id="user.publicName.help">
+                <source>user.publicName.help</source>
+            <target state="translated">If filled, public name may be displayed to any other website user, you can use it as a pseudonym.</target></trans-unit>
     </body>
   </file>
 </xliff>
