@@ -47,6 +47,9 @@
       <trans-unit xml:space="preserve" id="translate_offspring.help">
                 <source>translate_offspring.help</source>
             <target state="translated">Effectue la traduction sur tous les nœuds enfants en cascade lorsque ceux-ci ne sont pas traduits dans la langue de destination.</target></trans-unit>
+      <trans-unit xml:space="preserve" id="user.publicName.help">
+                <source>user.publicName.help</source>
+            <target state="translated">Si rempli, le nom publique peut être affiché librement sur le site à la manière d'un pseudonyme.</target></trans-unit>
     </body>
   </file>
 </xliff>
