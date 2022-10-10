@@ -35,9 +35,7 @@ class SecurityController extends AbstractController
         $this->rozierServiceRegistry = $rozierServiceRegistry;
     }
 
-    /**
-     * @Route("/rz-admin/login", name="roadiz_rozier_login")
-     */
+    #[Route(path: '/rz-admin/login', name: 'roadiz_rozier_login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -69,9 +67,7 @@ class SecurityController extends AbstractController
         return $this->render('@RoadizRozier/security/login.html.twig', $assignation);
     }
 
-    /**
-     * @Route("/rz-admin/logout", name="roadiz_rozier_logout")
-     */
+    #[Route(path: '/rz-admin/logout', name: 'roadiz_rozier_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
