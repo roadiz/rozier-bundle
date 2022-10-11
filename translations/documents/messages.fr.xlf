@@ -55,6 +55,10 @@ dans un texte Markdown, un site externe, *le document sera considéré comme in
                 <source>document.picture_sources</source>
                 <target state="final">Toutes les sources images</target>
             </trans-unit>
+      <trans-unit xml:space="preserve" id="private_documents">
+                <source>private_documents</source>
+                <target state="translated">Documents privés</target>
+            </trans-unit>
     </body>
   </file>
 </xliff>
