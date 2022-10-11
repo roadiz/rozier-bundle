@@ -124,7 +124,13 @@ translationsRoutes:
 # DOCUMENTS
 documentsHomePage:
     path:     /rz-admin/documents/{folderId}
-    controller: Themes\Rozier\Controllers\Documents\DocumentsController::indexAction
+    controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentPublicListController::indexAction
+    defaults:
+        folderId: null
+    requirements: { folderId : "[0-9]+" }
+documentsPrivateHomePage:
+    path:     /rz-admin/documents/private/{folderId}
+    controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentPrivateListController::indexAction
     defaults:
         folderId: null
     requirements: { folderId : "[0-9]+" }

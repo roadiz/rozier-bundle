@@ -6,21 +6,24 @@
         {% block content_title %}
             {% if folder %}
                 {% set folderName = folder.translatedFolders.first.name|default(folder.folderName) %}
-                <h1 class="content-title">{{ folderName|u.truncate(25, '[…]', true) }}</h1>
-                {% include '@RoadizRozier/folders/navBar.html.twig' with {'folder':folder, current:'list'} %}
+                <h1 class="content-title">{{ folderName|u.truncate(25, '[…]', true) }}{% if displayPrivateDocuments %} <i class="uk-icon uk-icon-lock"></i>{% endif %}</h1>
+                {% include '@RoadizRozier/folders/navBar.html.twig' with {'folder':folder, current: displayPrivateDocuments ? 'private_list' : 'list'} %}
             {% else %}
-                <h1 class="content-title">{% trans %}documents{% endtrans %}</h1>
+                <h1 class="content-title">{{ pageTitle|trans }}{% if displayPrivateDocuments %} <i class="uk-icon uk-icon-lock"></i>{% endif %}</h1>
             {% endif %}
         {% endblock %}
         {% include '@RoadizRozier/widgets/countFiltersBar.html.twig' %}
         {% include '@RoadizRozier/documents/backLink.html.twig' %}
-        <div class="content-header-action-menu">
-            {% block header_action_menu %}
-                <a class="uk-button" href="{{ path('documentsUploadPage', {folderId: folder.id}) }}"><i class="uk-icon-rz-upload"></i> {% trans %}upload.document{% endtrans %}</a>
-                <a class="uk-button" href="{{ path('documentsEmbedPage', {folderId: folder.id}) }}"><i class="uk-icon-rz-embed"></i> {% trans %}embed.document{% endtrans %}</a>
-                <a class="uk-button rz-no-ajax-link" href="{{ path('documentsRandomPage', {folderId: folder.id}) }}"><i class="uk-icon-magic"></i> {% trans %}random.document{% endtrans %}</a>
-            {% endblock %}
-        </div>
+
+        {% if not displayPrivateDocuments %}
+            <div class="content-header-action-menu">
+                {% block header_action_menu %}
+                    <a class="uk-button" href="{{ path('documentsUploadPage', {folderId: folder.id}) }}"><i class="uk-icon-rz-upload"></i> {% trans %}upload.document{% endtrans %}</a>
+                    <a class="uk-button" href="{{ path('documentsEmbedPage', {folderId: folder.id}) }}"><i class="uk-icon-rz-embed"></i> {% trans %}embed.document{% endtrans %}</a>
+                    <a class="uk-button rz-no-ajax-link" href="{{ path('documentsRandomPage', {folderId: folder.id}) }}"><i class="uk-icon-magic"></i> {% trans %}random.document{% endtrans %}</a>
+                {% endblock %}
+            </div>
+        {% endif %}
     </header>
 
     {% include '@RoadizRozier/documents/filtersBar.html.twig' %}
