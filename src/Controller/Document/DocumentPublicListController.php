@@ -50,13 +50,15 @@ class DocumentPublicListController extends RozierApp
         ];
     }
 
-    public function prepareBaseAssignation()
+    public function prepareBaseAssignation(): static
     {
         parent::prepareBaseAssignation();
 
         $this->assignation['pageTitle'] = 'documents';
         $this->assignation['availablePlatforms'] = $this->documentPlatforms;
         $this->assignation['displayPrivateDocuments'] = false;
+
+        return $this;
     }
 
     /**

@@ -16,11 +16,13 @@ class DocumentPrivateListController extends DocumentPublicListController
         ];
     }
 
-    public function prepareBaseAssignation()
+    public function prepareBaseAssignation(): static
     {
         parent::prepareBaseAssignation();
 
         $this->assignation['pageTitle'] = 'private_documents';
         $this->assignation['displayPrivateDocuments'] = true;
+
+        return $this;
     }
 }
