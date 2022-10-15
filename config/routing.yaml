@@ -94,14 +94,6 @@ attributesRoutes:
     resource: "routing/attributes.yml"
     prefix: /rz-admin/attributes
 
-# FONTS
-fontsHomePage:
-    path:     /rz-admin/fonts
-    controller: Themes\Rozier\Controllers\FontsController::defaultAction
-fontsRoutes:
-    resource: "routing/fonts.yml"
-    prefix: /rz-admin/fonts
-
 
 # FOLDERS
 foldersHomePage:
