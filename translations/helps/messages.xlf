@@ -50,6 +50,9 @@
             <trans-unit xml:space="preserve" id="user.publicName.help">
                 <source>user.publicName.help</source>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="document.createdAt.help">
+                <source>document.createdAt.help</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
