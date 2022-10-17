@@ -47,6 +47,10 @@
       <trans-unit xml:space="preserve" id="translate_offspring.help">
                 <source>translate_offspring.help</source>
             <target state="translated">This will propagate translation to every node children when they are not translated yet in destination language.</target></trans-unit>
+      <trans-unit xml:space="preserve" id="document.createdAt.help">
+          <source>document.createdAt.help</source>
+          <target state="translated">Allows editing Document creation date and time for sorting purposes.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

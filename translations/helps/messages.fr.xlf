@@ -47,6 +47,10 @@
       <trans-unit xml:space="preserve" id="translate_offspring.help">
                 <source>translate_offspring.help</source>
             <target state="translated">Effectue la traduction sur tous les nœuds enfants en cascade lorsque ceux-ci ne sont pas traduits dans la langue de destination.</target></trans-unit>
+      <trans-unit xml:space="preserve" id="document.createdAt.help">
+          <source>document.createdAt.help</source>
+          <target state="translated">Permet d'éditer la date de création pour modifier le tri des documents.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
