@@ -69,7 +69,7 @@ nodesResetAttributesPage:
 nodesEditTagsPage:
     path:     /edit/{nodeId}/tags
     defaults:
-        _controller: Themes\Rozier\Controllers\Nodes\NodesTagsController::editTagsAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodesTagsController::editTagsAction
     requirements: { nodeId : "[0-9]+" }
 nodesRemoveStackTypePage:
     path:     /edit/{nodeId}/stacktype/{typeId}/remove
