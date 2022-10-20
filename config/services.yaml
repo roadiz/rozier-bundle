@@ -21,26 +21,26 @@ services:
             - '../src/Event/'
 
     Themes\Rozier\:
-        resource: '%kernel.project_dir%/vendor/roadiz/rozier/src/'
+        resource: '%roadiz_rozier.theme_dir%'
         autowire: true
         autoconfigure: true
         exclude:
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Services/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Events/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Traits/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Widgets/'
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Explorer/'
+            - '%roadiz_rozier.theme_dir%/Controllers/'
+            - '%roadiz_rozier.theme_dir%/Services/'
+            - '%roadiz_rozier.theme_dir%/Events/'
+            - '%roadiz_rozier.theme_dir%/Resources/'
+            - '%roadiz_rozier.theme_dir%/Traits/'
+            - '%roadiz_rozier.theme_dir%/Widgets/'
+            - '%roadiz_rozier.theme_dir%/Explorer/'
 
     Themes\Rozier\Controllers\:
-        resource: '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
+        resource: '%roadiz_rozier.theme_dir%/Controllers/'
         autowire: true
         autoconfigure: true
         tags:
             - container.service_subscriber
         exclude:
-            - '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/LoginRequestController.php'
+            - '%roadiz_rozier.theme_dir%/Controllers/LoginRequestController.php'
 
     Themes\Rozier\Explorer\FoldersProvider:
         public: true
@@ -57,7 +57,7 @@ services:
         class: Twig\Loader\FilesystemLoader
         calls:
             -   prependPath: [ '%kernel.project_dir%/vendor/roadiz/documents/src/Roadiz/Resources/views' ]
-            -   addPath: [ '%kernel.project_dir%/vendor/roadiz/rozier/src/Resources/views', 'RoadizRozier' ]
+            -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', 'RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
 

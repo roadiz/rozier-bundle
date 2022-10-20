@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection\Compiler;
 
+use RZ\Roadiz\RozierBundle\DependencyInjection\Configuration;
 use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -26,9 +28,13 @@ class RozierPathsCompilerPass implements CompilerPassInterface
     private function registerThemeTranslatorResources(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
+        $themeDir = $container->getParameter('roadiz_rozier.theme_dir');
 
         if (!is_string($projectDir)) {
             throw new \RuntimeException('kernel.project_dir is not a valid string');
+        }
+        if (!is_string($themeDir)) {
+            throw new \RuntimeException('roadiz_rozier.theme_dir is not a valid string');
         }
 
         /*
@@ -53,7 +59,7 @@ class RozierPathsCompilerPass implements CompilerPassInterface
         /*
          * add translations paths
          */
-        $translationFolder = realpath($projectDir . '/vendor/roadiz/rozier/src/Resources/translations');
+        $translationFolder = realpath($themeDir . '/Resources/translations');
         if (
             $container->hasDefinition('translator.default') &&
             false !== $translationFolder &&

@@ -20,6 +20,9 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('node_form')->defaultValue(NodeType::class)->end()
+                ->scalarNode('theme_dir')->defaultValue(
+                    '%kernel.project_dir%/vendor/roadiz/rozier/src'
+                )->end()
                 ->scalarNode('add_node_form')->defaultValue(AddNodeType::class)->end()
                 ->arrayNode('entries')
                     ->defaultValue([])

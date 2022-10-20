@@ -20,15 +20,16 @@ class RoadizRozierExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/../config'));
-        $loader->load('services.yaml');
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('roadiz_rozier.backoffice_menu_configuration', $config['entries']);
         $container->setParameter('roadiz_rozier.node_form.class', $config['node_form']);
         $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
+        $container->setParameter('roadiz_rozier.theme_dir', $config['theme_dir']);
+
+        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/../config'));
+        $loader->load('services.yaml');
 
         $this->registerOpenId($config, $container);
     }
