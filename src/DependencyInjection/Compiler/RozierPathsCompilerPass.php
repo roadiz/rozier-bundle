@@ -60,11 +60,12 @@ class RozierPathsCompilerPass implements CompilerPassInterface
          * add translations paths
          */
         $translationFolder = realpath($themeDir . '/Resources/translations');
-        if (
-            $container->hasDefinition('translator.default') &&
-            false !== $translationFolder &&
-            file_exists($translationFolder)
-        ) {
+
+        if (false === $translationFolder || !file_exists($translationFolder)) {
+            throw new \RuntimeException($themeDir . '/Resources/translations' . ' is not a valid directory');
+        }
+
+        if ($container->hasDefinition('translator.default')) {
             $translator = $container->findDefinition('translator.default');
             $files = [];
             $finder = Finder::create()

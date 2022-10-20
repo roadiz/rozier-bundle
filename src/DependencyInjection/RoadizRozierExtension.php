@@ -26,7 +26,10 @@ class RoadizRozierExtension extends Extension
         $container->setParameter('roadiz_rozier.backoffice_menu_configuration', $config['entries']);
         $container->setParameter('roadiz_rozier.node_form.class', $config['node_form']);
         $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
-        $container->setParameter('roadiz_rozier.theme_dir', $config['theme_dir']);
+        $container->setParameter(
+            'roadiz_rozier.theme_dir',
+            $container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . trim($config['theme_dir'], "/ \t\n\r\0\x0B")
+        );
 
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/../config'));
         $loader->load('services.yaml');
