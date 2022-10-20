@@ -1,5 +1,17 @@
 {% extends '@RoadizRozier/layout.html.twig' %}
 
+{%- block title -%}
+    {%- if folder -%}
+        {%- set folderName = folder.translatedFolders.first.name|default(folder.folderName) -%}
+        {{- folderName|u.truncate(25, '[…]', true) }}
+    {%- elseif orphans -%}
+        {%- trans %}unused_documents{% endtrans %}
+    {%- else -%}
+        {%- trans %}documents{% endtrans %}
+    {% endif %}
+    | {{ parent() }}
+{%- endblock -%}
+
 {% block content %}
 <section class="content-global content-nav-and-filters">
 	<header class="content-header header-document header-document-list">
