@@ -49,6 +49,15 @@ services:
     Themes\Rozier\Explorer\UsersProvider:
         public: true
 
+    # Since symfony/dependency-injection 5.1: The "Psr\Container\ContainerInterface" autowiring alias is deprecated.
+    # Define it explicitly in your app if you want to keep using it.
+    Themes\Rozier\Forms\NodeSource\NodeSourceProviderType:
+        autoconfigure: true
+        autowire: false
+        arguments:
+            - '@doctrine'
+            - '@service_container'
+
     Themes\Rozier\Widgets\TreeWidgetFactory: ~
     Themes\Rozier\RozierServiceRegistry:
         public: true
