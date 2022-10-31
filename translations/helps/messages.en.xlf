@@ -51,9 +51,8 @@
                 <source>user.publicName.help</source>
             <target state="translated">If filled, public name may be displayed to any other website user, you can use it as a pseudonym.</target></trans-unit>
       <trans-unit xml:space="preserve" id="document.createdAt.help">
-          <source>document.createdAt.help</source>
-          <target state="translated">Allows editing Document creation date and time for sorting purposes.</target>
-      </trans-unit>
+                <source>document.createdAt.help</source>
+            <target state="translated">Allows editing Document creation date and time for sorting purposes.</target></trans-unit>
     </body>
   </file>
 </xliff>
