@@ -33,6 +33,8 @@ services:
             - '%roadiz_rozier.theme_dir%/Widgets/'
             - '%roadiz_rozier.theme_dir%/Explorer/'
             - '%roadiz_rozier.theme_dir%/node_modules/'
+            - '%roadiz_rozier.theme_dir%/bower_components/'
+            - '%roadiz_rozier.theme_dir%/static/'
 
     Themes\Rozier\Controllers\:
         resource: '%roadiz_rozier.theme_dir%/Controllers/'
