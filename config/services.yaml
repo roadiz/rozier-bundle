@@ -32,6 +32,10 @@ services:
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Traits/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Widgets/'
             - '%kernel.project_dir%/vendor/roadiz/rozier/src/Explorer/'
+            # Ignore vendor folder which may contain php files
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/node_modules/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/bower_components/'
+            - '%kernel.project_dir%/vendor/roadiz/rozier/src/static/'
 
     Themes\Rozier\Controllers\:
         resource: '%kernel.project_dir%/vendor/roadiz/rozier/src/Controllers/'
