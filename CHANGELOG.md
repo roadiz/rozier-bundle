@@ -1,3 +1,9 @@
+## 2.0.8 (2022-11-09)
+
+### Bug Fixes
+
+* Ignore Rozier vendor folder which may contain php files ([26cf7b5](https://github.com/roadiz/rozier-bundle/commit/26cf7b5018829e5fabc449476133597dcbc69747))
+
 ## 2.0.6 (2022-09-30)
 
 ### Features
