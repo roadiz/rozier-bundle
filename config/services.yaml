@@ -7,9 +7,10 @@ services:
         bind:
             $backofficeMenuEntries: '%roadiz_rozier.backoffice_menu_configuration%'
             $documentPlatforms: '%roadiz_core.medias.supported_platforms%'
-            $webpSupported: '%roadiz_core.assets_processing.supports_webp%'
             $nodeFormTypeClass: '%roadiz_rozier.node_form.class%'
             $addNodeFormTypeClass: '%roadiz_rozier.add_node_form.class%'
+            $googleServerId: '%roadiz_core.medias.google_server_id%'
+            $soundcloudClientId: '%roadiz_core.medias.soundcloud_client_id%'
 
     RZ\Roadiz\RozierBundle\:
         resource: '../src/'
