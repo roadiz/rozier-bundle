@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
-use RZ\Roadiz\Core\Events\DocumentInFolderEvent;
-use RZ\Roadiz\Core\Events\DocumentOutFolderEvent;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\Entity\Folder;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
+use RZ\Roadiz\Documents\Events\DocumentInFolderEvent;
+use RZ\Roadiz\Documents\Events\DocumentOutFolderEvent;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

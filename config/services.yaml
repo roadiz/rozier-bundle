@@ -70,7 +70,7 @@ services:
     roadiz_rozier.twig_loader:
         class: Twig\Loader\FilesystemLoader
         calls:
-            -   prependPath: [ '%roadiz_core.documents_lib_dir%/Roadiz/Resources/views' ]
+            -   prependPath: [ '%roadiz_core.documents_lib_dir%/Resources/views' ]
             -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', 'RoadizRozier' ]
         tags: [ 'twig.loader' ]
 

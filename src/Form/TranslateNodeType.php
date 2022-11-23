@@ -13,9 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @package Themes\Rozier\Forms\Node
- */
 class TranslateNodeType extends AbstractType
 {
     protected ManagerRegistry $managerRegistry;

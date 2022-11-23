@@ -6,13 +6,12 @@ namespace RZ\Roadiz\RozierBundle\Controller;
 
 use Psr\Log\LoggerInterface;
 use RZ\Roadiz\CompatBundle\Controller\AppController;
-use RZ\Roadiz\Core\Models\FileAwareInterface;
 use RZ\Roadiz\CoreBundle\Bag\NodeTypes;
 use RZ\Roadiz\CoreBundle\Bag\Roles;
 use RZ\Roadiz\CoreBundle\Bag\Settings;
 use RZ\Roadiz\CoreBundle\Mailer\EmailManager;
+use RZ\Roadiz\Documents\Packages;
 use RZ\Roadiz\OpenId\OAuth2LinkGenerator;
-use RZ\Roadiz\Utils\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -46,7 +45,6 @@ abstract class BackendController extends AppController
             'assetPackages' => Packages::class,
             'csrfTokenManager' => CsrfTokenManagerInterface::class,
             OAuth2LinkGenerator::class => OAuth2LinkGenerator::class,
-            FileAwareInterface::class => FileAwareInterface::class,
             RozierServiceRegistry::class => RozierServiceRegistry::class,
             UsersProvider::class => UsersProvider::class,
             SettingsProvider::class => SettingsProvider::class,
