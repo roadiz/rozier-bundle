@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
 use Doctrine\Persistence\ManagerRegistry;
-use RZ\Roadiz\CoreBundle\Document\DocumentArchiver;
 use RZ\Roadiz\CoreBundle\Entity\Document;
+use RZ\Roadiz\Documents\DocumentArchiver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
