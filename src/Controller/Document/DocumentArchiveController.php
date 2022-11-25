@@ -65,6 +65,7 @@ final class DocumentArchiveController extends RozierApp
                 try {
                     return $this->documentArchiver->archiveAndServe($documents, 'Documents archive');
                 } catch (\Exception $e) {
+                    $this->getLogger()->error($e->getMessage());
                     $msg = $this->translator->trans('documents.cannot_download');
                     $this->publishErrorMessage($request, $msg);
                 }
