@@ -37,13 +37,13 @@
         <td class="mobile-hidden uk-visible-xlarge">{% if document.imageHeight > 0 %}{{ document.imageHeight }}px{% endif %}</td>
         <td class="mobile-hidden uk-visible-xlarge">
             {% if document.embedPlatform %}
-                {% set iconName = document.embedPlatform %}
+                {% set iconName = (document|embedFinder).shortType %}
                 {% if document.embedPlatform == 'unsplash' or document.embedPlatform == 'splashbase' %}
                     {% set iconName = 'documents' %}
                 {% endif %}
                 <span class="uk-button-status"
                       data-uk-tooltip="{animation:true}"
-                      title="{{ document.embedPlatform|trans }}"><i class="uk-icon-rz-{{ iconName }}"></i></span>
+                      title="{{ document.embedPlatform|trans|capitalize }}"><i class="uk-icon-rz-{{ iconName }}"></i></span>
             {% endif %}
         </td>
         <td>
