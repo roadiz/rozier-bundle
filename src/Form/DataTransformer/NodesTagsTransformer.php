@@ -29,7 +29,7 @@ class NodesTagsTransformer implements DataTransformerInterface
         $ids = [];
         if (\is_iterable($value)) {
             foreach ($value as $nodesTag) {
-                $ids[] = $nodesTag->getTag()->getId();
+                $ids[] = (int) $nodesTag->getTag()->getId();
             }
         }
 
