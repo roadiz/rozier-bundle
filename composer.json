@@ -22,7 +22,7 @@
         "roadiz/core-bundle": "~2.1.0 || dev-develop",
         "roadiz/rozier": "~2.1.0 || dev-develop",
         "roadiz/compat-bundle": "~2.1.0 || dev-develop",
-        "roadiz/openid": "~2.0.0"
+        "roadiz/openid": "~2.1.0 || dev-develop"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.4",
@@ -53,6 +53,7 @@
     },
     "extra": {
         "branch-alias": {
+            "dev-main": "2.0-dev",
             "dev-develop": "2.1-dev"
         }
     }
