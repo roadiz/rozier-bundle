@@ -19,9 +19,4 @@ nodeTypeFieldsDeletePage:
     defaults:
         _controller: Themes\Rozier\Controllers\NodeTypeFieldsController::deleteAction
     requirements: { nodeTypeFieldId : "[0-9]+" }
-nodeTypesFieldSchemaUpdate:
-    path:     /update-schema/{nodeTypeId}
-    defaults:
-        _controller: Themes\Rozier\Controllers\SchemaController::updateNodeTypeFieldsSchemaAction
-    requirements:
-        nodeTypeId : "[0-9]+"
+

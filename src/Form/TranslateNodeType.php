@@ -7,16 +7,12 @@ namespace RZ\Roadiz\RozierBundle\Form;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Node;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
-use RZ\Roadiz\CoreBundle\Form\DataTransformer\TranslationTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @package Themes\Rozier\Forms\Node
- */
 class TranslateNodeType extends AbstractType
 {
     protected ManagerRegistry $managerRegistry;
@@ -65,9 +61,6 @@ class TranslateNodeType extends AbstractType
                 'help' => 'translate_offspring.help',
                 'required' => false,
             ]);
-
-        $builder->get('translation')
-            ->addModelTransformer(new TranslationTransformer($this->managerRegistry));
     }
 
     /**

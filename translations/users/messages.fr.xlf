@@ -10,6 +10,10 @@
                 <source>user.neverLoggedIn</source>
                 <target state="translated">Jamais</target>
             </trans-unit>
+      <trans-unit xml:space="preserve" id="publicName">
+                <source>publicName</source>
+                <target state="translated">Nom public</target>
+            </trans-unit>
     </body>
   </file>
 </xliff>

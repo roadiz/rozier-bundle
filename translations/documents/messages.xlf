@@ -51,6 +51,10 @@
                 <source>document.picture_sources</source>
                 <target></target>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="private_documents">
+                <source>private_documents</source>
+                <target></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

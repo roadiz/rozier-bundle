@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
 use RZ\Roadiz\CoreBundle\Entity\Document;
-use RZ\Roadiz\Document\DocumentFinderInterface;
+use RZ\Roadiz\Documents\DocumentFinderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;

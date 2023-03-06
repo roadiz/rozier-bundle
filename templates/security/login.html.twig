@@ -1,5 +1,7 @@
 {% extends '@RoadizRozier/login/base.html.twig' %}
 
+{% block title %}{% trans %}login{% endtrans %} | {{ parent() }}{% endblock %}
+
 {% block login_content %}
     {% if error %}
         <div data-uk-alert class="uk-alert uk-alert-danger">

@@ -1,5 +1,6 @@
 {% extends "@RoadizRozier/realms/add.html.twig" %}
 
+{% block title %}{{- "edit.realm.%name%"|trans({'%name%': item.name}) -}} | {{ parent() }}{% endblock %}
 {%- block content_title -%}{{- "edit.realm.%name%"|trans({'%name%': item.name}) -}}{%- endblock -%}
 
 {%- block content_body_after -%}

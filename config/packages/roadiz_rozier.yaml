@@ -1,5 +1,6 @@
 ---
 roadiz_rozier:
+    theme_dir: '%kernel.project_dir%/vendor/roadiz/rozier/src'
     open_id:
         # Verify User info in JWT at each login
         verify_user_info: false
@@ -61,9 +62,30 @@ roadiz_rozier:
 
         manage_documents:
             name: 'manage.documents'
-            route: documentsHomePage
+            route: ~
             icon: uk-icon-rz-documents
             roles: [ 'ROLE_ACCESS_DOCUMENTS' ]
+            subentries:
+                all_documents:
+                    name: 'all.documents'
+                    route: documentsHomePage
+                    icon: uk-icon-rz-documents
+                    roles: [ 'ROLE_ACCESS_DOCUMENTS' ]
+                private_documents:
+                    name: 'private_documents'
+                    route: documentsPrivateHomePage
+                    icon: uk-icon-lock
+                    roles: [ 'ROLE_ACCESS_DOCUMENTS' ]
+                unused_documents:
+                    name: 'unused_documents'
+                    route: documentsUnusedPage
+                    icon: uk-icon-unlink
+                    roles: [ 'ROLE_ACCESS_DOCUMENTS' ]
+                duplicated_documents:
+                    name: 'duplicated_documents'
+                    route: documentsDuplicatesPage
+                    icon: uk-icon-files-o
+                    roles: [ 'ROLE_ACCESS_DOCUMENTS' ]
 
         manage_tags:
             name: 'manage.tags'
@@ -100,11 +122,6 @@ roadiz_rozier:
                     route: translationsHomePage
                     icon: uk-icon-rz-translate
                     roles: ['ROLE_ACCESS_TRANSLATIONS']
-                manage_fonts:
-                    name: 'manage.fonts'
-                    route: fontsHomePage
-                    icon: 'uk-icon-rz-fontes'
-                    roles: ['ROLE_ACCESS_FONTS']
                 manage_redirections:
                     name: 'manage.redirections'
                     route: redirectionsHomePage
