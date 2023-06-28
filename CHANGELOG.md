@@ -1,3 +1,10 @@
+## [2.0.9 (2023-06-28)](https://github.com/roadiz/rozier-bundle/compare/2.0.8...2.0.9)
+
+
+### Bug Fixes
+
+* **OpenID:** Do not register `roadiz_rozier.open_id.discovery` if `discovery_url` is not valid ([4850823](https://github.com/roadiz/rozier-bundle/commit/485082377080c87d0e7f384385d2290c3bc0b90a))
+
 ## 2.0.8 (2022-11-09)
 
 ### Bug Fixes
