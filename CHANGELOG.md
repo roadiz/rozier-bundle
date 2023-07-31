@@ -1,3 +1,10 @@
+## [2.0.10 (2023-07-31)](https://github.com/roadiz/rozier-bundle/compare/2.0.9...2.0.10)
+
+
+### Bug Fixes
+
+* Removed `nodesTreeAjax` translationId Path param ([48b8f18](https://github.com/roadiz/rozier-bundle/commit/48b8f183feca8fdc27ad7807c042eb815113c1ad))
+
 ## [2.0.9 (2023-06-28)](https://github.com/roadiz/rozier-bundle/compare/2.0.8...2.0.9)
 
 
