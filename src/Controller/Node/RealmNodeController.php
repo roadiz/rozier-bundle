@@ -12,7 +12,6 @@ use RZ\Roadiz\CoreBundle\Event\Realm\NodeJoinedRealmEvent;
 use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
 use RZ\Roadiz\CoreBundle\Form\RealmNodeType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
-use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +38,7 @@ final class RealmNodeController extends RozierApp
 
     public function defaultAction(Request $request, Node $id): Response
     {
-        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $id);
+        $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
 
         $node = $id;
         $realmNode = new RealmNode();
@@ -65,7 +64,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.joined.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
@@ -116,7 +117,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.left.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
