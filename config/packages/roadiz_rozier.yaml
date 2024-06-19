@@ -1,9 +1,4 @@
 ---
-parameters:
-    env(OPEN_ID_DISCOVERY_URL): ''
-    env(OPEN_ID_HOSTED_DOMAIN): ''
-    env(OPEN_ID_CLIENT_ID): ''
-    env(OPEN_ID_CLIENT_SECRET): ''
 roadiz_rozier:
     theme_dir: '%kernel.project_dir%/vendor/roadiz/rozier/src'
     open_id:
@@ -18,7 +13,6 @@ roadiz_rozier:
         # OpenID identity provider OAuth2 client secret
         oauth_client_secret: '%env(string:OPEN_ID_CLIENT_SECRET)%'
         requires_local_user: false
-        force_ssl_on_redirect_uri: true
         # Only when local users are not required, creating virtual users
         # with following roles.
         granted_roles:

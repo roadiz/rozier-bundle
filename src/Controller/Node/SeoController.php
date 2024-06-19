@@ -10,15 +10,12 @@ use RZ\Roadiz\CoreBundle\Entity\Redirection;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Entity\UrlAlias;
 use RZ\Roadiz\CoreBundle\Event\NodesSources\NodesSourcesUpdatedEvent;
-use RZ\Roadiz\CoreBundle\Event\Redirection\PostCreatedRedirectionEvent;
-use RZ\Roadiz\CoreBundle\Event\Redirection\PostUpdatedRedirectionEvent;
 use RZ\Roadiz\CoreBundle\Event\UrlAlias\UrlAliasCreatedEvent;
 use RZ\Roadiz\CoreBundle\Event\UrlAlias\UrlAliasDeletedEvent;
 use RZ\Roadiz\CoreBundle\Event\UrlAlias\UrlAliasUpdatedEvent;
 use RZ\Roadiz\CoreBundle\Exception\EntityAlreadyExistsException;
 use RZ\Roadiz\CoreBundle\Exception\NoTranslationAvailableException;
 use RZ\Roadiz\CoreBundle\Form\UrlAliasType;
-use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -46,6 +43,8 @@ final class SeoController extends RozierApp
         Node $nodeId,
         ?Translation $translationId = null
     ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ACCESS_NODES');
+
         if (null === $translationId) {
             $translation = $this->em()->getRepository(Translation::class)->findDefault();
         } else {
@@ -63,7 +62,6 @@ final class SeoController extends RozierApp
         if ($source === false) {
             throw new ResourceNotFoundException();
         }
-        $this->denyAccessUnlessGranted(NodeVoter::EDIT_CONTENT, $source);
 
         $redirections = $this->em()
             ->getRepository(Redirection::class)
@@ -303,7 +301,6 @@ final class SeoController extends RozierApp
         if ($addForm->isSubmitted() && $addForm->isValid()) {
             $this->em()->persist($redirection);
             $this->em()->flush();
-            $this->dispatchEvent(new PostCreatedRedirectionEvent($redirection));
 
             /** @var Translation $translation */
             $translation = $redirection->getRedirectNodeSource()->getTranslation();
@@ -348,7 +345,6 @@ final class SeoController extends RozierApp
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->em()->flush();
-            $this->dispatchEvent(new PostUpdatedRedirectionEvent($redirection));
             return $this->redirect($this->generateUrl(
                 'nodesEditSEOPage',
                 [
@@ -363,7 +359,6 @@ final class SeoController extends RozierApp
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             $this->em()->remove($redirection);
             $this->em()->flush();
-            $this->dispatchEvent(new PostCreatedRedirectionEvent($redirection));
             return $this->redirect($this->generateUrl(
                 'nodesEditSEOPage',
                 [
