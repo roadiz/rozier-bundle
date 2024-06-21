@@ -7,7 +7,6 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\Entity\Folder;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
-use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
 use RZ\Roadiz\Documents\Events\DocumentInFolderEvent;
 use RZ\Roadiz\Documents\Events\DocumentOutFolderEvent;
 use Symfony\Component\Form\ClickableInterface;
@@ -20,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Themes\Rozier\RozierApp;
+use Themes\Rozier\Utils\SessionListFilters;
 use Twig\Error\RuntimeError;
 
 class DocumentPublicListController extends RozierApp
@@ -84,17 +84,20 @@ class DocumentPublicListController extends RozierApp
             $this->assignation['folder'] = $folder;
         }
 
-        $type = $request->query->get('type');
-        $embedPlatform = $request->query->get('embedPlatform');
-
-        if (\is_string($type) && $type !== '') {
-            $prefilters['mimeType'] = trim($type);
-            $this->assignation['mimeType'] = trim($type);
+        if (
+            $request->query->has('type') &&
+            $request->query->get('type', '') !== ''
+        ) {
+            $prefilters['mimeType'] = trim($request->query->get('type', ''));
+            $this->assignation['mimeType'] = trim($request->query->get('type', ''));
         }
 
-        if (\is_string($embedPlatform) && $embedPlatform !== '') {
-            $prefilters['embedPlatform'] = trim($embedPlatform);
-            $this->assignation['embedPlatform'] = trim($embedPlatform);
+        if (
+            $request->query->has('embedPlatform') &&
+            $request->query->get('embedPlatform', '') !== ''
+        ) {
+            $prefilters['embedPlatform'] = trim($request->query->get('embedPlatform', ''));
+            $this->assignation['embedPlatform'] = trim($request->query->get('embedPlatform', ''));
         }
 
         /*
