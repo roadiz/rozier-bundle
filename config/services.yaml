@@ -72,8 +72,6 @@ services:
         calls:
             -   prependPath: [ '%roadiz_core.documents_lib_dir%/Resources/views' ]
             -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', 'RoadizRozier' ]
-                # Add a second path to make RoadizRozier templates extendable with @!RoadizRozier namespace
-            -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', '!RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
     #
