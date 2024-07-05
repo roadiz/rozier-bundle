@@ -65,7 +65,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.joined.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
@@ -116,7 +118,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.left.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
