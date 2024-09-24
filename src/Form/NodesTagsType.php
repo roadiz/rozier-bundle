@@ -14,8 +14,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class NodesTagsType extends AbstractType
 {
-    public function __construct(private readonly ManagerRegistry $managerRegistry)
+    protected ManagerRegistry $managerRegistry;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(ManagerRegistry $managerRegistry)
     {
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
