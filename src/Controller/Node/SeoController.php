@@ -31,8 +31,14 @@ use Themes\Rozier\RozierApp;
 
 final class SeoController extends RozierApp
 {
-    public function __construct(private readonly FormFactoryInterface $formFactory)
+    private FormFactoryInterface $formFactory;
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(FormFactoryInterface $formFactory)
     {
+        $this->formFactory = $formFactory;
     }
 
     public function editAliasesAction(
