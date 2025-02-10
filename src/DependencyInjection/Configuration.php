@@ -60,7 +60,6 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->append($this->addOpenIdNode())
         ;
-
         return $builder;
     }
 
@@ -77,13 +76,6 @@ class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                     ->info(<<<EOD
 Verify User info in JWT at each login
-EOD
-                    )
-                ->end()
-                ->booleanNode('force_ssl_on_redirect_uri')
-                    ->defaultTrue()
-                    ->info(<<<EOD
-Force generating redirect uri with https scheme. (required by some OpenID providers)
 EOD
                     )
                 ->end()

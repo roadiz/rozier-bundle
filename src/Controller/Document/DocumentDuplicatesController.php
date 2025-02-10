@@ -7,25 +7,33 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\ListManager\QueryBuilderListManager;
-use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
 use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use RZ\Roadiz\RozierBundle\ListManager\SessionListFilters;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;
 
-final class DocumentDuplicatesController extends AbstractController
+final class DocumentDuplicatesController extends RozierApp
 {
-    public function __construct(private readonly ManagerRegistry $managerRegistry)
+    private ManagerRegistry $managerRegistry;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(ManagerRegistry $managerRegistry)
     {
+        $this->managerRegistry = $managerRegistry;
     }
 
+    /**
+     * @param  Request $request
+     * @return Response
+     */
     public function duplicatedAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
-        $assignation = [];
-        $assignation['duplicates'] = true;
+        $this->assignation['duplicates'] = true;
         /** @var DocumentRepository $documentRepository */
         $documentRepository = $this->managerRegistry->getRepository(Document::class);
 
@@ -34,7 +42,7 @@ final class DocumentDuplicatesController extends AbstractController
             $documentRepository->getDuplicatesQueryBuilder(),
             'd'
         );
-        $listManager->setItemPerPage(RozierApp::DEFAULT_ITEM_PER_PAGE);
+        $listManager->setItemPerPage(static::DEFAULT_ITEM_PER_PAGE);
 
         /*
          * Stored in session
@@ -44,9 +52,9 @@ final class DocumentDuplicatesController extends AbstractController
 
         $listManager->handle();
 
-        $assignation['filters'] = $listManager->getAssignation();
-        $assignation['documents'] = $listManager->getEntities();
-        $assignation['thumbnailFormat'] = [
+        $this->assignation['filters'] = $listManager->getAssignation();
+        $this->assignation['documents'] = $listManager->getEntities();
+        $this->assignation['thumbnailFormat'] = [
             'quality' => 50,
             'fit' => '128x128',
             'sharpen' => 5,
@@ -56,6 +64,6 @@ final class DocumentDuplicatesController extends AbstractController
             'loading' => 'lazy',
         ];
 
-        return $this->render('@RoadizRozier/documents/duplicated.html.twig', $assignation);
+        return $this->render('@RoadizRozier/documents/duplicated.html.twig', $this->assignation);
     }
 }

@@ -6,27 +6,37 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\Documents\DocumentFinderInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Themes\Rozier\RozierApp;
 
-class DocumentPreviewController extends AbstractController
+class DocumentPreviewController extends RozierApp
 {
     private DocumentFinderInterface $documentFinder;
 
+    /**
+     * @param DocumentFinderInterface $documentFinder
+     */
     public function __construct(DocumentFinderInterface $documentFinder)
     {
         $this->documentFinder = $documentFinder;
     }
 
+    /**
+     * @param Request $request
+     * @param Document $documentId
+     *
+     * @return Response
+     * @throws \Twig\Error\RuntimeError
+     */
     public function previewAction(Request $request, Document $documentId): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
         $document = $documentId;
-        $assignation = [];
-        $assignation['document'] = $document;
-        $assignation['thumbnailFormat'] = [
+
+        $this->assignation['document'] = $document;
+        $this->assignation['thumbnailFormat'] = [
             'width' => 750,
             'controls' => true,
             'srcset' => [
@@ -63,19 +73,19 @@ class DocumentPreviewController extends AbstractController
         $otherAudios = $this->documentFinder->findAudiosWithFilename($document->getFilename());
         $otherPictures = $this->documentFinder->findPicturesWithFilename($document->getFilename());
 
-        $assignation['otherVideos'] = $otherVideos;
-        $assignation['otherAudios'] = $otherAudios;
-        $assignation['otherPictures'] = $otherPictures;
-        $assignation['thumbnailFormat']['picture'] = true;
-        $assignation['infos'] = [];
+        $this->assignation['otherVideos'] = $otherVideos;
+        $this->assignation['otherAudios'] = $otherAudios;
+        $this->assignation['otherPictures'] = $otherPictures;
+        $this->assignation['thumbnailFormat']['picture'] = true;
+        $this->assignation['infos'] = [];
         if ($document->isProcessable() || $document->isSvg()) {
-            $assignation['infos']['width'] = $document->getImageWidth().'px';
-            $assignation['infos']['height'] = $document->getImageHeight().'px';
+            $this->assignation['infos']['width'] = $document->getImageWidth() . 'px';
+            $this->assignation['infos']['height'] = $document->getImageHeight() . 'px';
         }
         if ($document->getMediaDuration() > 0) {
-            $assignation['infos']['duration'] = $document->getMediaDuration().' sec';
+            $this->assignation['infos']['duration'] = $document->getMediaDuration() . ' sec';
         }
 
-        return $this->render('@RoadizRozier/documents/preview.html.twig', $assignation);
+        return $this->render('@RoadizRozier/documents/preview.html.twig', $this->assignation);
     }
 }
