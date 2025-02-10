@@ -7,29 +7,25 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\ListManager\QueryBuilderListManager;
+use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
 use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
-use RZ\Roadiz\RozierBundle\ListManager\SessionListFilters;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;
+use Twig\Error\RuntimeError;
 
 final class DocumentUnusedController extends RozierApp
 {
-    private ManagerRegistry $managerRegistry;
-
-    /**
-     * @param ManagerRegistry $managerRegistry
-     */
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private readonly ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     /**
      * See unused documents.
      *
-     * @param  Request $request
+     * @param Request $request
      * @return Response
+     * @throws RuntimeError
      */
     public function unusedAction(Request $request): Response
     {
