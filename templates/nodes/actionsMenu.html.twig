@@ -126,7 +126,7 @@
                                 <i class="uk-icon-rz-duplicate"></i><span class="label">{% trans %}duplicate{% endtrans %}</span>
                             </a>
                         {% endif %}
-                        {% if is_granted('EDIT_SETTING', node) %}
+                        {% if is_granted('EDIT_ATTRIBUTE', node) %}
                         <a
                             class="uk-button"
                             href="{{ path('nodesTranstypePage', { nodeId:node.getId }) }}"
@@ -143,7 +143,7 @@
                         {% if node.hidingChildren and translation %}
                             <a
                                 class="uk-button rz-no-ajax-link"
-                                href="{{ path('nodesExportNodeCsvPage', {parentNodeId: node.id, translationId:translation.id}) }}"
+                                href="{{ path('nodesExportNodeXlsxPage', {parentNodeId: node.id, translationId:translation.id}) }}"
                             >
                                 <i class="uk-icon-file-excel-o"></i>
                                 <span class="label">{{ 'export_format.excel.%language%'|trans({'%language%':translation.name }) }}</span>

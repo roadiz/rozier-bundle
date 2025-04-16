@@ -11,14 +11,20 @@ use Symfony\Component\HttpKernel\Profiler\Profiler;
 
 final class PingController extends AbstractController
 {
-    public function __construct(private readonly ?Profiler $profiler)
+    private ?Profiler $profiler;
+
+    public function __construct(?Profiler $profiler)
     {
+        $this->profiler = $profiler;
     }
 
     public function indexAction(): JsonResponse
     {
         // $profiler won't be set if your environment doesn't have the profiler (like prod, by default)
-        $this->profiler?->disable();
+        if (null !== $this->profiler) {
+            // if it exists, disable the profiler for this particular controller action
+            $this->profiler->disable();
+        }
 
         $this->denyAccessUnlessGranted('ROLE_BACKEND_USER');
 

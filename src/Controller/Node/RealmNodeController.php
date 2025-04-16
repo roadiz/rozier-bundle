@@ -23,11 +23,18 @@ use Themes\Rozier\RozierApp;
 
 final class RealmNodeController extends RozierApp
 {
+    private ManagerRegistry $managerRegistry;
+    private TranslatorInterface $translator;
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-        private readonly TranslatorInterface $translator,
-        private readonly EventDispatcherInterface $eventDispatcher
+        ManagerRegistry $managerRegistry,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
     ) {
+        $this->managerRegistry = $managerRegistry;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function defaultAction(Request $request, Node $id): Response
@@ -58,7 +65,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.joined.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
@@ -109,7 +118,9 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.left.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
             $this->publishConfirmMessage($request, $msg);
