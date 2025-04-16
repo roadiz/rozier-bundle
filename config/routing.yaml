@@ -16,7 +16,7 @@ ajaxSessionMessages:
 ping:
     path:     /rz-admin/ping
     methods: [GET]
-    controller: RZ\Roadiz\RozierBundle\Controller\PingController::indexAction
+    controller: RZ\Roadiz\RozierBundle\Controller\PingController::pingAction
 
 # CACHES
 deleteDoctrineCache:
@@ -51,6 +51,11 @@ nodeTypesRoutes:
 nodeTypeFieldsRoutes:
     resource: "routing/node-type-fields.yml"
     prefix: /rz-admin/node-types/fields
+
+# Node type DECORATORS
+nodeTypeDecoratorsRoutes:
+    resource: "routing/node-type-decorators.yml"
+    prefix: /rz-admin/node-types/decorators
 
 # SETTINGS
 settingsHomePage:
@@ -198,9 +203,9 @@ searchNodePage:
     path:     /rz-admin/search
     controller: Themes\Rozier\Controllers\SearchController::searchNodeAction
 searchNodeSourcePage:
-    path:     /rz-admin/search/{nodetypeId}
+    path:     /rz-admin/search/{nodeTypeName}
     controller: Themes\Rozier\Controllers\SearchController::searchNodeSourceAction
-    requirements: { nodetypeId : "[0-9]+" }
+    requirements: { nodeTypeName : "[a-zA-Z]+" }
 
 webhooksHomePage:
     path:     /rz-admin/webhooks
@@ -214,11 +219,7 @@ webhooksRoutes:
 # CSS to style with main color
 # NOT SECURED ROUTES
 #
-cssMainColor:
-    path : /css/main-color.css
-    controller: Themes\Rozier\RozierApp::cssAction
-
 loginImagePage:
     path: /css/login/image
-    controller: Themes\Rozier\Controllers\LoginController::imageAction
+    controller: RZ\Roadiz\RozierBundle\Controller\Login\LoginImageController::imageAction
 
