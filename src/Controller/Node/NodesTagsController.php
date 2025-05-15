@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use RZ\Roadiz\CoreBundle\Entity\Node;
 use RZ\Roadiz\CoreBundle\Entity\NodesSources;
+use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Event\Node\NodeTaggedEvent;
 use RZ\Roadiz\CoreBundle\Node\NodeFactory;
 use RZ\Roadiz\CoreBundle\Repository\NodesSourcesRepository;
@@ -24,7 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Themes\Rozier\Traits\NodesTrait;
 
-final class NodesTagsController extends AbstractController
+class NodesTagsController extends AbstractController
 {
     use NodesTrait;
 
@@ -49,15 +50,11 @@ final class NodesTagsController extends AbstractController
             ->setDisplayingAllNodesStatuses(true)
             ->setDisplayingNotPublishedNodes(true);
 
-        /**
-         * Get all sources because if node does not have a default translation
-         * we still need to get one available translation.
-         *
-         * @var NodesSources|null $source
-         */
-        $source = $nodeSourceRepository->findByNode(
-            $nodeId
-        )[0] ?? null;
+        /** @var NodesSources|null $source */
+        $source = $nodeSourceRepository->findOneByNodeAndTranslation(
+            $nodeId,
+            $this->managerRegistry->getRepository(Translation::class)->findDefault()
+        );
 
         if (null === $source) {
             throw new ResourceNotFoundException();
