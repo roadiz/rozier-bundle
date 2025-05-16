@@ -10,11 +10,11 @@ nodeAjaxEdit:
     controller: Themes\Rozier\AjaxControllers\AjaxNodesController::editAction
     format: json
     requirements: { nodeId : "[0-9]+" }
-searchAjax:
-    path:     /search
+searchNodesSourcesAjax:
+    path:     /nodes-sources/search
     methods: [GET]
     defaults:
-        _controller: Themes\Rozier\AjaxControllers\AjaxSearchController::searchAction
+        _controller: Themes\Rozier\AjaxControllers\AjaxSearchNodesSourcesController::searchAction
         _format: json
 nodesStatusesAjax:
     path:     /nodes/statuses
