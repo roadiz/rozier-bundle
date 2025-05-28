@@ -7,35 +7,27 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\ListManager\QueryBuilderListManager;
+use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
 use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
-use RZ\Roadiz\RozierBundle\ListManager\SessionListFilters;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Themes\Rozier\RozierApp;
 
-final class DocumentUnusedController extends RozierApp
+final class DocumentUnusedController extends AbstractController
 {
-    private ManagerRegistry $managerRegistry;
-
-    /**
-     * @param ManagerRegistry $managerRegistry
-     */
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private readonly ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     /**
      * See unused documents.
-     *
-     * @param  Request $request
-     * @return Response
      */
     public function unusedAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
-        $this->assignation['orphans'] = true;
+        $assignation['orphans'] = true;
         /** @var DocumentRepository $documentRepository */
         $documentRepository = $this->managerRegistry->getRepository(Document::class);
 
@@ -44,7 +36,7 @@ final class DocumentUnusedController extends RozierApp
             $documentRepository->getAllUnusedQueryBuilder(),
             'd'
         );
-        $listManager->setItemPerPage(static::DEFAULT_ITEM_PER_PAGE);
+        $listManager->setItemPerPage(RozierApp::DEFAULT_ITEM_PER_PAGE);
 
         /*
          * Stored in session
@@ -54,9 +46,9 @@ final class DocumentUnusedController extends RozierApp
 
         $listManager->handle();
 
-        $this->assignation['filters'] = $listManager->getAssignation();
-        $this->assignation['documents'] = $listManager->getEntities();
-        $this->assignation['thumbnailFormat'] = [
+        $assignation['filters'] = $listManager->getAssignation();
+        $assignation['documents'] = $listManager->getEntities();
+        $assignation['thumbnailFormat'] = [
             'quality' => 50,
             'fit' => '128x128',
             'sharpen' => 5,
@@ -66,6 +58,6 @@ final class DocumentUnusedController extends RozierApp
             'loading' => 'lazy',
         ];
 
-        return $this->render('@RoadizRozier/documents/unused.html.twig', $this->assignation);
+        return $this->render('@RoadizRozier/documents/unused.html.twig', $assignation);
     }
 }

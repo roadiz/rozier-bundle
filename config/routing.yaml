@@ -16,7 +16,7 @@ ajaxSessionMessages:
 ping:
     path:     /rz-admin/ping
     methods: [GET]
-    controller: RZ\Roadiz\RozierBundle\Controller\PingController::indexAction
+    controller: RZ\Roadiz\RozierBundle\Controller\PingController::pingAction
 
 # CACHES
 deleteDoctrineCache:
@@ -81,7 +81,7 @@ tagsRoutes:
 # USERS
 usersHomePage:
     path:     /rz-admin/users
-    controller: Themes\Rozier\Controllers\Users\UsersController::indexAction
+    controller: Themes\Rozier\Controllers\Users\UsersController::defaultAction
 usersRoutes:
     resource: "routing/users.yml"
     prefix: /rz-admin/users
@@ -214,10 +214,6 @@ webhooksRoutes:
 # CSS to style with main color
 # NOT SECURED ROUTES
 #
-cssMainColor:
-    path : /css/main-color.css
-    controller: Themes\Rozier\RozierApp::cssAction
-
 loginImagePage:
     path: /css/login/image
     controller: Themes\Rozier\Controllers\LoginController::imageAction
