@@ -12,6 +12,7 @@ use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Themes\Rozier\RozierApp;
 
 final class DocumentDuplicatesController extends AbstractController
 {
@@ -33,7 +34,12 @@ final class DocumentDuplicatesController extends AbstractController
             $documentRepository->getDuplicatesQueryBuilder(),
             'd'
         );
-        $sessionListFilter = new SessionListFilters('duplicated_documents_item_per_page', 50);
+        $listManager->setItemPerPage(RozierApp::DEFAULT_ITEM_PER_PAGE);
+
+        /*
+         * Stored in session
+         */
+        $sessionListFilter = new SessionListFilters('duplicated_documents_item_per_page');
         $sessionListFilter->handleItemPerPage($request, $listManager);
 
         $listManager->handle();
