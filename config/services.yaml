@@ -11,9 +11,6 @@ services:
             $addNodeFormTypeClass: '%roadiz_rozier.add_node_form.class%'
             $googleServerId: '%roadiz_core.medias.google_server_id%'
             $soundcloudClientId: '%roadiz_core.medias.soundcloud_client_id%'
-            $forceSslOnRedirectUri: '%roadiz_rozier.open_id.force_ssl_on_redirect_uri%'
-            $useGravatar: '%roadiz_core.use_gravatar%'
-            $csvEncoderOptions: '%roadiz_rozier.csv_encoder_options%'
 
     RZ\Roadiz\RozierBundle\:
         resource: '../src/'
@@ -50,16 +47,22 @@ services:
         exclude:
             - '%roadiz_rozier.theme_dir%/Controllers/LoginRequestController.php'
 
-    Themes\Rozier\Explorer\FoldersProvider: ~
-    Themes\Rozier\Explorer\SettingsProvider: ~
-    Themes\Rozier\Explorer\UsersProvider: ~
+    Themes\Rozier\Explorer\FoldersProvider:
+        public: true
+    Themes\Rozier\Explorer\SettingsProvider:
+        public: true
+    Themes\Rozier\Explorer\UsersProvider:
+        public: true
 
-    RZ\Roadiz\CoreBundle\Explorer\ExplorerItemFactoryInterface:
-        class: Themes\Rozier\Explorer\ExplorerItemFactory
-        autowire: true
+    # Since symfony/dependency-injection 5.1: The "Psr\Container\ContainerInterface" autowiring alias is deprecated.
+    # Define it explicitly in your app if you want to keep using it.
+    Themes\Rozier\Forms\NodeSource\NodeSourceProviderType:
         autoconfigure: true
+        autowire: false
+        arguments:
+            - '@doctrine'
+            - '@service_container'
 
-    Themes\Rozier\Forms\NodeSource\NodeSourceProviderType: ~
     Themes\Rozier\Widgets\TreeWidgetFactory: ~
     Themes\Rozier\RozierServiceRegistry:
         public: true
@@ -69,8 +72,6 @@ services:
         calls:
             -   prependPath: [ '%roadiz_core.documents_lib_dir%/Resources/views' ]
             -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', 'RoadizRozier' ]
-                # Add a second path to make RoadizRozier templates extendable with @!RoadizRozier namespace
-            -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', '!RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
     #
@@ -80,7 +81,6 @@ services:
         arguments:
             - '@?roadiz_rozier.open_id.discovery'
             - '@security.csrf.token_manager'
-            - '@RZ\Roadiz\Random\TokenGeneratorInterface'
             - '%roadiz_rozier.open_id.hosted_domain%'
             - '%roadiz_rozier.open_id.oauth_client_id%'
             - '%roadiz_rozier.open_id.scopes%'

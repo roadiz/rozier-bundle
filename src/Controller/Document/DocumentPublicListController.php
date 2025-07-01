@@ -4,40 +4,34 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
-use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\Entity\Folder;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
-use RZ\Roadiz\CoreBundle\ListManager\EntityListManagerFactoryInterface;
-use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
-use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\Documents\Events\DocumentInFolderEvent;
 use RZ\Roadiz\Documents\Events\DocumentOutFolderEvent;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Themes\Rozier\RozierApp;
+use Themes\Rozier\Utils\SessionListFilters;
+use Twig\Error\RuntimeError;
 
-class DocumentPublicListController extends AbstractController
+class DocumentPublicListController extends RozierApp
 {
-    public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-        private readonly TranslatorInterface $translator,
-        private readonly LogTrail $logTrail,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly EntityListManagerFactoryInterface $entityListManagerFactory,
-        private readonly array $documentPlatforms,
-    ) {
+    private array $documentPlatforms;
+
+    /**
+     * @param array $documentPlatforms
+     */
+    public function __construct(array $documentPlatforms)
+    {
+        $this->documentPlatforms = $documentPlatforms;
     }
 
     protected function getFolder(?int $folderId): ?Folder
@@ -45,8 +39,7 @@ class DocumentPublicListController extends AbstractController
         if (null === $folderId || $folderId <= 0) {
             return null;
         }
-
-        return $this->managerRegistry->getRepository(Folder::class)->find($folderId);
+        return $this->em()->find(Folder::class, $folderId);
     }
 
     protected function getPreFilters(Request $request): array
@@ -57,22 +50,29 @@ class DocumentPublicListController extends AbstractController
         ];
     }
 
-    public function getAssignation(): array
+    public function prepareBaseAssignation(): static
     {
-        return [
-            'pageTitle' => 'documents',
-            'availablePlatforms' => $this->documentPlatforms,
-            'displayPrivateDocuments' => false,
-        ];
+        parent::prepareBaseAssignation();
+
+        $this->assignation['pageTitle'] = 'documents';
+        $this->assignation['availablePlatforms'] = $this->documentPlatforms;
+        $this->assignation['displayPrivateDocuments'] = false;
+
+        return $this;
     }
 
+    /**
+     * @param Request $request
+     * @param int|null $folderId
+     * @return Response
+     * @throws RuntimeError
+     */
     public function indexAction(Request $request, ?int $folderId = null): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
-        $assignation = $this->getAssignation();
 
         /** @var Translation $translation */
-        $translation = $this->managerRegistry
+        $translation = $this->em()
             ->getRepository(Translation::class)
             ->findDefault();
 
@@ -81,20 +81,23 @@ class DocumentPublicListController extends AbstractController
         $folder = $this->getFolder($folderId);
         if (null !== $folder) {
             $prefilters['folders'] = [$folder];
-            $assignation['folder'] = $folder;
+            $this->assignation['folder'] = $folder;
         }
 
-        $type = $request->query->get('type');
-        $embedPlatform = $request->query->get('embedPlatform');
-
-        if (\is_string($type) && '' !== $type) {
-            $prefilters['mimeType'] = trim($type);
-            $assignation['mimeType'] = trim($type);
+        if (
+            $request->query->has('type') &&
+            $request->query->get('type', '') !== ''
+        ) {
+            $prefilters['mimeType'] = trim($request->query->get('type', ''));
+            $this->assignation['mimeType'] = trim($request->query->get('type', ''));
         }
 
-        if (\is_string($embedPlatform) && '' !== $embedPlatform) {
-            $prefilters['embedPlatform'] = trim($embedPlatform);
-            $assignation['embedPlatform'] = trim($embedPlatform);
+        if (
+            $request->query->has('embedPlatform') &&
+            $request->query->get('embedPlatform', '') !== ''
+        ) {
+            $prefilters['embedPlatform'] = trim($request->query->get('embedPlatform', ''));
+            $this->assignation['embedPlatform'] = trim($request->query->get('embedPlatform', ''));
         }
 
         /*
@@ -111,31 +114,38 @@ class DocumentPublicListController extends AbstractController
             } elseif ($submitUnfolder instanceof ClickableInterface && $submitUnfolder->isClicked()) {
                 $msg = $this->leaveFolder($data);
             } else {
-                $msg = $this->translator->trans('wrong.request');
+                $msg = $this->getTranslator()->trans('wrong.request');
             }
 
-            $this->logTrail->publishConfirmMessage($request, $msg);
+            $this->publishConfirmMessage($request, $msg);
 
             return $this->redirectToRoute(
                 'documentsHomePage',
                 ['folderId' => $folderId]
             );
         }
-        $assignation['joinFolderForm'] = $joinFolderForm->createView();
+        $this->assignation['joinFolderForm'] = $joinFolderForm->createView();
 
-        $listManager = $this->entityListManagerFactory->createAdminEntityListManager(
+        $listManager = $this->createEntityListManager(
             Document::class,
             $prefilters,
             ['createdAt' => 'DESC']
         );
-        $sessionListFilter = new SessionListFilters('documents_item_per_page', 50);
+        $listManager->setDisplayingNotPublishedNodes(true);
+        $listManager->setItemPerPage(static::DEFAULT_ITEM_PER_PAGE);
+
+        /*
+         * Stored in session
+         */
+        $sessionListFilter = new SessionListFilters('documents_item_per_page');
         $sessionListFilter->handleItemPerPage($request, $listManager);
+
         $listManager->handle();
 
-        $assignation['filters'] = $listManager->getAssignation();
-        $assignation['documents'] = $listManager->getEntities();
-        $assignation['translation'] = $translation;
-        $assignation['thumbnailFormat'] = [
+        $this->assignation['filters'] = $listManager->getAssignation();
+        $this->assignation['documents'] = $listManager->getEntities();
+        $this->assignation['translation'] = $translation;
+        $this->assignation['thumbnailFormat'] = [
             'quality' => 50,
             'fit' => '128x128',
             'sharpen' => 5,
@@ -145,21 +155,23 @@ class DocumentPublicListController extends AbstractController
             'loading' => 'lazy',
         ];
 
-        return $this->render($this->getListingTemplate($request), $assignation);
+        return $this->render($this->getListingTemplate($request), $this->assignation);
     }
 
     protected function getListingTemplate(Request $request): string
     {
-        if ('1' === $request->query->get('list')) {
+        if ($request->query->get('list') === '1') {
             return '@RoadizRozier/documents/list-table.html.twig';
         }
-
         return '@RoadizRozier/documents/list.html.twig';
     }
 
+    /**
+     * @return FormInterface
+     */
     private function buildLinkFoldersForm(): FormInterface
     {
-        $builder = $this->formFactory->createNamedBuilder('folderForm')
+        $builder = $this->createNamedFormBuilder('folderForm')
             ->add('documentsId', HiddenType::class, [
                 'attr' => ['class' => 'document-id-bulk-folder'],
                 'constraints' => [
@@ -183,7 +195,7 @@ class DocumentPublicListController extends AbstractController
                 'attr' => [
                     'class' => 'uk-button uk-button-primary',
                     'title' => 'link.folders',
-                    'data-uk-tooltip' => '{animation:true}',
+                    'data-uk-tooltip' => "{animation:true}",
                 ],
             ])
             ->add('submitUnfolder', SubmitType::class, [
@@ -191,7 +203,7 @@ class DocumentPublicListController extends AbstractController
                 'attr' => [
                     'class' => 'uk-button',
                     'title' => 'unlink.folders',
-                    'data-uk-tooltip' => '{animation:true}',
+                    'data-uk-tooltip' => "{animation:true}",
                 ],
             ]);
 
@@ -199,19 +211,20 @@ class DocumentPublicListController extends AbstractController
     }
 
     /**
+     * @param array $data
      * @return string Status message
      */
     private function joinFolder(array $data): string
     {
-        $msg = $this->translator->trans('no_documents.linked_to.folders');
+        $msg = $this->getTranslator()->trans('no_documents.linked_to.folders');
 
         if (
-            !empty($data['documentsId'])
-            && !empty($data['folderPaths'])
+            !empty($data['documentsId']) &&
+            !empty($data['folderPaths'])
         ) {
             $documentsIds = explode(',', $data['documentsId']);
 
-            $documents = $this->managerRegistry
+            $documents = $this->em()
                 ->getRepository(Document::class)
                 ->findBy([
                     'id' => $documentsIds,
@@ -222,7 +235,7 @@ class DocumentPublicListController extends AbstractController
 
             foreach ($folderPaths as $path) {
                 /** @var Folder $folder */
-                $folder = $this->managerRegistry
+                $folder = $this->em()
                     ->getRepository(Folder::class)
                     ->findOrCreateByPath($path);
 
@@ -234,14 +247,14 @@ class DocumentPublicListController extends AbstractController
                 }
             }
 
-            $this->managerRegistry->getManagerForClass(Document::class)->flush();
-            $msg = $this->translator->trans('documents.linked_to.folders');
+            $this->em()->flush();
+            $msg = $this->getTranslator()->trans('documents.linked_to.folders');
 
             /*
              * Dispatch events
              */
             foreach ($documents as $document) {
-                $this->eventDispatcher->dispatch(
+                $this->dispatchEvent(
                     new DocumentInFolderEvent($document)
                 );
             }
@@ -251,19 +264,20 @@ class DocumentPublicListController extends AbstractController
     }
 
     /**
+     * @param array $data
      * @return string Status message
      */
     private function leaveFolder(array $data): string
     {
-        $msg = $this->translator->trans('no_documents.removed_from.folders');
+        $msg = $this->getTranslator()->trans('no_documents.removed_from.folders');
 
         if (
-            !empty($data['documentsId'])
-            && !empty($data['folderPaths'])
+            !empty($data['documentsId']) &&
+            !empty($data['folderPaths'])
         ) {
             $documentsIds = explode(',', $data['documentsId']);
 
-            $documents = $this->managerRegistry
+            $documents = $this->em()
                 ->getRepository(Document::class)
                 ->findBy([
                     'id' => $documentsIds,
@@ -274,7 +288,7 @@ class DocumentPublicListController extends AbstractController
 
             foreach ($folderPaths as $path) {
                 /** @var Folder $folder */
-                $folder = $this->managerRegistry
+                $folder = $this->em()
                     ->getRepository(Folder::class)
                     ->findByPath($path);
 
@@ -287,14 +301,14 @@ class DocumentPublicListController extends AbstractController
                     }
                 }
             }
-            $this->managerRegistry->getManagerForClass(Document::class)->flush();
-            $msg = $this->translator->trans('documents.removed_from.folders');
+            $this->em()->flush();
+            $msg = $this->getTranslator()->trans('documents.removed_from.folders');
 
             /*
              * Dispatch events
              */
             foreach ($documents as $document) {
-                $this->eventDispatcher->dispatch(
+                $this->dispatchEvent(
                     new DocumentOutFolderEvent($document)
                 );
             }

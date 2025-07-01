@@ -12,29 +12,33 @@ use RZ\Roadiz\CoreBundle\Event\Realm\NodeJoinedRealmEvent;
 use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
 use RZ\Roadiz\CoreBundle\Form\RealmNodeType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
-use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
-use RZ\Roadiz\CoreBundle\Security\LogTrail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Themes\Rozier\RozierApp;
 
-final class RealmNodeController extends AbstractController
+final class RealmNodeController extends RozierApp
 {
+    private ManagerRegistry $managerRegistry;
+    private TranslatorInterface $translator;
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-        private readonly TranslatorInterface $translator,
-        private readonly LogTrail $logTrail,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $managerRegistry,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
     ) {
+        $this->managerRegistry = $managerRegistry;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function defaultAction(Request $request, Node $id): Response
     {
-        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $id);
+        $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
 
         $node = $id;
         $realmNode = new RealmNode();
@@ -60,25 +64,27 @@ final class RealmNodeController extends AbstractController
                 'node.%node%.joined.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName(),
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
-            $this->logTrail->publishConfirmMessage($request, $msg);
+            $this->publishConfirmMessage($request, $msg);
 
             return $this->redirectToRoute('nodesRealmsPage', [
-                'id' => $node->getId(),
+                'id' => $node->getId()
             ]);
         }
 
-        return $this->render('@RoadizRozier/nodes/realms.html.twig', [
-            'node' => $node,
-            'source' => $nodeSource,
-            'form' => $form->createView(),
-            'translation' => $nodeSource->getTranslation(),
-            'nodeRealms' => $this->managerRegistry
-                ->getRepository(RealmNode::class)
-                ->findByNode($node),
-        ]);
+        $this->assignation['form'] = $form->createView();
+        $this->assignation['node'] = $node;
+        $this->assignation['source'] = $nodeSource;
+        $this->assignation['nodeRealms'] = $this->managerRegistry
+            ->getRepository(RealmNode::class)
+            ->findByNode($node);
+        $this->assignation['translation'] = $nodeSource->getTranslation();
+
+        return $this->render('@RoadizRozier/nodes/realms.html.twig', $this->assignation);
     }
 
     public function deleteAction(Request $request, int $id, int $realmNodeId): Response
@@ -111,22 +117,24 @@ final class RealmNodeController extends AbstractController
                 'node.%node%.left.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName(),
+                    '%realm%' => $realmNode->getRealm() ?
+                        $realmNode->getRealm()->getName() :
+                        $this->translator->trans('node.no_realm')
                 ]
             );
-            $this->logTrail->publishConfirmMessage($request, $msg);
+            $this->publishConfirmMessage($request, $msg);
 
             return $this->redirectToRoute('nodesRealmsPage', [
-                'id' => $node->getId(),
+                'id' => $node->getId()
             ]);
         }
 
-        return $this->render('@RoadizRozier/nodes/deleteRealm.html.twig', [
-            'form' => $form->createView(),
-            'node' => $node,
-            'source' => $nodeSource,
-            'realmNode' => $realmNode,
-            'translation' => $nodeSource->getTranslation(),
-        ]);
+        $this->assignation['form'] = $form->createView();
+        $this->assignation['node'] = $node;
+        $this->assignation['source'] = $nodeSource;
+        $this->assignation['realmNode'] = $realmNode;
+        $this->assignation['translation'] = $nodeSource->getTranslation();
+
+        return $this->render('@RoadizRozier/nodes/deleteRealm.html.twig', $this->assignation);
     }
 }

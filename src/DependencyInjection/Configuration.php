@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Themes\Rozier\Forms\Node\AddNodeType;
 use Themes\Rozier\Forms\NodeType;
 
-final class Configuration implements ConfigurationInterface
+class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -58,13 +59,14 @@ final class Configuration implements ConfigurationInterface
                 ->end() // entries
             ->end()
             ->append($this->addOpenIdNode())
-            ->append($this->addCsvNode())
         ;
-
         return $builder;
     }
 
-    protected function addOpenIdNode(): NodeDefinition
+    /**
+     * @return ArrayNodeDefinition|NodeDefinition
+     */
+    protected function addOpenIdNode()
     {
         $builder = new TreeBuilder('open_id');
         $node = $builder->getRootNode();
@@ -74,13 +76,6 @@ final class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                     ->info(<<<EOD
 Verify User info in JWT at each login
-EOD
-                    )
-                ->end()
-                ->booleanNode('force_ssl_on_redirect_uri')
-                    ->defaultTrue()
-                    ->info(<<<EOD
-Force generating redirect uri with https scheme. (required by some OpenID providers)
 EOD
                     )
                 ->end()
@@ -143,36 +138,6 @@ Roles granted to user logged in with OpenId authentication process. Only when lo
 EOD
                     )
                     ->end()
-                ->end()
-            ->end();
-
-        return $node;
-    }
-
-    protected function addCsvNode(): NodeDefinition
-    {
-        $builder = new TreeBuilder('csv_encoder_options');
-        $node = $builder->getRootNode();
-        $builder->getRootNode()->addDefaultsIfNotSet()
-            ->info('https://symfony.com/doc/6.4/serializer/encoders.html#the-csvencoder')
-            ->children()
-                ->scalarNode('csv_delimiter')
-                    ->defaultValue(',')
-                ->end()
-                ->scalarNode('csv_enclosure')
-                    ->defaultValue('"')
-                ->end()
-                ->scalarNode('csv_escape_char')
-                    ->defaultValue('')
-                ->end()
-                ->scalarNode('csv_end_of_line')
-                    ->defaultValue("\n")
-                ->end()
-                ->scalarNode('csv_key_separator')
-                    ->defaultValue('.')
-                ->end()
-                ->booleanNode('output_utf8_bom')
-                    ->defaultFalse()
                 ->end()
             ->end();
 
