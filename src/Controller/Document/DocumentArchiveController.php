@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
 use Doctrine\Persistence\ManagerRegistry;
+use League\Flysystem\FilesystemException;
+use Psr\Log\LoggerInterface;
 use RZ\Roadiz\CoreBundle\Entity\Document;
+use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\Documents\DocumentArchiver;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,30 +19,20 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Themes\Rozier\RozierApp;
 
-final class DocumentArchiveController extends RozierApp
+final class DocumentArchiveController extends AbstractController
 {
-    private ManagerRegistry $managerRegistry;
-    private TranslatorInterface $translator;
-    private DocumentArchiver $documentArchiver;
-
     public function __construct(
-        ManagerRegistry $managerRegistry,
-        TranslatorInterface $translator,
-        DocumentArchiver $documentArchiver
+        private readonly ManagerRegistry $managerRegistry,
+        private readonly TranslatorInterface $translator,
+        private readonly DocumentArchiver $documentArchiver,
+        private readonly LoggerInterface $logger,
+        private readonly LogTrail $logTrail,
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->translator = $translator;
-        $this->documentArchiver = $documentArchiver;
     }
 
     /**
-     * Return an deletion form for multiple docs.
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @throws FilesystemException
      */
     public function bulkDownloadAction(Request $request): Response
     {
@@ -56,41 +50,41 @@ final class DocumentArchiveController extends RozierApp
                 'id' => $documentsIds,
             ]);
 
-        if (count($documents) > 0) {
-            $this->assignation['documents'] = $documents;
-            $form = $this->buildBulkDownloadForm($documentsIds);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                try {
-                    return $this->documentArchiver->archiveAndServe($documents, 'Documents archive');
-                } catch (\Exception $e) {
-                    $this->getLogger()->error($e->getMessage());
-                    $msg = $this->translator->trans('documents.cannot_download');
-                    $this->publishErrorMessage($request, $msg);
-                }
-
-                return $this->redirectToRoute('documentsHomePage');
-            }
-
-            $this->assignation['form'] = $form->createView();
-            $this->assignation['action'] = '?' . http_build_query(['documents' => $documentsIds]);
-            $this->assignation['thumbnailFormat'] = [
-                'quality' => 50,
-                'fit' => '128x128',
-                'sharpen' => 5,
-                'inline' => false,
-                'picture' => true,
-                'controls' => false,
-                'loading' => 'lazy',
-            ];
-
-            return $this->render('@RoadizRozier/documents/bulkDownload.html.twig', $this->assignation);
+        if (0 === count($documents)) {
+            throw new ResourceNotFoundException();
         }
 
-        throw new ResourceNotFoundException();
-    }
+        $assignation = [];
+        $assignation['documents'] = $documents;
+        $form = $this->buildBulkDownloadForm($documentsIds);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                return $this->documentArchiver->archiveAndServe($documents, 'Documents archive');
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+                $msg = $this->translator->trans('documents.cannot_download');
+                $this->logTrail->publishErrorMessage($request, $msg);
+            }
+
+            return $this->redirectToRoute('documentsHomePage');
+        }
+
+        $assignation['form'] = $form->createView();
+        $assignation['action'] = '?'.http_build_query(['documents' => $documentsIds]);
+        $assignation['thumbnailFormat'] = [
+            'quality' => 50,
+            'fit' => '128x128',
+            'sharpen' => 5,
+            'inline' => false,
+            'picture' => true,
+            'controls' => false,
+            'loading' => 'lazy',
+        ];
+
+        return $this->render('@RoadizRozier/documents/bulkDownload.html.twig', $assignation);
+    }
 
     private function buildBulkDownloadForm(array $documentsIds): FormInterface
     {
@@ -98,7 +92,7 @@ final class DocumentArchiveController extends RozierApp
             'checksum' => md5(serialize($documentsIds)),
         ];
         $builder = $this->createFormBuilder($defaults, [
-            'action' => '?' . http_build_query(['documents' => $documentsIds]),
+            'action' => '?'.http_build_query(['documents' => $documentsIds]),
         ])
             ->add('checksum', HiddenType::class, [
                 'constraints' => [

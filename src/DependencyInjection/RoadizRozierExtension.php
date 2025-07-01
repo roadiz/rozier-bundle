@@ -12,26 +12,33 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RoadizRozierExtension extends Extension
 {
-    /**
-     * @inheritDoc
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $projectDir = $container->getParameter('kernel.project_dir');
+        if (!\is_string($projectDir)) {
+            throw new \RuntimeException('kernel.project_dir parameter is not a string.');
+        }
         $container->setParameter('roadiz_rozier.backoffice_menu_configuration', $config['entries']);
         $container->setParameter('roadiz_rozier.node_form.class', $config['node_form']);
         $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
         $container->setParameter(
             'roadiz_rozier.theme_dir',
-            $container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . trim($config['theme_dir'], "/ \t\n\r\0\x0B")
+            $projectDir.DIRECTORY_SEPARATOR.trim($config['theme_dir'], "/ \t\n\r\0\x0B")
         );
 
-        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/../config'));
+        $container->setParameter(
+            'roadiz_rozier.csv_encoder_options',
+            $config['csv_encoder_options'],
+        );
+
+        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__).'/../config'));
         $loader->load('services.yaml');
 
         $this->registerOpenId($config, $container);
@@ -40,6 +47,7 @@ class RoadizRozierExtension extends Extension
     private function registerOpenId(array $config, ContainerBuilder $container): void
     {
         $container->setParameter('roadiz_rozier.open_id.verify_user_info', $config['open_id']['verify_user_info']);
+        $container->setParameter('roadiz_rozier.open_id.force_ssl_on_redirect_uri', $config['open_id']['force_ssl_on_redirect_uri']);
         $container->setParameter('roadiz_rozier.open_id.discovery_url', $config['open_id']['discovery_url']);
         $container->setParameter('roadiz_rozier.open_id.hosted_domain', $config['open_id']['hosted_domain']);
         $container->setParameter('roadiz_rozier.open_id.oauth_client_id', $config['open_id']['oauth_client_id']);
@@ -61,7 +69,9 @@ class RoadizRozierExtension extends Extension
                     ->setPublic(true)
                     ->setArguments([
                         $config['open_id']['discovery_url'],
-                        new Reference(\Psr\Cache\CacheItemPoolInterface::class)
+                        new Reference(\Psr\Cache\CacheItemPoolInterface::class),
+                        new Reference(HttpClientInterface::class),
+                        new Reference(\Psr\Log\LoggerInterface::class),
                     ])
             );
         }
@@ -73,6 +83,7 @@ class RoadizRozierExtension extends Extension
                 ->setPublic(true)
                 ->setArguments([
                     new Reference('roadiz_rozier.open_id.discovery', ContainerInterface::NULL_ON_INVALID_REFERENCE),
+                    new Reference(HttpClientInterface::class),
                     $config['open_id']['hosted_domain'],
                     $config['open_id']['oauth_client_id'],
                     $config['open_id']['verify_user_info'],
@@ -93,10 +104,12 @@ class RoadizRozierExtension extends Extension
                     new Reference(\RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy::class),
                     new Reference('roadiz_rozier.open_id.jwt_configuration_factory'),
                     new Reference(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class),
+                    new Reference(HttpClientInterface::class),
                     'loginPage',
                     'adminHomePage',
                     $config['open_id']['oauth_client_id'],
                     $config['open_id']['oauth_client_secret'],
+                    $config['open_id']['force_ssl_on_redirect_uri'],
                     $config['open_id']['requires_local_user'],
                     $config['open_id']['openid_username_claim'],
                     '_target_path',
