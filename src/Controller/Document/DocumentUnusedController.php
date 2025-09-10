@@ -12,7 +12,6 @@ use RZ\Roadiz\CoreBundle\Repository\DocumentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Themes\Rozier\RozierApp;
 
 final class DocumentUnusedController extends AbstractController
 {
@@ -36,12 +35,7 @@ final class DocumentUnusedController extends AbstractController
             $documentRepository->getAllUnusedQueryBuilder(),
             'd'
         );
-        $listManager->setItemPerPage(RozierApp::DEFAULT_ITEM_PER_PAGE);
-
-        /*
-         * Stored in session
-         */
-        $sessionListFilter = new SessionListFilters('unused_documents_item_per_page');
+        $sessionListFilter = new SessionListFilters('unused_documents_item_per_page', 50);
         $sessionListFilter->handleItemPerPage($request, $listManager);
 
         $listManager->handle();
@@ -50,7 +44,8 @@ final class DocumentUnusedController extends AbstractController
         $assignation['documents'] = $listManager->getEntities();
         $assignation['thumbnailFormat'] = [
             'quality' => 50,
-            'fit' => '128x128',
+            'crop' => '1:1',
+            'width' => 128,
             'sharpen' => 5,
             'inline' => false,
             'picture' => true,

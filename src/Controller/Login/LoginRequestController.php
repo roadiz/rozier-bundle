@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\Controller\Login;
 
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use RZ\Roadiz\CoreBundle\Entity\User;
@@ -29,15 +27,12 @@ final class LoginRequestController extends AbstractController
     ) {
     }
 
+    #[\Override]
     protected function getUserViewer(): UserViewer
     {
         return $this->userViewer;
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function indexAction(Request $request): Response
     {
         $form = $this->createForm(LoginRequestForm::class);

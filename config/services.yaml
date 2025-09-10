@@ -7,11 +7,12 @@ services:
         bind:
             $backofficeMenuEntries: '%roadiz_rozier.backoffice_menu_configuration%'
             $documentPlatforms: '%roadiz_core.medias.supported_platforms%'
+            $customPublicScheme: '%roadiz_core.custom_public_scheme%'
+            $customPreviewScheme: '%roadiz_core.custom_preview_scheme%'
             $nodeFormTypeClass: '%roadiz_rozier.node_form.class%'
             $addNodeFormTypeClass: '%roadiz_rozier.add_node_form.class%'
             $googleServerId: '%roadiz_core.medias.google_server_id%'
             $soundcloudClientId: '%roadiz_core.medias.soundcloud_client_id%'
-            $allowNodeTypeEdition: '%kernel.debug%'
             $forceSslOnRedirectUri: '%roadiz_rozier.open_id.force_ssl_on_redirect_uri%'
             $useGravatar: '%roadiz_core.use_gravatar%'
             $csvEncoderOptions: '%roadiz_rozier.csv_encoder_options%'
@@ -21,68 +22,32 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
             - '../src/Event/'
+            - '../src/Kernel.php'
+            - '../src/Model/'
+            - '../src/Explorer/'
+            - '../src/Tests/'
+            - '../src/Widgets/'
 
-    Themes\Rozier\:
-        resource: '%roadiz_rozier.theme_dir%'
+    RZ\Roadiz\RozierBundle\Explorer\Provider\:
+        resource: '../src/Explorer/Provider/'
         autowire: true
         autoconfigure: true
-        exclude:
-            - '%roadiz_rozier.theme_dir%/Controllers/'
-            - '%roadiz_rozier.theme_dir%/Services/'
-            - '%roadiz_rozier.theme_dir%/Events/'
-            - '%roadiz_rozier.theme_dir%/Resources/'
-            - '%roadiz_rozier.theme_dir%/Traits/'
-            - '%roadiz_rozier.theme_dir%/Widgets/'
-            - '%roadiz_rozier.theme_dir%/Explorer/'
-            # Ignore vendor folder which may contain php files
-            - '%roadiz_rozier.theme_dir%/node_modules/'
-            - '%roadiz_rozier.theme_dir%/bower_components/'
-            - '%roadiz_rozier.theme_dir%/static/'
-
-    Themes\Rozier\Controllers\:
-        resource: '%roadiz_rozier.theme_dir%/Controllers/'
-        autowire: true
-        autoconfigure: true
-        tags:
-            - container.service_subscriber
-        exclude:
-            - '%roadiz_rozier.theme_dir%/Controllers/LoginRequestController.php'
-
-    Themes\Rozier\Explorer\FoldersProvider:
-        public: true
-    Themes\Rozier\Explorer\SettingsProvider:
-        public: true
-    Themes\Rozier\Explorer\UsersProvider:
-        public: true
+        tags: [ 'roadiz.explorer_provider' ]
 
     RZ\Roadiz\CoreBundle\Explorer\ExplorerItemFactoryInterface:
-        class: Themes\Rozier\Explorer\ExplorerItemFactory
+        class: RZ\Roadiz\RozierBundle\Explorer\ExplorerItemFactory
         autowire: true
         autoconfigure: true
 
-    # Since symfony/dependency-injection 5.1: The "Psr\Container\ContainerInterface" autowiring alias is deprecated.
-    # Define it explicitly in your app if you want to keep using it.
-    Themes\Rozier\Forms\NodeSource\NodeSourceProviderType:
-        autoconfigure: true
-        autowire: false
-        arguments:
-            - '@doctrine'
-            - '@service_container'
-
-    Themes\Rozier\Widgets\TreeWidgetFactory: ~
-    Themes\Rozier\RozierServiceRegistry:
+    RZ\Roadiz\RozierBundle\Widget\TreeWidgetFactory: ~
+    RZ\Roadiz\RozierBundle\RozierServiceRegistry:
         public: true
 
     roadiz_rozier.twig_loader:
         class: Twig\Loader\FilesystemLoader
         calls:
             -   prependPath: [ '%roadiz_core.documents_lib_dir%/Resources/views' ]
-            -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', 'RoadizRozier' ]
-                # Add a second path to make RoadizRozier templates extendable with @!RoadizRozier namespace
-            -   addPath: [ '%roadiz_rozier.theme_dir%/Resources/views', '!RoadizRozier' ]
         tags: [ 'twig.loader' ]
 
     #
@@ -107,5 +72,3 @@ services:
     RZ\Roadiz\RozierBundle\Controller\PingController:
         arguments: ['@?profiler']
 
-    Themes\Rozier\Controllers\CacheController:
-        arguments: ['@cache.global_clearer']

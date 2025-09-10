@@ -19,8 +19,11 @@ use RZ\Roadiz\CoreBundle\Event\UrlAlias\UrlAliasUpdatedEvent;
 use RZ\Roadiz\CoreBundle\Exception\EntityAlreadyExistsException;
 use RZ\Roadiz\CoreBundle\Exception\NoTranslationAvailableException;
 use RZ\Roadiz\CoreBundle\Form\UrlAliasType;
+use RZ\Roadiz\CoreBundle\Repository\AllStatusesNodesSourcesRepository;
 use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
+use RZ\Roadiz\RozierBundle\Form\NodeSource\NodeSourceSeoType;
+use RZ\Roadiz\RozierBundle\Form\RedirectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\Form\FormError;
@@ -31,8 +34,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Themes\Rozier\Forms\NodeSource\NodeSourceSeoType;
-use Themes\Rozier\Forms\RedirectionType;
 
 final class SeoController extends AbstractController
 {
@@ -42,6 +43,7 @@ final class SeoController extends AbstractController
         private readonly ManagerRegistry $managerRegistry,
         private readonly FormFactoryInterface $formFactory,
         private readonly TranslatorInterface $translator,
+        private readonly AllStatusesNodesSourcesRepository $allStatusesNodesSourcesRepository,
     ) {
     }
 
@@ -159,9 +161,7 @@ final class SeoController extends AbstractController
                     'nodesEditSEOPage',
                     ['nodeId' => $node->getId(), 'translationId' => $translationId]
                 ).'#manage-aliases');
-            } catch (EntityAlreadyExistsException $e) {
-                $addAliasForm->addError(new FormError($e->getMessage()));
-            } catch (NoTranslationAvailableException $e) {
+            } catch (EntityAlreadyExistsException|NoTranslationAvailableException $e) {
                 $addAliasForm->addError(new FormError($e->getMessage()));
             }
         }
@@ -178,10 +178,7 @@ final class SeoController extends AbstractController
     {
         $entityManager = $this->managerRegistry->getManagerForClass(UrlAlias::class);
         /** @var NodesSources|null $nodeSource */
-        $nodeSource = $this->managerRegistry
-                           ->getRepository(NodesSources::class)
-                           ->setDisplayingAllNodesStatuses(true)
-                           ->setDisplayingNotPublishedNodes(true)
+        $nodeSource = $this->allStatusesNodesSourcesRepository
                            ->findOneBy(['node' => $node, 'translation' => $translation]);
 
         if (null !== $nodeSource) {
