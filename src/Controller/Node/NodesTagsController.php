@@ -8,10 +8,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use RZ\Roadiz\CoreBundle\Entity\Node;
 use RZ\Roadiz\CoreBundle\Entity\NodesSources;
-use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Event\Node\NodeTaggedEvent;
 use RZ\Roadiz\CoreBundle\Node\NodeFactory;
-use RZ\Roadiz\CoreBundle\Repository\NodesSourcesRepository;
+use RZ\Roadiz\CoreBundle\Repository\AllStatusesNodesSourcesRepository;
 use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\RozierBundle\Form\NodesTagsType;
@@ -25,7 +24,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Themes\Rozier\Traits\NodesTrait;
 
-class NodesTagsController extends AbstractController
+final class NodesTagsController extends AbstractController
 {
     use NodesTrait;
 
@@ -36,6 +35,7 @@ class NodesTagsController extends AbstractController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LogTrail $logTrail,
         private readonly FormFactoryInterface $formFactory,
+        private readonly AllStatusesNodesSourcesRepository $allStatusesNodesSourcesRepository,
     ) {
     }
 
@@ -44,17 +44,15 @@ class NodesTagsController extends AbstractController
      */
     public function editTagsAction(Request $request, Node $nodeId): Response
     {
-        /** @var NodesSourcesRepository $nodeSourceRepository */
-        $nodeSourceRepository = $this->managerRegistry->getRepository(NodesSources::class);
-        $nodeSourceRepository
-            ->setDisplayingAllNodesStatuses(true)
-            ->setDisplayingNotPublishedNodes(true);
-
-        /** @var NodesSources|null $source */
-        $source = $nodeSourceRepository->findOneByNodeAndTranslation(
-            $nodeId,
-            $this->managerRegistry->getRepository(Translation::class)->findDefault()
-        );
+        /**
+         * Get all sources because if node does not have a default translation
+         * we still need to get one available translation.
+         *
+         * @var NodesSources|null $source
+         */
+        $source = $this->allStatusesNodesSourcesRepository->findByNode(
+            $nodeId
+        )[0] ?? null;
 
         if (null === $source) {
             throw new ResourceNotFoundException();
