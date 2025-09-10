@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DocumentLimitationsType extends AbstractType
 {
-    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,11 +44,13 @@ class DocumentLimitationsType extends AbstractType
         ;
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Document::class,
+            'data_class' => Document::class
         ]);
 
         $resolver->setRequired('referer');
