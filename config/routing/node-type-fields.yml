@@ -2,5 +2,5 @@
 nodeTypeFieldsListPage:
     path:     /{nodeTypeName}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\NodeTypeFieldController::listAction
+        _controller: Themes\Rozier\Controllers\NodeTypeFieldsController::listAction
     requirements: { nodeTypeName : "[a-zA-Z]+" }
