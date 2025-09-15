@@ -5,32 +5,32 @@
 nodesHomeDraftPage:
     path:     /drafts
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::indexAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::indexAction
         filter: 'draft'
 nodesHomePendingPage:
     path:     /pending
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::indexAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::indexAction
         filter: 'pending'
 nodesHomeArchivedPage:
     path:     /archived
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::indexAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::indexAction
         filter: 'archived'
 nodesHomeDeletedPage:
     path:     /deleted
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::indexAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::indexAction
         filter: 'deleted'
 nodesEditPage:
     path:     /edit/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::editAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::editAction
     requirements: { nodeId : "[0-9]+" }
 nodesTranstypePage:
     path:     /edit/{nodeId}/transtype
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\TranstypeController::transtypeAction
+        _controller: Themes\Rozier\Controllers\Nodes\TranstypeController::transtypeAction
     requirements: { nodeId : "[0-9]+" }
 nodesTranslatePage:
     path:     /translate/{nodeId}
@@ -40,42 +40,42 @@ nodesTranslatePage:
 nodesEditSourcePage:
     path:     /edit/{nodeId}/source/{translationId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodesSourcesController::editSourceAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesSourcesController::editSourceAction
     requirements: { nodeId : "[0-9]+", translationId : "[0-9]+" }
 nodesDeleteSourcePage:
     path:     /source/delete/{nodeSourceId}
     defaults:
-        _controller : RZ\Roadiz\RozierBundle\Controller\Node\NodesSourcesController::removeAction
+        _controller : Themes\Rozier\Controllers\Nodes\NodesSourcesController::removeAction
     requirements: {nodeSourceId : "[0-9]+"}
 
 nodesEditAttributesPage:
     path:     /edit/{nodeId}/source/{translationId}/attributes
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeAttributeController::editAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesAttributesController::editAction
     requirements: { nodeId : "[0-9]+", translationId : "[0-9]+" }
 
 nodesDeleteAttributesPage:
     path:     /edit/{nodeId}/source/{translationId}/attributes/{attributeValueId}/delete
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeAttributeController::deleteAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesAttributesController::deleteAction
     requirements: { nodeId : "[0-9]+", translationId : "[0-9]+", attributeValueId : "[0-9]+" }
 
 nodesResetAttributesPage:
     path:     /edit/{nodeId}/source/{translationId}/attributes/{attributeValueId}/reset
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeAttributeController::resetAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesAttributesController::resetAction
     requirements: { nodeId: "[0-9]+", translationId: "[0-9]+", attributeValueId: "[0-9]+" }
 
 nodesEditTagsPage:
     path:     /edit/{nodeId}/tags
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeTagController::editTagsAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodesTagsController::editTagsAction
     requirements: { nodeId : "[0-9]+" }
 nodesRemoveStackTypePage:
     path:     /edit/{nodeId}/stacktype/{typeName}/remove
     methods: [POST]
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::removeStackTypeAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::removeStackTypeAction
     requirements: { nodeId : "[0-9]+", typeName : "[a-zA-Z]+" }
 nodesEditSEOPage:
     path:     /edit/{nodeId}/seo/{translationId}
@@ -85,7 +85,7 @@ nodesEditSEOPage:
 nodesTreePage:
     path:     /tree/{nodeId}/{translationId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeTreeController::treeAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesTreesController::treeAction
         nodeId : null
         translationId : null
     requirements:
@@ -94,7 +94,7 @@ nodesTreePage:
 nodesMainTreePage:
     path:     /tree/main/{translationId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeTreeController::treeAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesTreesController::treeAction
         nodeId : null
         translationId : null
     requirements:
@@ -102,44 +102,44 @@ nodesMainTreePage:
 nodesBulkDeletePage:
     path:     /bulk-delete
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeTreeController::bulkDeleteAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesTreesController::bulkDeleteAction
 nodesBulkStatusPage:
     path:     /bulk-status
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeTreeController::bulkStatusAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesTreesController::bulkStatusAction
 nodesAddPage:
     path:     /add/{translationId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::addAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::addAction
     requirements: { translationId : "[0-9]+" }
 nodesAddChildPage:
     path:     /add-child/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::addChildAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::addChildAction
         nodeId: ~
     requirements: { nodeId : "[0-9]+" }
 nodesDeletePage:
     path:     /delete/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::deleteAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::deleteAction
     requirements: { nodeId : "[0-9]+" }
 nodesUndeletePage:
     path:     /undelete/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::undeleteAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::undeleteAction
     requirements: { nodeId : "[0-9]+" }
 
 nodesExportAllCsvPage:
     path:     /export/all-{translationId}.csv
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\ExportController::exportAllAction
+        _controller: Themes\Rozier\Controllers\Nodes\ExportController::exportAllAction
     requirements:
         translationId : "[0-9]+"
 
 nodesExportNodeCsvPage:
     path:     /export/node-{parentNodeId}-{translationId}.csv
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\ExportController::exportAllAction
+        _controller: Themes\Rozier\Controllers\Nodes\ExportController::exportAllAction
     requirements:
         translationId: "[0-9]+"
         parentNodeId: "[0-9]+"
@@ -147,25 +147,25 @@ nodesExportNodeCsvPage:
 nodesDuplicatePage:
     path:     /duplicate/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeDuplicateController::duplicateAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesDuplicateController::duplicateAction
     requirements: { nodeId : "[0-9]+" }
 nodesEmptyTrashPage:
     path:     /empty-trash
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::emptyTrashAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::emptyTrashAction
 nodesGenerateAndAddNodeAction:
     path:     /create
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::generateAndAddNodeAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::generateAndAddNodeAction
 nodesPublishAllAction:
     path:     /publish-all/{nodeId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\NodeController::publishAllAction
+        _controller: Themes\Rozier\Controllers\Nodes\NodesController::publishAllAction
     requirements: { nodeId : "[0-9]+" }
 nodesHistoryPage:
     path:     /history/{nodeId}/{page}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Node\HistoryController::historyAction
+        _controller: Themes\Rozier\Controllers\Nodes\HistoryController::historyAction
         page : "1"
     requirements:
         nodeId : "[0-9]+"
