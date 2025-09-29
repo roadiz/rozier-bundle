@@ -10,8 +10,7 @@ use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\NodeType;
 use RZ\Roadiz\CoreBundle\Entity\StackType;
 use RZ\Roadiz\CoreBundle\Enum\NodeStatus;
-use RZ\Roadiz\RozierBundle\RozierServiceRegistry;
-use RZ\Roadiz\RozierBundle\Vite\JsonManifestResolver;
+use Themes\Rozier\RozierServiceRegistry;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
@@ -21,11 +20,9 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
     public function __construct(
         private readonly RozierServiceRegistry $rozierServiceRegistry,
         private readonly DecoratedNodeTypes $nodeTypesBag,
-        private readonly JsonManifestResolver $manifestResolver,
     ) {
     }
 
-    #[\Override]
     public function getGlobals(): array
     {
         return [
@@ -33,8 +30,7 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
             'nodeStatuses' => NodeStatus::allLabelsAndValues(),
             'thumbnailFormat' => [
                 'quality' => 50,
-                'crop' => '1:1',
-                'width' => 128,
+                'fit' => '128x128',
                 'sharpen' => 5,
                 'inline' => false,
                 'picture' => true,
@@ -44,40 +40,11 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
         ];
     }
 
-    #[\Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('getNodeType', $this->getNodeType(...)),
-            new TwigFunction('manifest_script_tags', $this->getManifestScriptTags(...), ['is_safe' => ['html']]),
-            new TwigFunction('manifest_style_tags', $this->getManifestStyleTags(...), ['is_safe' => ['html']]),
-            new TwigFunction('manifest_preload_tags', $this->getManifestPreloadTags(...), ['is_safe' => ['html']]),
+            new TwigFunction('getNodeType', [$this, 'getNodeType']),
         ];
-    }
-
-    public function getManifestScriptTags(string $name): string
-    {
-        return implode('', array_map(fn ($cssFilePath) => sprintf(
-            '<script async type="module" src="%s"></script>',
-            htmlspecialchars((string) $cssFilePath, ENT_QUOTES, 'UTF-8')
-        ), $this->manifestResolver->getEntrypointScriptFiles($name)));
-    }
-
-    public function getManifestStyleTags(string $name): string
-    {
-        return implode('', array_map(fn ($cssFilePath) => sprintf(
-            '<link rel="stylesheet" href="%s">',
-            htmlspecialchars((string) $cssFilePath, ENT_QUOTES, 'UTF-8')
-        ), $this->manifestResolver->getEntrypointCssFiles($name)));
-    }
-
-    public function getManifestPreloadTags(string $name): string
-    {
-        return implode('', array_map(fn ($preloadFilePath) => sprintf(
-            '<link rel="preload" href="%s" as="%s">',
-            htmlspecialchars((string) $preloadFilePath['href'], ENT_QUOTES, 'UTF-8'),
-            htmlspecialchars((string) $preloadFilePath['as'], ENT_QUOTES, 'UTF-8')
-        ), $this->manifestResolver->getEntrypointPreloadFiles($name)));
     }
 
     public function getNodeType(mixed $object): ?NodeType

@@ -13,29 +13,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class DocumentUnusedController extends AbstractController
+final class DocumentDuplicatesController extends AbstractController
 {
     public function __construct(private readonly ManagerRegistry $managerRegistry)
     {
     }
 
-    /**
-     * See unused documents.
-     */
-    public function unusedAction(Request $request): Response
+    public function duplicatedAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
 
-        $assignation['orphans'] = true;
+        $assignation = [];
+        $assignation['duplicates'] = true;
         /** @var DocumentRepository $documentRepository */
         $documentRepository = $this->managerRegistry->getRepository(Document::class);
 
         $listManager = new QueryBuilderListManager(
             $request,
-            $documentRepository->getAllUnusedQueryBuilder(),
+            $documentRepository->getDuplicatesQueryBuilder(),
             'd'
         );
-        $sessionListFilter = new SessionListFilters('unused_documents_item_per_page', 50);
+        $sessionListFilter = new SessionListFilters('duplicated_documents_item_per_page', 50);
         $sessionListFilter->handleItemPerPage($request, $listManager);
 
         $listManager->handle();
@@ -52,6 +50,6 @@ final class DocumentUnusedController extends AbstractController
             'loading' => 'lazy',
         ];
 
-        return $this->render('@RoadizRozier/documents/unused.html.twig', $assignation);
+        return $this->render('@RoadizRozier/documents/duplicated.html.twig', $assignation);
     }
 }
