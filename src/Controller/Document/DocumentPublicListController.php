@@ -137,8 +137,7 @@ class DocumentPublicListController extends AbstractController
         $assignation['translation'] = $translation;
         $assignation['thumbnailFormat'] = [
             'quality' => 50,
-            'crop' => '1:1',
-            'width' => 128,
+            'fit' => '128x128',
             'sharpen' => 5,
             'inline' => false,
             'picture' => true,
@@ -162,7 +161,7 @@ class DocumentPublicListController extends AbstractController
     {
         $builder = $this->formFactory->createNamedBuilder('folderForm')
             ->add('documentsId', HiddenType::class, [
-                'attr' => ['class' => 'bulk-form-value'],
+                'attr' => ['class' => 'document-id-bulk-folder'],
                 'constraints' => [
                     new NotNull(),
                     new NotBlank(),
@@ -210,7 +209,7 @@ class DocumentPublicListController extends AbstractController
             !empty($data['documentsId'])
             && !empty($data['folderPaths'])
         ) {
-            $documentsIds = json_decode($data['documentsId'], true, flags: JSON_THROW_ON_ERROR);
+            $documentsIds = explode(',', $data['documentsId']);
 
             $documents = $this->managerRegistry
                 ->getRepository(Document::class)
@@ -218,11 +217,7 @@ class DocumentPublicListController extends AbstractController
                     'id' => $documentsIds,
                 ]);
 
-            if (!is_array($data['folderPaths'])) {
-                $folderPaths = explode(',', (string) $data['folderPaths']);
-            } else {
-                $folderPaths = $data['folderPaths'];
-            }
+            $folderPaths = explode(',', $data['folderPaths']);
             $folderPaths = array_filter($folderPaths);
 
             foreach ($folderPaths as $path) {
@@ -266,7 +261,7 @@ class DocumentPublicListController extends AbstractController
             !empty($data['documentsId'])
             && !empty($data['folderPaths'])
         ) {
-            $documentsIds = json_decode($data['documentsId'], true, flags: JSON_THROW_ON_ERROR);
+            $documentsIds = explode(',', $data['documentsId']);
 
             $documents = $this->managerRegistry
                 ->getRepository(Document::class)
@@ -274,7 +269,7 @@ class DocumentPublicListController extends AbstractController
                     'id' => $documentsIds,
                 ]);
 
-            $folderPaths = explode(',', (string) $data['folderPaths']);
+            $folderPaths = explode(',', $data['folderPaths']);
             $folderPaths = array_filter($folderPaths);
 
             foreach ($folderPaths as $path) {
