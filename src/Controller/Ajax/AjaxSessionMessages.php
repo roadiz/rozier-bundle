@@ -8,24 +8,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Attribute\Route;
 
 final class AjaxSessionMessages extends AbstractAjaxController
 {
-    #[Route(
-        path: '/rz-admin/session/messages',
-        name: 'ajaxSessionMessages',
-        methods: ['GET'],
-        stateless: false,
-    )]
-    public function getMessagesAction(
-        Request $request,
-        #[MapQueryParameter(name: '_csrf_token')]
-        ?string $csrfToken = null,
-    ): JsonResponse {
+    public function getMessagesAction(Request $request): JsonResponse
+    {
         $this->denyAccessUnlessGranted('ROLE_BACKEND_USER');
-        $this->validateCsrfToken($csrfToken);
 
         $responseArray = [
             'statusCode' => Response::HTTP_OK,

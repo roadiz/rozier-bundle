@@ -11,7 +11,6 @@ use RZ\Roadiz\CoreBundle\Form\NodeTypesType;
 use RZ\Roadiz\RozierBundle\Model\NodeTypeDecoratorPathDto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -32,9 +31,6 @@ final class NodeTypeDecoratorPathType extends AbstractType
             transform: function (string $path): NodeTypeDecoratorPathDto {
                 $pathExploded = explode('.', $path);
                 $nodeType = $this->decoratedNodeTypes->get($pathExploded[0]);
-                if (null === $nodeType) {
-                    throw new TransformationFailedException('Unknown node type '.$pathExploded[0]);
-                }
                 $field = $nodeType->getFieldByName($pathExploded[1]);
 
                 return new NodeTypeDecoratorPathDto(
