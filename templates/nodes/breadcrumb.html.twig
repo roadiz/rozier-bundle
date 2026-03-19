@@ -7,14 +7,26 @@
 <ul class="uk-breadcrumb content-breadcrumb node-breadcrumb">
     {%- for parent in source|parents(null, true)|reverse -%}
         {% if is_granted('READ', parent) %}
-            {# Use Roadiz Rozier BreadcrumbsItemFactory #}
-            {% set breadcrumbsItem = getBreadcrumbsItem(parent) %}
+            {% set title = parent.title|default(parent.node.nodeName) %}
+            {% if parent.node.isHidingChildren %}
+                {% if parent.translation %}
+                    {% set url = path('nodesTreePage', { nodeId: parent.node.id, translationId: parent.translation.id }) %}
+                {% else %}
+                    {% set url = path('nodesTreePage', { nodeId: parent.node.id }) %}
+                {% endif %}
+            {% else %}
+                {% set url = path('nodesEditSourcePage', {
+                    nodeId: parent.node.id,
+                    translationId: parent.translation.id
+                }) %}
+            {% endif %}
+
             <li class="node-breadcrumb-item">
-                <a class="node-breadcrumb-link" href="{{ breadcrumbsItem.url }}">
-                    {%- if breadcrumbsItem.isHome -%}
+                <a class="node-breadcrumb-link" href="{{ url }}">
+                    {%- if parent.node.isHome -%}
                         <i class="uk-icon-rz-breadcrumb-home"></i>
                     {%- else -%}
-                        {{- breadcrumbsItem.label|u.truncate(25, '[…]', true) -}}
+                        {{- title|u.truncate(25, '[…]', true) -}}
                     {%- endif -%}
                 </a>
             </li>

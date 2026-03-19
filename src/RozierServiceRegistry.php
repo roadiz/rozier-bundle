@@ -50,7 +50,6 @@ final class RozierServiceRegistry
         return UploadedFile::getMaxFilesize();
     }
 
-    /** @deprecated */
     public function getAdminImage(): ?DocumentInterface
     {
         return $this->settingsBag->getDocument('admin_image');
