@@ -16,11 +16,7 @@ class PingController extends AbstractController
     {
     }
 
-    #[Route(
-        path: '/rz-admin/ping',
-        name: 'ping',
-        methods: ['GET'],
-    )]
+    #[Route('/rz-admin/ping', name: 'ping', methods: ['GET'])]
     public function pingAction(): JsonResponse
     {
         // $profiler won't be set if your environment doesn't have the profiler (like prod, by default)

@@ -11,7 +11,6 @@ use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\Documents\Events\DocumentFileUpdatedEvent;
 use RZ\Roadiz\Documents\Events\DocumentUpdatedEvent;
-use RZ\Roadiz\RozierBundle\Form\DocumentEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -20,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Themes\Rozier\Forms\DocumentEditType;
 
 final class DocumentEditController extends AbstractController
 {
@@ -95,7 +95,9 @@ final class DocumentEditController extends AbstractController
                     'documentsEditPage',
                     $routeParams
                 );
-            } catch (FilesystemException|FileException $exception) {
+            } catch (FilesystemException $exception) {
+                $form->get('filename')->addError(new FormError($exception->getMessage()));
+            } catch (FileException $exception) {
                 $form->get('filename')->addError(new FormError($exception->getMessage()));
             }
         }

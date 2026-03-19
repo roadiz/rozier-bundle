@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
-use Psr\Cache\CacheItemPoolInterface;
 use RZ\Roadiz\OpenId\Discovery;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\DeeplTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\NullTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\TranslateAssistantInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,7 +16,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RoadizRozierExtension extends Extension
 {
-    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -35,11 +30,7 @@ class RoadizRozierExtension extends Extension
         $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
         $container->setParameter(
             'roadiz_rozier.theme_dir',
-            $projectDir.DIRECTORY_SEPARATOR.trim((string) $config['theme_dir'], "/ \t\n\r\0\x0B")
-        );
-        $container->setParameter(
-            'roadiz_rozier.manifest_path',
-            $projectDir.DIRECTORY_SEPARATOR.trim((string) $config['manifest_path'], "/ \t\n\r\0\x0B")
+            $projectDir.DIRECTORY_SEPARATOR.trim($config['theme_dir'], "/ \t\n\r\0\x0B")
         );
 
         $container->setParameter(
@@ -51,8 +42,6 @@ class RoadizRozierExtension extends Extension
         $loader->load('services.yaml');
 
         $this->registerOpenId($config, $container);
-        $this->registerTranslateAssistant($config, $container);
-        $this->registerBookmarkCollection($config, $container);
     }
 
     private function registerOpenId(array $config, ContainerBuilder $container): void
@@ -80,7 +69,7 @@ class RoadizRozierExtension extends Extension
                     ->setPublic(true)
                     ->setArguments([
                         $config['open_id']['discovery_url'],
-                        new Reference(CacheItemPoolInterface::class),
+                        new Reference(\Psr\Cache\CacheItemPoolInterface::class),
                         new Reference(HttpClientInterface::class),
                         new Reference(\Psr\Log\LoggerInterface::class),
                     ])
@@ -125,44 +114,6 @@ class RoadizRozierExtension extends Extension
                     $config['open_id']['openid_username_claim'],
                     '_target_path',
                     $config['open_id']['granted_roles'],
-                ])
-        );
-    }
-
-    private function registerTranslateAssistant(array $config, ContainerBuilder $container): void
-    {
-        if (!empty($config['translate_assistant']['deepl_api_key'])) {
-            $container->setParameter('roadiz_rozier.translate_assistant.deepl_api_key', $config['translate_assistant']['deepl_api_key']);
-            $container->setDefinition(
-                TranslateAssistantInterface::class,
-                (new Definition())
-                    ->setClass(DeeplTranslateAssistant::class)
-                    ->setArguments([
-                        new Reference(CacheItemPoolInterface::class),
-                        '%roadiz_rozier.translate_assistant.deepl_api_key%',
-                    ])
-            );
-
-            return;
-        }
-
-        $container->setDefinition(
-            TranslateAssistantInterface::class,
-            (new Definition())
-                ->setClass(NullTranslateAssistant::class)
-        );
-    }
-
-    private function registerBookmarkCollection(array $config, ContainerBuilder $container): void
-    {
-        $container->setDefinition(
-            \RZ\Roadiz\RozierBundle\Model\BookmarkCollection::class,
-            (new Definition())
-                ->setClass(\RZ\Roadiz\RozierBundle\Model\BookmarkCollection::class)
-                ->setPublic(true)
-                ->setFactory('\RZ\Roadiz\RozierBundle\Model\BookmarkCollection::fromConfiguration')
-                ->setArguments([
-                    $config['bookmarks'],
                 ])
         );
     }

@@ -125,7 +125,3 @@ modules.xml
 /report.txt
 /composer.lock
 /symfony.lock
-
-# Vite
-# Ignore Vite dev manifest file
-/public/manifest.dev.json
