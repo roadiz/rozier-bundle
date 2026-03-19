@@ -23,9 +23,9 @@ final class NodeSourceExplorerItem extends AbstractExplorerItem
     }
 
     #[\Override]
-    public function getId(): string|int
+    public function getId(): int
     {
-        return $this->nodeSource->getNode()->getId();
+        return $this->nodeSource->getNode()->getId() ?? throw new \RuntimeException('NodeSource has no Node ID associated.');
     }
 
     #[\Override]
