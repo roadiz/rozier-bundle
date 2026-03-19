@@ -44,10 +44,13 @@ class DocumentLimitationsType extends AbstractType
         ;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Document::class,
+            'data_class' => Document::class
         ]);
 
         $resolver->setRequired('referer');
