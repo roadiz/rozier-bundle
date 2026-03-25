@@ -17,7 +17,7 @@ final class TagExplorerItem extends AbstractExplorerItem
     }
 
     #[\Override]
-    protected function getEditItemPath(): string
+    protected function getEditItemPath(): ?string
     {
         return $this->urlGenerator->generate('tagsEditPage', [
             'tagId' => $this->tag->getId(),
@@ -25,19 +25,19 @@ final class TagExplorerItem extends AbstractExplorerItem
     }
 
     #[\Override]
-    protected function getColor(): string
+    protected function getColor(): ?string
     {
         return $this->tag->getColor();
     }
 
     #[\Override]
-    public function getId(): int
+    public function getId(): string|int
     {
-        return $this->tag->getId() ?? throw new \RuntimeException('Tag ID is null');
+        return $this->tag->getId();
     }
 
     #[\Override]
-    public function getAlternativeDisplayable(): string
+    public function getAlternativeDisplayable(): ?string
     {
         return $this->getTagParents($this->tag);
     }

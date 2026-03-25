@@ -14,9 +14,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @deprecated use specific Ajax controllers for each Field type instead
- */
 abstract class AjaxAbstractFieldsController extends AbstractAjaxController
 {
     public function __construct(
@@ -40,30 +37,27 @@ abstract class AjaxAbstractFieldsController extends AbstractAjaxController
     {
         $this->validateRequest($request);
 
-        if (null === $field) {
-            return null;
+        if (null !== $field) {
+            /*
+             * Get the right update method against "_action" parameter
+             */
+            if ('updatePosition' !== $request->get('_action')) {
+                throw new BadRequestHttpException('Action does not exist');
+            }
+
+            $responseArray = $this->updatePosition($request->request->all(), $field);
+
+            return new JsonResponse(
+                $responseArray,
+                Response::HTTP_PARTIAL_CONTENT
+            );
         }
 
-        /*
-         * Get the right update method against "_action" parameter
-         */
-        if ('updatePosition' !== $request->get('_action')) {
-            throw new BadRequestHttpException('Action does not exist');
-        }
-
-        $responseArray = $this->updatePosition($request->request->all(), $field);
-
-        return new JsonResponse(
-            $responseArray,
-            Response::HTTP_PARTIAL_CONTENT
-        );
+        return null;
     }
 
     protected function updatePosition(array $parameters, ?AbstractField $field = null): array
     {
-        if (null === $field) {
-            throw new BadRequestHttpException('Field does not exist');
-        }
         if (!empty($parameters['afterFieldId']) && is_numeric($parameters['afterFieldId'])) {
             $afterField = $this->findEntity((int) $parameters['afterFieldId']);
             if (null === $afterField) {
