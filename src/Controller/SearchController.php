@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use RZ\Roadiz\Contracts\NodeType\NodeTypeClassLocatorInterface;
 use RZ\Roadiz\Core\Handlers\HandlerFactoryInterface;
 use RZ\Roadiz\CoreBundle\Bag\NodeTypes;
 use RZ\Roadiz\CoreBundle\Entity\Node;
-use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\NodeType;
 use RZ\Roadiz\CoreBundle\Entity\NodeTypeField;
 use RZ\Roadiz\CoreBundle\Entity\Tag;
@@ -44,7 +42,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Workflow\Registry;
@@ -66,156 +63,8 @@ final class SearchController extends AbstractController
         private readonly Registry $workflowRegistry,
         private readonly EntityListManagerFactoryInterface $entityListManagerFactory,
         private readonly AllStatusesNodeRepository $allStatusesNodeRepository,
-        private readonly NodeTypeClassLocatorInterface $nodeTypeClassLocator,
         private readonly array $csvEncoderOptions,
     ) {
-    }
-
-    #[Route(
-        path: '/rz-admin/search',
-        name: 'searchNodePage',
-        methods: ['GET', 'POST'],
-    )]
-    public function searchNodeAction(Request $request): Response
-    {
-        $builder = $this->buildSimpleForm('');
-        $form = $this->addButtons($builder)->getForm();
-        $form->handleRequest($request);
-        $assignation = [];
-        $pagination = true;
-        $itemPerPage = null;
-
-        $builderNodeType = $this->buildNodeTypeForm();
-
-        /** @var Form $nodeTypeForm */
-        $nodeTypeForm = $builderNodeType->getForm();
-        $nodeTypeForm->handleRequest($request);
-
-        if (null !== $response = $this->handleNodeTypeForm($nodeTypeForm)) {
-            $response->prepare($request);
-
-            return $response;
-        }
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = array_filter($form->getData(), fn ($value) => (!is_array($value) && $this->notBlank($value))
-                || (is_array($value) && isset($value['compareDatetime'])));
-            $data = $this->processCriteria($data, $pagination, $itemPerPage);
-            $listManager = $this->entityListManagerFactory->createEntityListManager(
-                Node::class,
-                $data
-            );
-            $listManager->setDisplayingNotPublishedNodes(true);
-            $listManager->setDisplayingAllNodesStatuses(true);
-
-            if (false === $pagination) {
-                $listManager->setItemPerPage($itemPerPage ?? 999);
-                $listManager->disablePagination();
-            }
-            $listManager->handle();
-
-            $assignation['filters'] = $listManager->getAssignation();
-            $assignation['nodes'] = $listManager->getEntities();
-        }
-
-        /*
-         * Handle bulk tag form
-         */
-        $tagNodesForm = $this->buildBulkTagForm();
-        if (null !== $response = $this->handleTagNodesForm($request, $tagNodesForm)) {
-            return $response;
-        }
-        $assignation['tagNodesForm'] = $tagNodesForm->createView();
-
-        /*
-         * Handle bulk status
-         */
-        if ($this->isGranted('ROLE_ACCESS_NODES_STATUS')) {
-            $statusBulkNodes = $this->buildBulkStatusForm($request->getRequestUri());
-            $assignation['statusNodesForm'] = $statusBulkNodes->createView();
-        }
-
-        /*
-         * Handle bulk delete form
-         */
-        if ($this->isGranted('ROLE_ACCESS_NODES_DELETE')) {
-            $deleteNodesForm = $this->buildBulkDeleteForm($request->getRequestUri());
-            $assignation['deleteNodesForm'] = $deleteNodesForm->createView();
-        }
-
-        $assignation['form'] = $form->createView();
-        $assignation['nodeTypeForm'] = $nodeTypeForm->createView();
-        $assignation['filters']['searchDisable'] = true;
-
-        return $this->render('@RoadizRozier/search/list.html.twig', $assignation);
-    }
-
-    #[Route(
-        path: '/rz-admin/search/{nodeTypeName}',
-        name: 'searchNodeSourcePage',
-        requirements: ['nodeTypeName' => '[a-zA-Z]+'],
-        methods: ['GET', 'POST'],
-    )]
-    public function searchNodeSourceAction(Request $request, string $nodeTypeName): Response
-    {
-        $nodeType = $this->nodeTypesBag->get($nodeTypeName);
-
-        if (null === $nodeType) {
-            throw $this->createNotFoundException('Node type '.$nodeTypeName.' does not exist.');
-        }
-
-        $assignation = [];
-        $pagination = true;
-        $itemPerPage = null;
-        $builder = $this->buildSimpleForm('__node__');
-        $this->extendForm($builder, $nodeType);
-        $this->addButtons($builder, true);
-
-        $form = $builder->getForm();
-        $form->handleRequest($request);
-
-        $builderNodeType = $this->buildNodeTypeForm($nodeTypeName);
-        $nodeTypeForm = $builderNodeType->getForm();
-        $nodeTypeForm->handleRequest($request);
-
-        if (null !== $response = $this->handleNodeTypeForm($nodeTypeForm)) {
-            return $response;
-        }
-
-        if (null !== $response = $this->handleNodeForm($form, $nodeType, $pagination, $itemPerPage, $assignation)) {
-            return $response;
-        }
-
-        /*
-         * Handle bulk tag form
-         */
-        $tagNodesForm = $this->buildBulkTagForm();
-        if (null !== $response = $this->handleTagNodesForm($request, $tagNodesForm)) {
-            return $response;
-        }
-        $assignation['tagNodesForm'] = $tagNodesForm->createView();
-
-        /*
-         * Handle bulk status
-         */
-        if ($this->isGranted('ROLE_ACCESS_NODES_STATUS')) {
-            $statusBulkNodes = $this->buildBulkStatusForm($request->getRequestUri());
-            $assignation['statusNodesForm'] = $statusBulkNodes->createView();
-        }
-
-        /*
-         * Handle bulk delete form
-         */
-        if ($this->isGranted('ROLE_ACCESS_NODES_DELETE')) {
-            $deleteNodesForm = $this->buildBulkDeleteForm($request->getRequestUri());
-            $assignation['deleteNodesForm'] = $deleteNodesForm->createView();
-        }
-
-        $assignation['form'] = $form->createView();
-        $assignation['nodeType'] = $nodeType;
-        $assignation['filters']['searchDisable'] = true;
-
-        return $this->render('@RoadizRozier/search/list.html.twig', $assignation);
     }
 
     protected function isBlank(mixed $var): bool
@@ -286,7 +135,7 @@ final class SearchController extends AbstractController
          * no need to prefix tags
          */
         if (isset($data['tags'])) {
-            $data['tags'] = array_map(trim(...), explode(',', (string) $data['tags']));
+            $data['tags'] = array_map('trim', explode(',', (string) $data['tags']));
             foreach ($data['tags'] as $key => $value) {
                 $data['tags'][$key] = $this->managerRegistry->getRepository(Tag::class)->findByPath($value);
             }
@@ -344,6 +193,137 @@ final class SearchController extends AbstractController
         }
 
         return $data;
+    }
+
+    public function searchNodeAction(Request $request): Response
+    {
+        $builder = $this->buildSimpleForm('');
+        $form = $this->addButtons($builder)->getForm();
+        $form->handleRequest($request);
+        $assignation = [];
+        $pagination = true;
+        $itemPerPage = null;
+
+        $builderNodeType = $this->buildNodeTypeForm();
+
+        /** @var Form $nodeTypeForm */
+        $nodeTypeForm = $builderNodeType->getForm();
+        $nodeTypeForm->handleRequest($request);
+
+        if (null !== $response = $this->handleNodeTypeForm($nodeTypeForm)) {
+            $response->prepare($request);
+
+            return $response->send();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = array_filter($form->getData(), fn ($value) => (!is_array($value) && $this->notBlank($value))
+                || (is_array($value) && isset($value['compareDatetime'])));
+            $data = $this->processCriteria($data, $pagination, $itemPerPage);
+            $listManager = $this->entityListManagerFactory->createEntityListManager(
+                Node::class,
+                $data
+            );
+            $listManager->setDisplayingNotPublishedNodes(true);
+            $listManager->setDisplayingAllNodesStatuses(true);
+
+            if (false === $pagination) {
+                $listManager->setItemPerPage($itemPerPage ?? 999);
+                $listManager->disablePagination();
+            }
+            $listManager->handle();
+
+            $assignation['filters'] = $listManager->getAssignation();
+            $assignation['nodes'] = $listManager->getEntities();
+        }
+
+        /*
+         * Handle bulk tag form
+         */
+        $tagNodesForm = $this->buildBulkTagForm();
+        if (null !== $response = $this->handleTagNodesForm($request, $tagNodesForm)) {
+            return $response;
+        }
+        $assignation['tagNodesForm'] = $tagNodesForm->createView();
+
+        /*
+         * Handle bulk status
+         */
+        if ($this->isGranted('ROLE_ACCESS_NODES_STATUS')) {
+            $statusBulkNodes = $this->buildBulkStatusForm($request->getRequestUri());
+            $assignation['statusNodesForm'] = $statusBulkNodes->createView();
+        }
+
+        /*
+         * Handle bulk delete form
+         */
+        if ($this->isGranted('ROLE_ACCESS_NODES_DELETE')) {
+            $deleteNodesForm = $this->buildBulkDeleteForm($request->getRequestUri());
+            $assignation['deleteNodesForm'] = $deleteNodesForm->createView();
+        }
+
+        $assignation['form'] = $form->createView();
+        $assignation['nodeTypeForm'] = $nodeTypeForm->createView();
+        $assignation['filters']['searchDisable'] = true;
+
+        return $this->render('@RoadizRozier/search/list.html.twig', $assignation);
+    }
+
+    public function searchNodeSourceAction(Request $request, string $nodeTypeName): Response
+    {
+        $nodeType = $this->nodeTypesBag->get($nodeTypeName);
+        $assignation = [];
+        $pagination = true;
+        $itemPerPage = null;
+        $builder = $this->buildSimpleForm('__node__');
+        $this->extendForm($builder, $nodeType);
+        $this->addButtons($builder, true);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        $builderNodeType = $this->buildNodeTypeForm($nodeTypeName);
+        $nodeTypeForm = $builderNodeType->getForm();
+        $nodeTypeForm->handleRequest($request);
+
+        if (null !== $response = $this->handleNodeTypeForm($nodeTypeForm)) {
+            return $response;
+        }
+
+        if (null !== $response = $this->handleNodeForm($form, $nodeType, $pagination, $itemPerPage, $assignation)) {
+            return $response;
+        }
+
+        /*
+         * Handle bulk tag form
+         */
+        $tagNodesForm = $this->buildBulkTagForm();
+        if (null !== $response = $this->handleTagNodesForm($request, $tagNodesForm)) {
+            return $response;
+        }
+        $assignation['tagNodesForm'] = $tagNodesForm->createView();
+
+        /*
+         * Handle bulk status
+         */
+        if ($this->isGranted('ROLE_ACCESS_NODES_STATUS')) {
+            $statusBulkNodes = $this->buildBulkStatusForm($request->getRequestUri());
+            $assignation['statusNodesForm'] = $statusBulkNodes->createView();
+        }
+
+        /*
+         * Handle bulk delete form
+         */
+        if ($this->isGranted('ROLE_ACCESS_NODES_DELETE')) {
+            $deleteNodesForm = $this->buildBulkDeleteForm($request->getRequestUri());
+            $assignation['deleteNodesForm'] = $deleteNodesForm->createView();
+        }
+
+        $assignation['form'] = $form->createView();
+        $assignation['nodeType'] = $nodeType;
+        $assignation['filters']['searchDisable'] = true;
+
+        return $this->render('@RoadizRozier/search/list.html.twig', $assignation);
     }
 
     /**
@@ -435,11 +415,9 @@ final class SearchController extends AbstractController
         }
         $data = $this->processCriteria($data, $pagination, $itemPerPage, 'node.');
         $data = $this->processCriteriaNodeType($data, $nodeType);
-        /** @var class-string<NodesSources> $entityClassName */
-        $entityClassName = $this->nodeTypeClassLocator->getSourceEntityFullQualifiedClassName($nodeType);
 
         $listManager = $this->entityListManagerFactory->createEntityListManager(
-            $entityClassName,
+            $nodeType->getSourceEntityFullQualifiedClassName(),
             $data
         );
         $listManager->setDisplayingNotPublishedNodes(true);
@@ -516,11 +494,11 @@ final class SearchController extends AbstractController
             ->add($prefix.'locked', ExtendedBooleanType::class, [
                 'label' => 'locked',
             ])
+            ->add($prefix.'sterile', ExtendedBooleanType::class, [
+                'label' => 'sterile-status',
+            ])
             ->add($prefix.'hideChildren', ExtendedBooleanType::class, [
                 'label' => 'hiding-children',
-            ])
-            ->add($prefix.'shadow', ExtendedBooleanType::class, [
-                'label' => 'node.shadow',
             ])
         );
         $builder->add(
@@ -634,7 +612,7 @@ final class SearchController extends AbstractController
 
             if (FieldType::ENUM_T === $field->getType()) {
                 $choices = $field->getDefaultValuesAsArray();
-                $choices = array_map(trim(...), $choices);
+                $choices = array_map('trim', $choices);
                 $choices = array_combine(array_values($choices), array_values($choices));
                 $type = ChoiceType::class;
                 $option['placeholder'] = 'ignore';
@@ -646,7 +624,7 @@ final class SearchController extends AbstractController
                 $option['choices'] = $choices;
             } elseif (FieldType::MULTIPLE_T === $field->getType()) {
                 $choices = $field->getDefaultValuesAsArray();
-                $choices = array_map(trim(...), $choices);
+                $choices = array_map('trim', $choices);
                 $choices = array_combine(array_values($choices), array_values($choices));
                 $type = ChoiceType::class;
                 $option['choices'] = $choices;

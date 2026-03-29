@@ -124,8 +124,6 @@ final class DocumentEditType extends AbstractType
                         'width' => 800,
                         'height' => 800,
                     ])->getUrl(),
-                    'image-width' => $document->getImageWidth(),
-                    'image-height' => $document->getImageHeight(),
                 ],
             ]);
         }

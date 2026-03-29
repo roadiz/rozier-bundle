@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" source-language="en" datatype="plaintext" target-language="it">
+  <file original="./themes/Rozier/Resources/translations/messages.po" source-language="en" datatype="plaintext" target-language="it">
     <body>
       <trans-unit xml:space="preserve" id="2" approved="yes">
         <source>node.%name%.updated</source>
@@ -1209,6 +1209,10 @@
       <trans-unit xml:space="preserve" id="320" approved="yes">
         <source>lock-status</source>
         <target state="final">stato bloccato</target>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="321" approved="yes">
+        <source>sterile-status</source>
+        <target state="final">nega figlio</target>
       </trans-unit>
       <trans-unit xml:space="preserve" id="322" approved="yes">
         <source>archive-status</source>
