@@ -13,7 +13,6 @@ use RZ\Roadiz\CoreBundle\Traits\LoginRequestTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class LoginRequestController extends AbstractController
@@ -28,17 +27,11 @@ final class LoginRequestController extends AbstractController
     ) {
     }
 
-    #[\Override]
     protected function getUserViewer(): UserViewer
     {
         return $this->userViewer;
     }
 
-    #[Route(
-        path: '/rz-admin/login/request',
-        name: 'loginRequestPage',
-        methods: ['GET', 'POST'],
-    )]
     public function indexAction(Request $request): Response
     {
         $form = $this->createForm(LoginRequestForm::class);
@@ -48,7 +41,7 @@ final class LoginRequestController extends AbstractController
             if ($form->isValid()) {
                 $this->sendConfirmationEmail(
                     $form,
-                    $this->managerRegistry->getManagerForClass(User::class) ?? throw new \RuntimeException('No entity manager found for User class.'),
+                    $this->managerRegistry->getManagerForClass(User::class),
                     $this->logger,
                     $this->urlGenerator
                 );
@@ -68,11 +61,6 @@ final class LoginRequestController extends AbstractController
         ]);
     }
 
-    #[Route(
-        path: '/rz-admin/login/request/confirm',
-        name: 'loginRequestConfirmPage',
-        methods: ['GET'],
-    )]
     public function confirmAction(): Response
     {
         return $this->render('@RoadizRozier/login/requestConfirm.html.twig');
