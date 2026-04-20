@@ -151,7 +151,7 @@ final class WebhookController extends AbstractAdminWithBulkController
     }
 
     #[\Override]
-    protected function getBulkDeleteRouteName(): ?string
+    protected function getBulkDeleteRouteName(): string
     {
         return 'webhooksBulkDeletePage';
     }
