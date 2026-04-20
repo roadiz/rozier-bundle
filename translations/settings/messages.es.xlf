@@ -3,14 +3,14 @@
   <file original="" source-language="en" datatype="plaintext" target-language="es-ES">
     <body>
       <!-- Setting groups names -->
-      <trans-unit xml:space="preserve" id="Development" approved="yes">
+      <trans-unit xml:space="preserve" id="Development">
                 <source>Development</source>
-                <target state="final">Desarrollo</target>
+                <target state="translated">Desarrollo</target>
                 <note>Setting group name</note>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="Social networks" approved="yes">
+      <trans-unit xml:space="preserve" id="Social networks">
                 <source>Social networks</source>
-                <target state="final">Redes sociales</target>
+                <target state="translated">Redes sociales</target>
                 <note>Setting group name</note>
             </trans-unit>
     </body>
