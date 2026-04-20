@@ -6,23 +6,16 @@ namespace RZ\Roadiz\RozierBundle\Controller\Document;
 
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Document;
-use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\Documents\Events\DocumentUpdatedEvent;
 use RZ\Roadiz\RozierBundle\Form\DocumentLimitationsType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Themes\Rozier\RozierApp;
 
-final class DocumentLimitationsController extends AbstractController
+final class DocumentLimitationsController extends RozierApp
 {
-    public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-        private readonly TranslatorInterface $translator,
-        private readonly LogTrail $logTrail,
-        private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
+    public function __construct(private readonly ManagerRegistry $managerRegistry)
+    {
     }
 
     public function limitationsAction(Request $request, Document $document): Response
@@ -35,29 +28,27 @@ final class DocumentLimitationsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $msg = $this->translator->trans('document.%name%.updated', [
+            $msg = $this->getTranslator()->trans('document.%name%.updated', [
                 '%name%' => (string) $document,
             ]);
-            $this->logTrail->publishConfirmMessage($request, $msg);
-            $this->eventDispatcher->dispatch(
+            $this->publishConfirmMessage($request, $msg);
+            $this->dispatchEvent(
                 new DocumentUpdatedEvent($document)
             );
 
             $this->managerRegistry->getManager()->flush();
-
             return $this->redirectToRoute(
                 'documentsLimitationsPage',
                 [
-                    'id' => $document->getId(),
+                    'id' => $document->getId()
                 ]
             );
         }
 
-        $assignation = [];
-        $assignation['document'] = $document;
-        $assignation['rawDocument'] = $document->getRawDocument();
-        $assignation['form'] = $form->createView();
+        $this->assignation['document'] = $document;
+        $this->assignation['rawDocument'] = $document->getRawDocument();
+        $this->assignation['form'] = $form->createView();
 
-        return $this->render('@RoadizRozier/documents/limitations.html.twig', $assignation);
+        return $this->render('@RoadizRozier/documents/limitations.html.twig', $this->assignation);
     }
 }
