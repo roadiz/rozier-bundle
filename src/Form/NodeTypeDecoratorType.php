@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class NodeTypeDecoratorType extends AbstractType
@@ -67,9 +66,6 @@ final class NodeTypeDecoratorType extends AbstractType
         ]);
     }
 
-    /**
-     * @return class-string<FormTypeInterface>
-     */
     private function getValueType(NodeTypeDecorator $nodeTypeDecorator): string
     {
         $property = $nodeTypeDecorator->getProperty();
@@ -105,11 +101,6 @@ final class NodeTypeDecoratorType extends AbstractType
     {
         $pathExploded = explode('.', $path);
         $nodeType = $this->decoratedNodeTypes->get($pathExploded[0]);
-
-        if (null === $nodeType) {
-            throw new \RuntimeException('Cannot find NodeType for NodeTypeDecorator path '.$path);
-        }
-
         $field = $nodeType->getFieldByName($pathExploded[1]);
 
         return [

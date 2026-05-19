@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\Controller\NodeType;
 
-use RZ\Roadiz\Contracts\NodeType\NodeTypeClassLocatorInterface;
 use RZ\Roadiz\CoreBundle\Bag\DecoratedNodeTypes;
 use RZ\Roadiz\Documentation\Generators\DocumentationGenerator;
 use RZ\Roadiz\Typescript\Declaration\DeclarationGeneratorFactory;
@@ -24,7 +23,6 @@ final class NodeTypeExportController extends AbstractController
     public function __construct(
         private readonly DecoratedNodeTypes $nodeTypesBag,
         private readonly TranslatorInterface $translator,
-        private readonly NodeTypeClassLocatorInterface $nodeTypeClassLocator,
     ) {
     }
 
@@ -81,8 +79,7 @@ final class NodeTypeExportController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ACCESS_NODETYPES');
 
         $documentationGenerator = new DeclarationGenerator(
-            new DeclarationGeneratorFactory($this->nodeTypesBag, $this->nodeTypeClassLocator),
-            $this->nodeTypeClassLocator
+            new DeclarationGeneratorFactory($this->nodeTypesBag)
         );
 
         $fileName = 'roadiz-app-'.date('Ymd-His').'.d.ts';
