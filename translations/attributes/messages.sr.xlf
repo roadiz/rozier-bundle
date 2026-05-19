@@ -2,156 +2,156 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" source-language="en" datatype="plaintext" target-language="sr">
     <body>
-      <trans-unit xml:space="preserve" id="manage.attributes" approved="yes">
+      <trans-unit xml:space="preserve" id="manage.attributes">
                 <source>manage.attributes</source>
-                <target state="final">Уређивање својстава</target>
+                <target state="translated">Уређивање својстава</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes">
                 <source>attributes</source>
-                <target state="final">својства</target>
+                <target state="translated">својства</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.code" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.code">
                 <source>attributes.code</source>
-                <target state="final">Код</target>
+                <target state="translated">Код</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="add.a.attribute" approved="yes">
+      <trans-unit xml:space="preserve" id="add.a.attribute">
                 <source>add.a.attribute</source>
-                <target state="final">Креирај својство</target>
+                <target state="translated">Креирај својство</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.code" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.code">
                 <source>attributes.form.code</source>
-                <target state="final">Код својства</target>
+                <target state="translated">Код својства</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type">
                 <source>attributes.form.type</source>
-                <target state="final">Тип својства</target>
+                <target state="translated">Тип својства</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.attributeTranslations" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.attributeTranslations">
                 <source>attributes.form.attributeTranslations</source>
-                <target state="final">Преводи</target>
+                <target state="translated">Преводи</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.options" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.options">
                 <source>attributes.form.options</source>
-                <target state="final">Доступне опције (за тип)</target>
+                <target state="translated">Доступне опције (за тип)</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="edit.attribute.%name%" approved="yes">
+      <trans-unit xml:space="preserve" id="edit.attribute.%name%">
                 <source>edit.attribute.%name%</source>
-                <target state="final">%name%</target>
+                <target state="translated">%name%</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="back_to.attributes" approved="yes">
+      <trans-unit xml:space="preserve" id="back_to.attributes">
                 <source>back_to.attributes</source>
-                <target state="final">Назад на својства</target>
+                <target state="translated">Назад на својства</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.string" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.string">
                 <source>attributes.form.type.string</source>
-                <target state="final">Низ карактера</target>
+                <target state="translated">Низ карактера</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.datetime" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.datetime">
                 <source>attributes.form.type.datetime</source>
-                <target state="final">Датум и време</target>
+                <target state="translated">Датум и време</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.boolean" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.boolean">
                 <source>attributes.form.type.boolean</source>
-                <target state="final">Логичко (да или не)</target>
+                <target state="translated">Логичко (да или не)</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.integer" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.integer">
                 <source>attributes.form.type.integer</source>
-                <target state="final">Цео број</target>
+                <target state="translated">Цео број</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.decimal" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.decimal">
                 <source>attributes.form.type.decimal</source>
-                <target state="final">Децимални број</target>
+                <target state="translated">Децимални број</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.email" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.email">
                 <source>attributes.form.type.email</source>
-                <target state="final">Јединствена email адреса</target>
+                <target state="translated">Јединствена email адреса</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.colour" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.colour">
                 <source>attributes.form.type.colour</source>
-                <target state="final">Боја, хексадецимално</target>
+                <target state="translated">Боја, хексадецимално</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.enum" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.enum">
                 <source>attributes.form.type.enum</source>
-                <target state="final">Јединствени избор</target>
+                <target state="translated">Јединствени избор</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.date" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.date">
                 <source>attributes.form.type.date</source>
-                <target state="final">Датум</target>
+                <target state="translated">Датум</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.type.country" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.type.country">
                 <source>attributes.form.type.country</source>
-                <target state="final">Код државе</target>
+                <target state="translated">Код државе</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="node.attributes" approved="yes">
+      <trans-unit xml:space="preserve" id="node.attributes">
                 <source>node.attributes</source>
-                <target state="final">Својства</target>
+                <target state="translated">Својства</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute_values.form.attribute" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute_values.form.attribute">
                 <source>attribute_values.form.attribute</source>
-                <target state="final">Додај ново својство</target>
+                <target state="translated">Додај ново својство</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="new_attribute" approved="yes">
+      <trans-unit xml:space="preserve" id="new_attribute">
                 <source>new_attribute</source>
-                <target state="final">-- Одаберите својство --</target>
+                <target state="translated">-- Одаберите својство --</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="add.a.node.attribute" approved="yes">
+      <trans-unit xml:space="preserve" id="add.a.node.attribute">
                 <source>add.a.node.attribute</source>
-                <target state="final">Доделите својство постојећем чвору</target>
+                <target state="translated">Доделите својство постојећем чвору</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.no_value" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.no_value">
                 <source>attributes.no_value</source>
-                <target state="final">-- Нема задате вредности --</target>
+                <target state="translated">-- Нема задате вредности --</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute.%name%.created" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute.%name%.created">
                 <source>attribute.%name%.created</source>
-                <target state="final">Својство %name% је креирано</target>
+                <target state="translated">Својство %name% је креирано</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute.%name%.updated" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute.%name%.updated">
                 <source>attribute.%name%.updated</source>
-                <target state="final">Својство %name% је ажурирано</target>
+                <target state="translated">Својство %name% је ажурирано</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute.%name%.deleted" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute.%name%.deleted">
                 <source>attribute.%name%.deleted</source>
-                <target state="final">Својство %name% је избрисано</target>
+                <target state="translated">Својство %name% је избрисано</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.value" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.value">
                 <source>attributes.value</source>
-                <target state="final">Вредност</target>
+                <target state="translated">Вредност</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="are_you_sure.delete.attribute" approved="yes">
+      <trans-unit xml:space="preserve" id="are_you_sure.delete.attribute">
                 <source>are_you_sure.delete.attribute</source>
-                <target state="final">Да ли сте сигурни да желите да избришете ово својство?</target>
+                <target state="translated">Да ли сте сигурни да желите да избришете ово својство?</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute.%name%.deleted_from_node.%nodeName%" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute.%name%.deleted_from_node.%nodeName%">
                 <source>attribute.%name%.deleted_from_node.%nodeName%</source>
-                <target state="final">Својство %name% је избрисано из чвора %nodeName%</target>
+                <target state="translated">Својство %name% је избрисано из чвора %nodeName%</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="delete.attribute.%name%" approved="yes">
+      <trans-unit xml:space="preserve" id="delete.attribute.%name%">
                 <source>delete.attribute.%name%</source>
-                <target state="final">Избриши својство %name%</target>
+                <target state="translated">Избриши својство %name%</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute_value_translation.%name%.updated_from_node.%nodeName%" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute_value_translation.%name%.updated_from_node.%nodeName%">
                 <source>attribute_value_translation.%name%.updated_from_node.%nodeName%</source>
-                <target state="final">Вредност својства %name% за чвор %nodeName% је ажурирана.</target>
+                <target state="translated">Вредност својства %name% за чвор %nodeName% је ажурирана.</target>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attribute_code.must_contain_alpha_underscore" approved="yes">
+      <trans-unit xml:space="preserve" id="attribute_code.must_contain_alpha_underscore">
                 <source>attribute_code.must_contain_alpha_underscore</source>
-                <target state="final">Код атрибута може садржати само алфабетске знакове, укључујући и доњу црту.</target>
+                <target state="translated">Код атрибута може садржати само алфабетске знакове, укључујући и доњу црту.</target>
                 <note>Validation failed message on Attribute code that must only contain alpha and underscore characters.</note>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form.searchable" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form.searchable">
                 <source>attributes.form.searchable</source>
-                <target state="final">Индексирaнo у енџин за претраживање?</target>
+                <target state="translated">Индексирaнo у енџин за претраживање?</target>
                 <note/>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form_help.searchable" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form_help.searchable">
                 <source>attributes.form_help.searchable</source>
-                <target state="final">Индексирај тренутне вредности атрибута, у енџин за претраживање, за сваки превод.</target>
+                <target state="translated">Индексирај тренутне вредности атрибута, у енџин за претраживање, за сваки превод.</target>
                 <note/>
             </trans-unit>
-      <trans-unit xml:space="preserve" id="attributes.form_help.code" approved="yes">
+      <trans-unit xml:space="preserve" id="attributes.form_help.code">
                 <source>attributes.form_help.code</source>
-                <target state="final">Код дозвољава да име атрибута буде јединствено, на целом веб-сајту, за све преводе.</target>
+                <target state="translated">Код дозвољава да име атрибута буде јединствено, на целом веб-сајту, за све преводе.</target>
                 <note/>
             </trans-unit>
     </body>
