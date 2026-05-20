@@ -16,15 +16,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @template TEntity of PersistableInterface
- *
- * @extends AbstractAdminController<TEntity>
- */
 abstract class AbstractAdminWithBulkController extends AbstractAdminController
 {
     public function __construct(
@@ -114,9 +108,8 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
     }
 
     /**
-     * @param callable(string): FormInterface                $createBulkFormWithIds
-     * @param callable(TEntity, FormInterface): void         $alterItemCallable
-     * @param (callable(TEntity): (Event|Event[]|null))|null $onEachItemEventCallable
+     * @param callable(string): FormInterface                     $createBulkFormWithIds
+     * @param callable(PersistableInterface, FormInterface): void $alterItemCallable
      *
      * @throws \Twig\Error\RuntimeError
      */
@@ -130,7 +123,6 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
         string $confirmMessageTemplate,
         callable $alterItemCallable,
         string $bulkFormName,
-        ?callable $onEachItemEventCallable = null,
     ): Response {
         $this->denyAccessUnlessGranted($requiredRole);
         $bulkForm->handleRequest($request);
@@ -159,29 +151,16 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
             if (count($ids) < 1) {
                 $form->addError(new FormError('No item selected.'));
             } else {
-                /** @var TEntity[] $items */
+                /** @var PersistableInterface[] $items */
                 $items = $this->getRepository()->findBy([
                     'id' => $ids,
                 ]);
                 foreach ($items as $item) {
                     if ($this->supports($item)) {
-                        /*
-                         * Method to alter each item before persisting it.
-                         */
                         $alterItemCallable($item, $form);
-
-                        /*
-                         * Dispatch event for each item
-                         */
-                        if (is_callable($onEachItemEventCallable)) {
-                            $events = $onEachItemEventCallable($item);
-                        } else {
-                            // Default to update event
-                            $events = $this->createUpdateEvent($item);
-                        }
-
-                        if (null !== $events) {
-                            $this->dispatchSingleOrMultipleEvent($events);
+                        $updateEvent = $this->createUpdateEvent($item);
+                        if (null !== $updateEvent) {
+                            $this->dispatchSingleOrMultipleEvent($updateEvent);
                         }
                         $msg = $this->translator->trans(
                             $confirmMessageTemplate,
@@ -224,17 +203,10 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
             ]),
             $this->getTemplateFolder().'/bulk_delete.html.twig',
             '%namespace%.%item%.was_deleted',
-            /**
-             * @param TEntity $item
-             */
             function (PersistableInterface $item) {
                 $this->removeItem($item);
             },
-            'bulkDeleteForm',
-            /**
-             * @param TEntity $item
-             */
-            fn (PersistableInterface $item) => $this->createDeleteEvent($item),
+            'bulkDeleteForm'
         );
     }
 
@@ -252,9 +224,6 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
             ]),
             $this->getTemplateFolder().'/bulk_publish.html.twig',
             '%namespace%.%item%.was_published',
-            /**
-             * @param TEntity $item
-             */
             function (PersistableInterface $item) {
                 $this->setPublishedAt($item, new \DateTime('now'));
             },
@@ -276,9 +245,6 @@ abstract class AbstractAdminWithBulkController extends AbstractAdminController
             ]),
             $this->getTemplateFolder().'/bulk_unpublish.html.twig',
             '%namespace%.%item%.was_unpublished',
-            /**
-             * @param TEntity $item
-             */
             function (PersistableInterface $item) {
                 $this->setPublishedAt($item, null);
             },

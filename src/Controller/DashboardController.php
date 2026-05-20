@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 final class DashboardController extends AbstractController
@@ -19,11 +18,6 @@ final class DashboardController extends AbstractController
     {
     }
 
-    #[Route(
-        path: '/rz-admin',
-        name: 'adminHomePage',
-        methods: ['GET']
-    )]
     public function indexAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_BACKEND_USER');

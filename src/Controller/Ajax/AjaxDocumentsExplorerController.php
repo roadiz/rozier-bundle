@@ -8,17 +8,10 @@ use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\CoreBundle\Entity\Folder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 final class AjaxDocumentsExplorerController extends AbstractAjaxExplorerController
 {
-    #[Route(
-        path: '/rz-admin/ajax/documents/explore',
-        name: 'documentsAjaxExplorerPage',
-        methods: ['GET'],
-        format: 'json'
-    )]
     public function indexAction(Request $request): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');
@@ -78,12 +71,6 @@ final class AjaxDocumentsExplorerController extends AbstractAjaxExplorerControll
     /**
      * Get a Document list from an array of id.
      */
-    #[Route(
-        path: '/rz-admin/ajax/documents/list',
-        name: 'documentsAjaxByArray',
-        methods: ['GET'],
-        format: 'json'
-    )]
     public function listAction(Request $request): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_DOCUMENTS');

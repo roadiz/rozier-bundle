@@ -115,7 +115,7 @@ final class RedirectionController extends AbstractAdminWithBulkController
     }
 
     #[\Override]
-    protected function getBulkDeleteRouteName(): string
+    protected function getBulkDeleteRouteName(): ?string
     {
         return 'redirectionsBulkDeletePage';
     }
