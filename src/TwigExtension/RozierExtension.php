@@ -10,12 +10,7 @@ use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\NodeType;
 use RZ\Roadiz\CoreBundle\Entity\StackType;
 use RZ\Roadiz\CoreBundle\Enum\NodeStatus;
-use RZ\Roadiz\RozierBundle\Breadcrumbs\BreadcrumbsItem;
-use RZ\Roadiz\RozierBundle\Breadcrumbs\BreadcrumbsItemFactoryInterface;
-use RZ\Roadiz\RozierBundle\Model\BookmarkCollection;
 use RZ\Roadiz\RozierBundle\RozierServiceRegistry;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\NullTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\TranslateAssistantInterface;
 use RZ\Roadiz\RozierBundle\Vite\JsonManifestResolver;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -27,9 +22,6 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
         private readonly RozierServiceRegistry $rozierServiceRegistry,
         private readonly DecoratedNodeTypes $nodeTypesBag,
         private readonly JsonManifestResolver $manifestResolver,
-        private readonly TranslateAssistantInterface $translateAssistant,
-        private readonly BookmarkCollection $bookmarkCollection,
-        private readonly BreadcrumbsItemFactoryInterface $breadcrumbItemFactory,
     ) {
     }
 
@@ -39,7 +31,6 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
         return [
             'rozier' => $this->rozierServiceRegistry,
             'nodeStatuses' => NodeStatus::allLabelsAndValues(),
-            'bookmarks' => $this->bookmarkCollection->getBookmarkItems(),
             'thumbnailFormat' => [
                 'quality' => 50,
                 'crop' => '1:1',
@@ -50,8 +41,6 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
                 'controls' => false,
                 'loading' => 'lazy',
             ],
-            'translateAssistantEnabled' => !$this->translateAssistant instanceof NullTranslateAssistant,
-            'translateAssistantSupportRephrase' => $this->translateAssistant->supportRephrase(),
         ];
     }
 
@@ -60,16 +49,10 @@ final class RozierExtension extends AbstractExtension implements GlobalsInterfac
     {
         return [
             new TwigFunction('getNodeType', $this->getNodeType(...)),
-            new TwigFunction('getBreadcrumbsItem', $this->getBreadcrumbsItem(...)),
             new TwigFunction('manifest_script_tags', $this->getManifestScriptTags(...), ['is_safe' => ['html']]),
             new TwigFunction('manifest_style_tags', $this->getManifestStyleTags(...), ['is_safe' => ['html']]),
             new TwigFunction('manifest_preload_tags', $this->getManifestPreloadTags(...), ['is_safe' => ['html']]),
         ];
-    }
-
-    public function getBreadcrumbsItem(?object $item): ?BreadcrumbsItem
-    {
-        return $this->breadcrumbItemFactory->createBreadcrumbsItem($item);
     }
 
     public function getManifestScriptTags(string $name): string
