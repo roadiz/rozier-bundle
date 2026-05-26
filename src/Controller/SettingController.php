@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RZ\Roadiz\RozierBundle\Controller;
 
 use Doctrine\Common\Cache\CacheProvider;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Bag\Settings;
 use RZ\Roadiz\CoreBundle\Entity\Setting;
@@ -20,6 +21,7 @@ use RZ\Roadiz\CoreBundle\ListManager\EntityListManagerFactoryInterface;
 use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\ResettableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -55,7 +57,7 @@ final class SettingController extends AbstractController
         $assignation = [];
 
         if (null !== $response = $this->commonSettingList($request, null, $assignation)) {
-            return $response->send();
+            return $response;
         }
 
         return $this->render('@RoadizRozier/settings/list.html.twig', $assignation);
@@ -77,7 +79,7 @@ final class SettingController extends AbstractController
         $assignation['settingGroup'] = $settingGroup;
 
         if (null !== $response = $this->commonSettingList($request, $settingGroup, $assignation)) {
-            return $response->send();
+            return $response;
         }
 
         return $this->render('@RoadizRozier/settings/list.html.twig', $assignation);
@@ -140,7 +142,7 @@ final class SettingController extends AbstractController
                 try {
                     $this->resetSettingsCache();
                     $this->eventDispatcher->dispatch(new SettingUpdatedEvent($setting));
-                    $this->managerRegistry->getManagerForClass(Setting::class)->flush();
+                    $this->managerRegistry->getManagerForClass(Setting::class)?->flush();
                     $msg = $this->translator->trans(
                         'setting.%name%.updated',
                         ['%name%' => $setting->getName()]
@@ -219,7 +221,7 @@ final class SettingController extends AbstractController
             try {
                 $this->resetSettingsCache();
                 $this->eventDispatcher->dispatch(new SettingUpdatedEvent($setting));
-                $this->managerRegistry->getManagerForClass(Setting::class)->flush();
+                $this->managerRegistry->getManagerForClass(Setting::class)?->flush();
                 $msg = $this->translator->trans('setting.%name%.updated', ['%name%' => $setting->getName()]);
                 $this->logTrail->publishConfirmMessage($request, $msg, $setting);
 
@@ -241,12 +243,25 @@ final class SettingController extends AbstractController
     protected function resetSettingsCache(): void
     {
         $this->settingsBag->reset();
-        /** @var CacheProvider|null $cacheDriver */
-        $cacheDriver = $this->managerRegistry
-            ->getManagerForClass(Setting::class)
-            ->getConfiguration()
-            ->getResultCacheImpl();
-        $cacheDriver?->deleteAll();
+
+        $manager = $this->managerRegistry->getManagerForClass(Setting::class);
+
+        if ($manager instanceof EntityManagerInterface) {
+            $configuration = $manager->getConfiguration();
+
+            // Doctrine ORM result cache pool (PSR-6, Doctrine ORM 2.7+)
+            $resultCache = $configuration->getResultCache();
+            $resultCache?->clear();
+            if ($resultCache instanceof ResettableInterface) {
+                $resultCache->reset();
+            }
+
+            // Legacy Doctrine result cache provider
+            if ($configuration->getResultCacheImpl() instanceof CacheProvider) {
+                $configuration->getResultCacheImpl()->deleteAll();
+            }
+        }
+
         $this->eventDispatcher->dispatch(new CachePurgeRequestEvent());
     }
 
@@ -269,8 +284,8 @@ final class SettingController extends AbstractController
             try {
                 $this->eventDispatcher->dispatch(new SettingCreatedEvent($setting));
                 $this->resetSettingsCache();
-                $this->managerRegistry->getManagerForClass(Setting::class)->persist($setting);
-                $this->managerRegistry->getManagerForClass(Setting::class)->flush();
+                $this->managerRegistry->getManagerForClass(Setting::class)?->persist($setting);
+                $this->managerRegistry->getManagerForClass(Setting::class)?->flush();
                 $msg = $this->translator->trans('setting.%name%.created', ['%name%' => $setting->getName()]);
                 $this->logTrail->publishConfirmMessage($request, $msg, $setting);
 
@@ -309,8 +324,8 @@ final class SettingController extends AbstractController
             try {
                 $this->eventDispatcher->dispatch(new SettingDeletedEvent($setting));
                 $this->resetSettingsCache();
-                $this->managerRegistry->getManagerForClass(Setting::class)->remove($setting);
-                $this->managerRegistry->getManagerForClass(Setting::class)->flush();
+                $this->managerRegistry->getManagerForClass(Setting::class)?->remove($setting);
+                $this->managerRegistry->getManagerForClass(Setting::class)?->flush();
 
                 $msg = $this->translator->trans('setting.%name%.deleted', ['%name%' => $setting->getName()]);
                 $this->logTrail->publishConfirmMessage($request, $msg, $setting);
