@@ -2,20 +2,20 @@
 nodeTypeDecoratorsListPage:
     path: /
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\NodeType\NodeTypeDecoratorController::defaultAction
+        _controller: Themes\Rozier\Controllers\NodeTypes\NodeTypeDecoratorController::defaultAction
     requirements: { nodeTypeName : "[a-zA-Z]+" }
 nodeTypeDecoratorsAddPage:
     path: /add
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\NodeType\NodeTypeDecoratorController::addAction
+        _controller: Themes\Rozier\Controllers\NodeTypes\NodeTypeDecoratorController::addAction
 nodeTypeDecoratorsEditPage:
     path:     /edit/{id}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\NodeType\NodeTypeDecoratorController::editAction
+        _controller: Themes\Rozier\Controllers\NodeTypes\NodeTypeDecoratorController::editAction
     requirements: { id : "[0-9]+" }
 nodeTypeDecoratorsDeletePage:
     path:     /delete/{id}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\NodeType\NodeTypeDecoratorController::deleteAction
+        _controller: Themes\Rozier\Controllers\NodeTypes\NodeTypeDecoratorController::deleteAction
     requirements: { id : "[0-9]+" }
 
