@@ -67,11 +67,6 @@ final class AddNodeType extends AbstractType
             'help' => 'node.hideChildren.help',
             'required' => false,
         ]);
-        $builder->add('shadow', CheckboxType::class, [
-            'label' => 'node.shadow',
-            'help' => 'node.shadow.help',
-            'required' => false,
-        ]);
         $builder->add('locked', CheckboxType::class, [
             'label' => 'node.locked',
             'help' => 'node.locked.help',

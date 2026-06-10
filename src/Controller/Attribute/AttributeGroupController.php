@@ -70,7 +70,7 @@ final class AttributeGroupController extends AbstractAdminController
     protected function getEntityName(PersistableInterface $item): string
     {
         if ($item instanceof AttributeGroup) {
-            return $item->getName() ?? throw new \RuntimeException('AttributeGroup name is null');
+            return $item->getName();
         }
         throw new \InvalidArgumentException('Item should be instance of '.$this->getEntityClass());
     }
