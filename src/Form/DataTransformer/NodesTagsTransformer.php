@@ -22,7 +22,6 @@ class NodesTagsTransformer implements DataTransformerInterface
 
     /**
      * @param iterable<NodesTags> $value
-     *
      * @return int[]
      */
     public function transform(mixed $value): array
@@ -39,7 +38,6 @@ class NodesTagsTransformer implements DataTransformerInterface
 
     /**
      * @param iterable<int|string> $value
-     *
      * @return Collection<int, NodesTags>
      */
     public function reverseTransform(mixed $value): Collection
