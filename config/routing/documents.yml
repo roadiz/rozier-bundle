@@ -11,12 +11,12 @@ documentsEditPage:
 documentsLimitationsPage:
     path:     /limitations/{id}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentLimitationController::limitationsAction
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentLimitationsController::limitationsAction
     requirements: { id : "[0-9]+" }
 documentsMetaPage:
     path:     /meta/{documentId}/{translationId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentTranslationController::editAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentTranslationsController::editAction
         translationId : null
     requirements: { documentId : "[0-9]+", translationId : "[0-9]+" }
 documentsPreviewPage:
@@ -27,12 +27,12 @@ documentsPreviewPage:
 documentsDownloadPage:
     path:     /download/{documentId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentController::downloadAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::downloadAction
     requirements: { documentId : "[0-9]+" }
 documentsDownloadInlinePage:
     path:     /download-inline/{documentId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentController::downloadInlineAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::downloadInlineAction
     requirements: { documentId : "[0-9]+" }
 documentsUsagePage:
     path:     /usage/{documentId}
@@ -42,7 +42,7 @@ documentsUsagePage:
 documentsUploadPage:
     path:     /upload/{_format}/{folderId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentController::uploadAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::uploadAction
         folderId: null
         _format : html
     requirements:
@@ -63,12 +63,12 @@ documentsEmbedPage:
 documentsDeletePage:
     path:     /delete/{documentId}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentController::deleteAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::deleteAction
     requirements: { documentId : "[0-9]+" }
 documentsBulkDeletePage:
     path:     /bulk-delete
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentController::bulkDeleteAction
+        _controller: Themes\Rozier\Controllers\Documents\DocumentsController::bulkDeleteAction
 documentsBulkDownloadPage:
     path: /bulk-download
     defaults:
@@ -80,9 +80,5 @@ documentsUnusedPage:
 documentsDuplicatesPage:
     path:     /duplicates
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentDuplicateController::duplicatedAction
-documentsAlignmentTemplate:
-    path:     /alignment-template
-    defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\Ajax\AjaxDocumentAlignmentController
+        _controller: RZ\Roadiz\RozierBundle\Controller\Document\DocumentDuplicatesController::duplicatedAction
 
