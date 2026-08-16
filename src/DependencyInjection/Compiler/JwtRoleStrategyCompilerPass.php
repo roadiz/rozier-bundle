@@ -11,7 +11,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class JwtRoleStrategyCompilerPass implements CompilerPassInterface
 {
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     public function process(ContainerBuilder $container): void
     {
         if ($container->has(ChainJwtRoleStrategy::class)) {

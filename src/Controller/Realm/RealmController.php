@@ -8,66 +8,86 @@ use RZ\Roadiz\Core\AbstractEntities\PersistableInterface;
 use RZ\Roadiz\CoreBundle\Entity\Realm;
 use RZ\Roadiz\CoreBundle\Form\RealmType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
-use RZ\Roadiz\RozierBundle\Controller\AbstractAdminWithBulkController;
 use Symfony\Component\HttpFoundation\Request;
+use Themes\Rozier\Controllers\AbstractAdminWithBulkController;
 
 class RealmController extends AbstractAdminWithBulkController
 {
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function supports(PersistableInterface $item): bool
     {
         return $item instanceof RealmInterface;
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getNamespace(): string
     {
         return 'realms';
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function createEmptyItem(Request $request): PersistableInterface
     {
         return new Realm();
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getTemplateFolder(): string
     {
         return '@RoadizRozier/realms';
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getRequiredRole(): string
     {
         return 'ROLE_ACCESS_REALMS';
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getEntityClass(): string
     {
         return Realm::class;
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getFormType(): string
     {
         return RealmType::class;
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getDefaultRouteName(): string
     {
         return 'realmsHomePage';
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getEditRouteName(): string
     {
         return 'realmsEditPage';
     }
 
-    #[\Override]
+    /**
+     * @inheritDoc
+     */
     protected function getEntityName(PersistableInterface $item): string
     {
         return $item instanceof RealmInterface ? $item->getName() : '';
