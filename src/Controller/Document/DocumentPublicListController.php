@@ -10,6 +10,7 @@ use RZ\Roadiz\CoreBundle\Entity\Folder;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\ListManager\EntityListManagerFactoryInterface;
 use RZ\Roadiz\CoreBundle\ListManager\SessionListFilters;
+use RZ\Roadiz\CoreBundle\Repository\FolderRepository;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\Documents\Events\DocumentInFolderEvent;
 use RZ\Roadiz\Documents\Events\DocumentOutFolderEvent;
@@ -36,6 +37,7 @@ class DocumentPublicListController extends AbstractController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly FormFactoryInterface $formFactory,
         private readonly EntityListManagerFactoryInterface $entityListManagerFactory,
+        private readonly FolderRepository $folderRepository,
         private readonly array $documentPlatforms,
     ) {
     }
@@ -46,7 +48,7 @@ class DocumentPublicListController extends AbstractController
             return null;
         }
 
-        return $this->managerRegistry->getRepository(Folder::class)->find($folderId);
+        return $this->folderRepository->find($folderId);
     }
 
     protected function getPreFilters(Request $request): array
@@ -80,7 +82,11 @@ class DocumentPublicListController extends AbstractController
 
         $folder = $this->getFolder($folderId);
         if (null !== $folder) {
-            $prefilters['folders'] = [$folder];
+            $prefilters['folders'] = [
+                $folder,
+                // also show documents in child folders
+                ...$this->folderRepository->findAllChildrenFromFolder($folder),
+            ];
             $assignation['folder'] = $folder;
         }
 
@@ -137,7 +143,8 @@ class DocumentPublicListController extends AbstractController
         $assignation['translation'] = $translation;
         $assignation['thumbnailFormat'] = [
             'quality' => 50,
-            'fit' => '128x128',
+            'crop' => '1:1',
+            'width' => 128,
             'sharpen' => 5,
             'inline' => false,
             'picture' => true,
@@ -161,7 +168,7 @@ class DocumentPublicListController extends AbstractController
     {
         $builder = $this->formFactory->createNamedBuilder('folderForm')
             ->add('documentsId', HiddenType::class, [
-                'attr' => ['class' => 'document-id-bulk-folder'],
+                'attr' => ['class' => 'bulk-form-value'],
                 'constraints' => [
                     new NotNull(),
                     new NotBlank(),
@@ -209,7 +216,7 @@ class DocumentPublicListController extends AbstractController
             !empty($data['documentsId'])
             && !empty($data['folderPaths'])
         ) {
-            $documentsIds = explode(',', $data['documentsId']);
+            $documentsIds = json_decode((string) $data['documentsId'], true, flags: JSON_THROW_ON_ERROR);
 
             $documents = $this->managerRegistry
                 ->getRepository(Document::class)
@@ -217,7 +224,11 @@ class DocumentPublicListController extends AbstractController
                     'id' => $documentsIds,
                 ]);
 
-            $folderPaths = explode(',', $data['folderPaths']);
+            if (!is_array($data['folderPaths'])) {
+                $folderPaths = explode(',', (string) $data['folderPaths']);
+            } else {
+                $folderPaths = $data['folderPaths'];
+            }
             $folderPaths = array_filter($folderPaths);
 
             foreach ($folderPaths as $path) {
@@ -234,7 +245,7 @@ class DocumentPublicListController extends AbstractController
                 }
             }
 
-            $this->managerRegistry->getManagerForClass(Document::class)->flush();
+            $this->managerRegistry->getManagerForClass(Document::class)?->flush();
             $msg = $this->translator->trans('documents.linked_to.folders');
 
             /*
@@ -261,7 +272,7 @@ class DocumentPublicListController extends AbstractController
             !empty($data['documentsId'])
             && !empty($data['folderPaths'])
         ) {
-            $documentsIds = explode(',', $data['documentsId']);
+            $documentsIds = json_decode((string) $data['documentsId'], true, flags: JSON_THROW_ON_ERROR);
 
             $documents = $this->managerRegistry
                 ->getRepository(Document::class)
@@ -269,7 +280,7 @@ class DocumentPublicListController extends AbstractController
                     'id' => $documentsIds,
                 ]);
 
-            $folderPaths = explode(',', $data['folderPaths']);
+            $folderPaths = explode(',', (string) $data['folderPaths']);
             $folderPaths = array_filter($folderPaths);
 
             foreach ($folderPaths as $path) {
@@ -287,7 +298,7 @@ class DocumentPublicListController extends AbstractController
                     }
                 }
             }
-            $this->managerRegistry->getManagerForClass(Document::class)->flush();
+            $this->managerRegistry->getManagerForClass(Document::class)?->flush();
             $msg = $this->translator->trans('documents.removed_from.folders');
 
             /*
