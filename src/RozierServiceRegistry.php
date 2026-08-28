@@ -58,25 +58,31 @@ final class RozierServiceRegistry implements ResetInterface
 
     public function getSettingGroups(): array
     {
-        $this->settingGroups ??= $this->managerRegistry->getRepository(SettingGroup::class)
-            ->findBy(
-                ['inMenu' => true],
-                ['name' => 'ASC']
-            );
+        if (null === $this->settingGroups) {
+            $this->settingGroups = $this->managerRegistry->getRepository(SettingGroup::class)
+                ->findBy(
+                    ['inMenu' => true],
+                    ['name' => 'ASC']
+                );
+        }
 
         return $this->settingGroups;
     }
 
     public function getTagTree(): TagTreeWidget
     {
-        $this->tagTree ??= $this->treeWidgetFactory->createTagTree();
+        if (null === $this->tagTree) {
+            $this->tagTree = $this->treeWidgetFactory->createTagTree();
+        }
 
         return $this->tagTree;
     }
 
     public function getFolderTree(): FolderTreeWidget
     {
-        $this->folderTree ??= $this->treeWidgetFactory->createFolderTree();
+        if (null === $this->folderTree) {
+            $this->folderTree = $this->treeWidgetFactory->createFolderTree();
+        }
 
         return $this->folderTree;
     }
