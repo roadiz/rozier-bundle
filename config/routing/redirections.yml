@@ -1,19 +1,19 @@
 redirectionsEditPage:
     path:     /edit/{id}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\RedirectionController::editAction
+        _controller: Themes\Rozier\Controllers\RedirectionsController::editAction
     requirements: { id : "[0-9]+" }
 redirectionsAddPage:
     path:     /add
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\RedirectionController::addAction
+        _controller: Themes\Rozier\Controllers\RedirectionsController::addAction
 redirectionsDeletePage:
     path:     /delete/{id}
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\RedirectionController::deleteAction
+        _controller: Themes\Rozier\Controllers\RedirectionsController::deleteAction
     requirements: { id : "[0-9]+" }
 redirectionsBulkDeletePage:
     methods: [GET, POST]
     path:     /bulk-delete
     defaults:
-        _controller: RZ\Roadiz\RozierBundle\Controller\RedirectionController::bulkDeleteAction
+        _controller: Themes\Rozier\Controllers\RedirectionsController::bulkDeleteAction

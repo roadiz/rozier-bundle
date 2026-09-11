@@ -4,80 +4,18 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
-use Psr\Cache\CacheItemPoolInterface;
 use RZ\Roadiz\OpenId\Discovery;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\DeeplTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\NullTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\TranslateAssistantInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class RoadizRozierExtension extends Extension implements PrependExtensionInterface
+class RoadizRozierExtension extends Extension
 {
-    /**
-     * Provide sensible defaults for the admin login-request/reset/login-link rate limiters
-     * (and their dedicated cache pools) so projects don't have to configure them themselves.
-     * A project declaring its own limiter or cache pool of the same name takes precedence
-     * over these defaults (Symfony merges config sources for the same key, and this is
-     * prepended first).
-     */
-    #[\Override]
-    public function prepend(ContainerBuilder $container): void
-    {
-        $container->prependExtensionConfig('framework', [
-            'rate_limiter' => [
-                'login_request' => [
-                    'policy' => 'token_bucket',
-                    'limit' => 3,
-                    'rate' => ['interval' => '1 minutes', 'amount' => 3],
-                    'cache_pool' => 'cache.login_request_limiter',
-                ],
-                'login_request_email' => [
-                    'policy' => 'fixed_window',
-                    'limit' => 5,
-                    'interval' => '1 hour',
-                    'cache_pool' => 'cache.login_request_email_limiter',
-                ],
-                'login_reset' => [
-                    'policy' => 'token_bucket',
-                    'limit' => 3,
-                    'rate' => ['interval' => '1 minutes', 'amount' => 3],
-                    'cache_pool' => 'cache.login_reset_limiter',
-                ],
-                'login_link_request' => [
-                    'policy' => 'token_bucket',
-                    'limit' => 3,
-                    'rate' => ['interval' => '1 minutes', 'amount' => 3],
-                    'cache_pool' => 'cache.login_link_request_limiter',
-                ],
-                'login_link_request_email' => [
-                    'policy' => 'fixed_window',
-                    'limit' => 5,
-                    'interval' => '1 hour',
-                    'cache_pool' => 'cache.login_link_request_email_limiter',
-                ],
-            ],
-            'cache' => [
-                'pools' => [
-                    'cache.login_request_limiter' => null,
-                    'cache.login_request_email_limiter' => null,
-                    'cache.login_reset_limiter' => null,
-                    'cache.login_link_request_limiter' => null,
-                    'cache.login_link_request_email_limiter' => null,
-                ],
-            ],
-        ]);
-    }
-
-    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -92,11 +30,7 @@ class RoadizRozierExtension extends Extension implements PrependExtensionInterfa
         $container->setParameter('roadiz_rozier.add_node_form.class', $config['add_node_form']);
         $container->setParameter(
             'roadiz_rozier.theme_dir',
-            $projectDir.DIRECTORY_SEPARATOR.trim((string) $config['theme_dir'], "/ \t\n\r\0\x0B")
-        );
-        $container->setParameter(
-            'roadiz_rozier.manifest_path',
-            $projectDir.DIRECTORY_SEPARATOR.trim((string) $config['manifest_path'], "/ \t\n\r\0\x0B")
+            $projectDir.DIRECTORY_SEPARATOR.trim($config['theme_dir'], "/ \t\n\r\0\x0B")
         );
 
         $container->setParameter(
@@ -108,8 +42,6 @@ class RoadizRozierExtension extends Extension implements PrependExtensionInterfa
         $loader->load('services.yaml');
 
         $this->registerOpenId($config, $container);
-        $this->registerTranslateAssistant($config, $container);
-        $this->registerBookmarkCollection($config, $container);
     }
 
     private function registerOpenId(array $config, ContainerBuilder $container): void
@@ -137,7 +69,7 @@ class RoadizRozierExtension extends Extension implements PrependExtensionInterfa
                     ->setPublic(true)
                     ->setArguments([
                         $config['open_id']['discovery_url'],
-                        new Reference(CacheItemPoolInterface::class),
+                        new Reference(\Psr\Cache\CacheItemPoolInterface::class),
                         new Reference(HttpClientInterface::class),
                         new Reference(\Psr\Log\LoggerInterface::class),
                     ])
@@ -173,7 +105,7 @@ class RoadizRozierExtension extends Extension implements PrependExtensionInterfa
                     new Reference(\RZ\Roadiz\OpenId\Authentication\Provider\ChainJwtRoleStrategy::class),
                     new Reference('roadiz_rozier.open_id.jwt_configuration_factory'),
                     new Reference(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class),
-                    new Reference(CsrfTokenManagerInterface::class),
+                    new Reference(\Symfony\Component\Security\Csrf\CsrfTokenManagerInterface::class),
                     new Reference(HttpClientInterface::class),
                     'loginPage',
                     'adminHomePage',
@@ -184,44 +116,6 @@ class RoadizRozierExtension extends Extension implements PrependExtensionInterfa
                     $config['open_id']['openid_username_claim'],
                     '_target_path',
                     $config['open_id']['granted_roles'],
-                ])
-        );
-    }
-
-    private function registerTranslateAssistant(array $config, ContainerBuilder $container): void
-    {
-        if (!empty($config['translate_assistant']['deepl_api_key'])) {
-            $container->setParameter('roadiz_rozier.translate_assistant.deepl_api_key', $config['translate_assistant']['deepl_api_key']);
-            $container->setDefinition(
-                TranslateAssistantInterface::class,
-                (new Definition())
-                    ->setClass(DeeplTranslateAssistant::class)
-                    ->setArguments([
-                        new Reference(CacheItemPoolInterface::class),
-                        '%roadiz_rozier.translate_assistant.deepl_api_key%',
-                    ])
-            );
-
-            return;
-        }
-
-        $container->setDefinition(
-            TranslateAssistantInterface::class,
-            (new Definition())
-                ->setClass(NullTranslateAssistant::class)
-        );
-    }
-
-    private function registerBookmarkCollection(array $config, ContainerBuilder $container): void
-    {
-        $container->setDefinition(
-            \RZ\Roadiz\RozierBundle\Model\BookmarkCollection::class,
-            (new Definition())
-                ->setClass(\RZ\Roadiz\RozierBundle\Model\BookmarkCollection::class)
-                ->setPublic(true)
-                ->setFactory('\RZ\Roadiz\RozierBundle\Model\BookmarkCollection::fromConfiguration')
-                ->setArguments([
-                    $config['bookmarks'],
                 ])
         );
     }
