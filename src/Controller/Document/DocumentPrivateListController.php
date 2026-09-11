@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DocumentPrivateListController extends DocumentPublicListController
 {
+    #[\Override]
     protected function getPreFilters(Request $request): array
     {
         return [
@@ -16,13 +17,12 @@ class DocumentPrivateListController extends DocumentPublicListController
         ];
     }
 
-    public function prepareBaseAssignation(): static
+    #[\Override]
+    public function getAssignation(): array
     {
-        parent::prepareBaseAssignation();
-
-        $this->assignation['pageTitle'] = 'private_documents';
-        $this->assignation['displayPrivateDocuments'] = true;
-
-        return $this;
+        return [
+            'pageTitle' => 'private_documents',
+            'displayPrivateDocuments' => true,
+        ];
     }
 }

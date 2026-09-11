@@ -13,28 +13,44 @@ use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
 use RZ\Roadiz\CoreBundle\Form\RealmNodeType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
 use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
+use RZ\Roadiz\CoreBundle\Security\LogTrail;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Themes\Rozier\RozierApp;
 
-final class RealmNodeController extends RozierApp
+final class RealmNodeController extends AbstractController
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
         private readonly TranslatorInterface $translator,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly LogTrail $logTrail,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
-    public function defaultAction(Request $request, Node $id): Response
-    {
-        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $id);
+    #[Route(
+        path: '/rz-admin/nodes/realms/{id}',
+        name: 'nodesRealmsPage',
+        requirements: [
+            'id' => '[0-9]+',
+        ],
+    )]
+    public function defaultAction(
+        Request $request,
+        #[MapEntity(
+            expr: 'repository.find(id)',
+            message: 'Node does not exist'
+        )]
+        Node $node,
+    ): Response {
+        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $node);
 
-        $node = $id;
         $realmNode = new RealmNode();
         $realmNode->setNode($node);
         $realmNode->setInheritanceType(RealmInterface::INHERITANCE_ROOT);
@@ -58,37 +74,50 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.joined.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm()->getName(),
                 ]
             );
-            $this->publishConfirmMessage($request, $msg);
+            $this->logTrail->publishConfirmMessage($request, $msg);
 
             return $this->redirectToRoute('nodesRealmsPage', [
-                'id' => $node->getId()
+                'id' => $node->getId(),
             ]);
         }
 
-        $this->assignation['form'] = $form->createView();
-        $this->assignation['node'] = $node;
-        $this->assignation['source'] = $nodeSource;
-        $this->assignation['nodeRealms'] = $this->managerRegistry
-            ->getRepository(RealmNode::class)
-            ->findByNode($node);
-        $this->assignation['translation'] = $nodeSource->getTranslation();
-
-        return $this->render('@RoadizRozier/nodes/realms.html.twig', $this->assignation);
+        return $this->render('@RoadizRozier/nodes/realms.html.twig', [
+            'node' => $node,
+            'source' => $nodeSource,
+            'form' => $form->createView(),
+            'translation' => $nodeSource->getTranslation(),
+            'nodeRealms' => $this->managerRegistry
+                ->getRepository(RealmNode::class)
+                ->findByNode($node),
+        ]);
     }
 
-    public function deleteAction(Request $request, int $id, int $realmNodeId): Response
-    {
+    #[Route(
+        path: '/rz-admin/nodes/realms/{id}/delete/{realmNodeId}',
+        name: 'nodesRealmsDeletePage',
+        requirements: [
+            'id' => '[0-9]+',
+            'realmNodeId' => '[0-9]+',
+        ],
+    )]
+    public function deleteAction(
+        Request $request,
+        #[MapEntity(
+            expr: 'repository.find(id)',
+            message: 'Node does not exist'
+        )]
+        Node $node,
+        #[MapEntity(
+            expr: 'repository.find(realmNodeId)',
+            message: 'Realm node does not exist'
+        )]
+        RealmNode $realmNode,
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
-        /** @var Node|null $node */
-        $node = $this->managerRegistry->getRepository(Node::class)->find($id);
-        /** @var RealmNode|null $realmNode */
-        $realmNode = $this->managerRegistry->getRepository(RealmNode::class)->find($realmNodeId);
-        if (null === $node || null === $realmNode) {
-            throw new ResourceNotFoundException();
-        }
+
         $nodeSource = $node->getNodeSources()->first();
         if (!$nodeSource instanceof NodesSources) {
             throw new ResourceNotFoundException();
@@ -109,22 +138,22 @@ final class RealmNodeController extends RozierApp
                 'node.%node%.left.%realm%',
                 [
                     '%node%' => $nodeSource->getTitle(),
-                    '%realm%' => $realmNode->getRealm()->getName()
+                    '%realm%' => $realmNode->getRealm()->getName(),
                 ]
             );
-            $this->publishConfirmMessage($request, $msg);
+            $this->logTrail->publishConfirmMessage($request, $msg);
 
             return $this->redirectToRoute('nodesRealmsPage', [
-                'id' => $node->getId()
+                'id' => $node->getId(),
             ]);
         }
 
-        $this->assignation['form'] = $form->createView();
-        $this->assignation['node'] = $node;
-        $this->assignation['source'] = $nodeSource;
-        $this->assignation['realmNode'] = $realmNode;
-        $this->assignation['translation'] = $nodeSource->getTranslation();
-
-        return $this->render('@RoadizRozier/nodes/deleteRealm.html.twig', $this->assignation);
+        return $this->render('@RoadizRozier/nodes/deleteRealm.html.twig', [
+            'form' => $form->createView(),
+            'node' => $node,
+            'source' => $nodeSource,
+            'realmNode' => $realmNode,
+            'translation' => $nodeSource->getTranslation(),
+        ]);
     }
 }
