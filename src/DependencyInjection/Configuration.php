@@ -60,11 +60,10 @@ final class Configuration implements ConfigurationInterface
             ->append($this->addOpenIdNode())
             ->append($this->addCsvNode())
         ;
-
         return $builder;
     }
 
-    private function addOpenIdNode(): NodeDefinition
+    protected function addOpenIdNode(): NodeDefinition
     {
         $builder = new TreeBuilder('open_id');
         $node = $builder->getRootNode();
@@ -158,7 +157,7 @@ EOD
         return $node;
     }
 
-    private function addCsvNode(): NodeDefinition
+    protected function addCsvNode(): NodeDefinition
     {
         $builder = new TreeBuilder('csv_encoder_options');
         $node = $builder->getRootNode();

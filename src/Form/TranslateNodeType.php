@@ -17,11 +17,18 @@ class TranslateNodeType extends AbstractType
 {
     protected ManagerRegistry $managerRegistry;
 
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $translations = $this->managerRegistry
@@ -56,11 +63,17 @@ class TranslateNodeType extends AbstractType
             ]);
     }
 
+    /**
+     * @return string
+     */
     public function getBlockPrefix(): string
     {
         return 'translate_node';
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
