@@ -10,6 +10,7 @@ use RZ\Roadiz\CoreBundle\Document\DocumentFactory;
 use RZ\Roadiz\CoreBundle\Entity\Document;
 use RZ\Roadiz\Documents\Events\DocumentFileUpdatedEvent;
 use RZ\Roadiz\Documents\Events\DocumentUpdatedEvent;
+use RZ\Roadiz\Documents\Exceptions\DocumentTypeNotAllowedException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
@@ -65,14 +66,14 @@ final class DocumentAdjustController extends AbstractController
                 $em->flush();
 
                 $cloneDocument->setRawDocument($rawDocument);
-                $oldPath = $cloneDocument->getMountPath();
+                $oldPath = $cloneDocument->getMountPath() ?? throw new \RuntimeException('Document has no mount path.');
 
                 /*
                  * Prefix document filename with unique id to avoid overriding original
                  * if already existing.
                  */
                 $cloneDocument->setFilename('original_'.uniqid().'_'.$cloneDocument);
-                $newPath = $cloneDocument->getMountPath();
+                $newPath = $cloneDocument->getMountPath() ?? throw new \RuntimeException('Cloned document has no mount path.');
 
                 $this->documentsStorage->move($oldPath, $newPath);
 
@@ -83,7 +84,15 @@ final class DocumentAdjustController extends AbstractController
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $fileForm->get('editDocument')->getData();
             $this->documentFactory->setFile($uploadedFile);
-            $this->documentFactory->updateDocument($document);
+            try {
+                $this->documentFactory->updateDocument($document);
+            } catch (DocumentTypeNotAllowedException $exception) {
+                return new JsonResponse([
+                    'errors' => ['attachment' => [$this->translator->trans('document.type_not_allowed', [
+                        '%extension%' => $exception->getExtension(),
+                    ])]],
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
             $em->flush();
 
             // Event must be dispatched AFTER flush for async concurrency matters
@@ -98,10 +107,13 @@ final class DocumentAdjustController extends AbstractController
             $msg = $this->translator->trans('document.%name%.updated', [
                 '%name%' => (string) $document,
             ]);
+            $mountPath = $document->getMountPath() ?? throw new \RuntimeException('Document has no mount path.');
 
             return new JsonResponse([
                 'message' => $msg,
-                'path' => $this->documentsStorage->publicUrl($document->getMountPath()).'?'.\random_int(10, 999),
+                'path' => $this->documentsStorage->publicUrl($mountPath).'?'.\random_int(10, 999),
+                'imageWidth' => $document->getImageWidth(),
+                'imageHeight' => $document->getImageHeight(),
             ]);
         }
 
