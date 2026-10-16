@@ -13,16 +13,17 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class NodesTagsTransformer implements DataTransformerInterface
 {
-    public function __construct(private readonly ManagerRegistry $managerRegistry)
+    private ManagerRegistry $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
     {
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
      * @param iterable<NodesTags> $value
-     *
      * @return int[]
      */
-    #[\Override]
     public function transform(mixed $value): array
     {
         $ids = [];
@@ -37,10 +38,8 @@ class NodesTagsTransformer implements DataTransformerInterface
 
     /**
      * @param iterable<int|string> $value
-     *
      * @return Collection<int, NodesTags>
      */
-    #[\Override]
     public function reverseTransform(mixed $value): Collection
     {
         $nodesTags = [];

@@ -7,8 +7,6 @@ namespace RZ\Roadiz\RozierBundle\Form;
 use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Node;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\NullTranslateAssistant;
-use RZ\Roadiz\RozierBundle\TranslateAssistant\TranslateAssistantInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,20 +15,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TranslateNodeType extends AbstractType
 {
-    public function __construct(
-        protected ManagerRegistry $managerRegistry,
-        protected TranslateAssistantInterface $translateAssistant,
-    ) {
+    protected ManagerRegistry $managerRegistry;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
     }
 
-    #[\Override]
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Subtree-wide: a root that is already translated must still offer the language when
-        // some of its descendants are missing it, otherwise a half-done run cannot be resumed.
         $translations = $this->managerRegistry
             ->getRepository(Translation::class)
-            ->findIncompleteTranslationsForNodes($options['subtreeNodeIds']);
+            ->findUnavailableTranslationsForNode($options['node']);
         $availableTranslations = $this->managerRegistry
             ->getRepository(Translation::class)
             ->findAvailableTranslationsForNode($options['node']);
@@ -58,29 +61,19 @@ class TranslateNodeType extends AbstractType
                 'help' => 'translate_offspring.help',
                 'required' => false,
             ]);
-
-        if (!$this->translateAssistant instanceof NullTranslateAssistant) {
-            $builder
-                ->add('use_translate_assistant', CheckboxType::class, [
-                    'label' => 'use_translate_assistant',
-                    'help' => 'use_translate_assistant.help',
-                    'required' => false,
-                ])
-                ->add('dry_run', CheckboxType::class, [
-                    'label' => 'translate_assistant.dry_run',
-                    'help' => 'translate_assistant.dry_run.help',
-                    'required' => false,
-                ]);
-        }
     }
 
-    #[\Override]
+    /**
+     * @return string
+     */
     public function getBlockPrefix(): string
     {
         return 'translate_node';
     }
 
-    #[\Override]
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -92,9 +85,7 @@ class TranslateNodeType extends AbstractType
 
         $resolver->setRequired([
             'node',
-            'subtreeNodeIds',
         ]);
         $resolver->setAllowedTypes('node', Node::class);
-        $resolver->setAllowedTypes('subtreeNodeIds', 'int[]');
     }
 }
