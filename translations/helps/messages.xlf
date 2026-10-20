@@ -11,6 +11,9 @@
             <trans-unit xml:space="preserve" id="node.nodeName.help">
                 <source>node.nodeName.help</source>
             </trans-unit>
+            <trans-unit xml:space="preserve" id="node.shadow.help">
+                <source>node.shadow.help</source>
+            </trans-unit>
             <trans-unit xml:space="preserve" id="tag.tagName.help">
                 <source>tag.tagName.help</source>
             </trans-unit>
@@ -46,6 +49,12 @@
             </trans-unit>
             <trans-unit xml:space="preserve" id="translate_offspring.help">
                 <source>translate_offspring.help</source>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="use_translate_assistant.help">
+                <source>use_translate_assistant.help</source>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="translate_assistant.dry_run.help">
+                <source>translate_assistant.dry_run.help</source>
             </trans-unit>
             <trans-unit xml:space="preserve" id="user.publicName.help">
                 <source>user.publicName.help</source>
