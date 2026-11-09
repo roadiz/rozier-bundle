@@ -18,7 +18,6 @@ final class NodesTagsType extends AbstractType
     {
     }
 
-    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('nodesTags', TagsType::class, [
@@ -28,13 +27,11 @@ final class NodesTagsType extends AbstractType
             ->addViewTransformer(new NodesTagsTransformer($this->managerRegistry));
     }
 
-    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', Node::class);
     }
 
-    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'node_tags';

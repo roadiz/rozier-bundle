@@ -12,9 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsController]
@@ -25,23 +22,11 @@ final class LoginResetController extends AbstractController
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
         private readonly TranslatorInterface $translator,
-        private readonly RateLimiterFactoryInterface $loginResetLimiter,
     ) {
     }
 
-    #[Route(
-        path: '/rz-admin/login/reset/{token}',
-        name: 'loginResetPage',
-        requirements: ['token' => '[^\/]+'],
-        methods: ['GET', 'POST'],
-    )]
     public function resetAction(Request $request, string $token): Response
     {
-        $limit = $this->loginResetLimiter->create($request->getClientIp())->consume();
-        if (false === $limit->isAccepted()) {
-            throw new TooManyRequestsHttpException($limit->getRetryAfter()->getTimestamp() - time());
-        }
-
         /** @var User|null $user */
         $user = $this->getUserByToken($this->managerRegistry->getManager(), $token);
         $assignation = [];
@@ -68,12 +53,6 @@ final class LoginResetController extends AbstractController
         return $this->render('@RoadizRozier/login/reset.html.twig', $assignation);
     }
 
-    #[Route(
-        path: '/rz-admin/login/reset/confirm',
-        name: 'loginResetConfirmPage',
-        methods: ['GET'],
-        priority: 2,
-    )]
     public function confirmAction(): Response
     {
         return $this->render('@RoadizRozier/login/resetConfirm.html.twig');

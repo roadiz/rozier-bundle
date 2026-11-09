@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\DependencyInjection;
 
-use RZ\Roadiz\RozierBundle\Form\Node\AddNodeType;
-use RZ\Roadiz\RozierBundle\Form\NodeType;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Themes\Rozier\Forms\Node\AddNodeType;
+use Themes\Rozier\Forms\NodeType;
 
 final class Configuration implements ConfigurationInterface
 {
-    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('roadiz_rozier');
@@ -20,16 +19,9 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('node_form')->defaultValue(NodeType::class)->end()
-                ->scalarNode('theme_dir')
-                    ->defaultValue(
-                        'vendor/roadiz/rozier/src'
-                    )
-                    ->info('Relative path to Rozier theme sources from project directory.')
-                    ->setDeprecated('roadiz/rozier-bundle', '2.6.0', 'The "theme_dir" configuration option is deprecated and will be removed in 3.0.0.')
-                ->end()
-                ->scalarNode('manifest_path')->defaultValue(
-                    'public/bundles/roadizrozier/manifest.json'
-                )->info('Relative path to Rozier theme manifest.json.')->end()
+                ->scalarNode('theme_dir')->defaultValue(
+                    'vendor/roadiz/rozier/src'
+                )->info('Relative path to Rozier theme sources from project directory.')->end()
                 ->scalarNode('add_node_form')->defaultValue(AddNodeType::class)->end()
                 ->arrayNode('entries')
                     ->defaultValue([])
@@ -64,25 +56,9 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->end()
                 ->end() // entries
-                ->arrayNode('bookmarks')
-                    ->defaultValue([])
-                    ->info('Rozier backoffice bookmark items.')
-                    ->prototype('array')
-                    ->children()
-                        ->scalarNode('label')
-                            ->isRequired()
-                        ->end()
-                        ->scalarNode('url')
-                            ->isRequired()
-                        ->end()
-                    ->end()
-                    ->end()
-                ->end() // bookmarks
             ->end()
             ->append($this->addOpenIdNode())
             ->append($this->addCsvNode())
-            ->append($this->addTranslateAssistantNode())
-            ->append($this->addLivePreviewNode())
         ;
 
         return $builder;
@@ -206,50 +182,6 @@ EOD
                 ->end()
                 ->booleanNode('output_utf8_bom')
                     ->defaultFalse()
-                ->end()
-            ->end();
-
-        return $node;
-    }
-
-    private function addTranslateAssistantNode(): NodeDefinition
-    {
-        $builder = new TreeBuilder('translate_assistant');
-        $node = $builder->getRootNode();
-        $builder->getRootNode()
-            ->children()
-                ->scalarNode('deepl_api_key')
-                    ->cannotBeEmpty()
-                ->end()
-            ->end();
-
-        return $node;
-    }
-
-    private function addLivePreviewNode(): NodeDefinition
-    {
-        $builder = new TreeBuilder('live_preview');
-        $node = $builder->getRootNode();
-        $node->addDefaultsIfNotSet()
-            ->children()
-                ->booleanNode('enabled')
-                    ->defaultTrue()
-                    ->info(<<<EOD
-Show the public website next to the node-source edit form.
-Only ever rendered when roadiz_core.customPublicScheme (or customPreviewScheme) is set,
-i.e. on headless installations.
-EOD
-                    )
-                ->end()
-                ->arrayNode('viewport_widths')
-                    ->integerPrototype()->end()
-                    ->defaultValue([375, 768, 1440])
-                    ->info(<<<EOD
-Viewport widths, in pixels, offered in the preview panel. The iframe is laid out at the
-chosen width then scaled down to fit the panel, so the front renders its real breakpoint
-instead of always rendering mobile.
-EOD
-                    )
                 ->end()
             ->end();
 

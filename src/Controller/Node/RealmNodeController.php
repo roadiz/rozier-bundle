@@ -12,14 +12,13 @@ use RZ\Roadiz\CoreBundle\Event\Realm\NodeJoinedRealmEvent;
 use RZ\Roadiz\CoreBundle\Event\Realm\NodeLeftRealmEvent;
 use RZ\Roadiz\CoreBundle\Form\RealmNodeType;
 use RZ\Roadiz\CoreBundle\Model\RealmInterface;
+use RZ\Roadiz\CoreBundle\Repository\AllStatusesNodeRepository;
 use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
 use RZ\Roadiz\CoreBundle\Security\LogTrail;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -31,26 +30,15 @@ final class RealmNodeController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly LogTrail $logTrail,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly AllStatusesNodeRepository $allStatusesNodeRepository,
     ) {
     }
 
-    #[Route(
-        path: '/rz-admin/nodes/realms/{id}',
-        name: 'nodesRealmsPage',
-        requirements: [
-            'id' => '[0-9]+',
-        ],
-    )]
-    public function defaultAction(
-        Request $request,
-        #[MapEntity(
-            expr: 'repository.find(id)',
-            message: 'Node does not exist'
-        )]
-        Node $node,
-    ): Response {
-        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $node);
+    public function defaultAction(Request $request, Node $id): Response
+    {
+        $this->denyAccessUnlessGranted(NodeVoter::EDIT_REALMS, $id);
 
+        $node = $id;
         $realmNode = new RealmNode();
         $realmNode->setNode($node);
         $realmNode->setInheritanceType(RealmInterface::INHERITANCE_ROOT);
@@ -95,29 +83,16 @@ final class RealmNodeController extends AbstractController
         ]);
     }
 
-    #[Route(
-        path: '/rz-admin/nodes/realms/{id}/delete/{realmNodeId}',
-        name: 'nodesRealmsDeletePage',
-        requirements: [
-            'id' => '[0-9]+',
-            'realmNodeId' => '[0-9]+',
-        ],
-    )]
-    public function deleteAction(
-        Request $request,
-        #[MapEntity(
-            expr: 'repository.find(id)',
-            message: 'Node does not exist'
-        )]
-        Node $node,
-        #[MapEntity(
-            expr: 'repository.find(realmNodeId)',
-            message: 'Realm node does not exist'
-        )]
-        RealmNode $realmNode,
-    ): Response {
+    public function deleteAction(Request $request, int $id, int $realmNodeId): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ACCESS_REALM_NODES');
-
+        /** @var Node|null $node */
+        $node = $this->allStatusesNodeRepository->find($id);
+        /** @var RealmNode|null $realmNode */
+        $realmNode = $this->managerRegistry->getRepository(RealmNode::class)->find($realmNodeId);
+        if (null === $node || null === $realmNode) {
+            throw new ResourceNotFoundException();
+        }
         $nodeSource = $node->getNodeSources()->first();
         if (!$nodeSource instanceof NodesSources) {
             throw new ResourceNotFoundException();
