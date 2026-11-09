@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace RZ\Roadiz\RozierBundle\Controller\Node;
 
-use Doctrine\Persistence\ManagerRegistry;
 use RZ\Roadiz\CoreBundle\Entity\Node;
 use RZ\Roadiz\CoreBundle\Entity\NodesSources;
 use RZ\Roadiz\CoreBundle\Entity\Translation;
 use RZ\Roadiz\CoreBundle\Exception\EntityAlreadyExistsException;
 use RZ\Roadiz\CoreBundle\Node\NodeTranslator;
 use RZ\Roadiz\CoreBundle\Security\Authorization\Voter\NodeVoter;
-use RZ\Roadiz\CoreBundle\Security\LogTrail;
 use RZ\Roadiz\RozierBundle\Form\TranslateNodeType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Themes\Rozier\RozierApp;
 
-final class TranslateController extends AbstractController
+final class TranslateController extends RozierApp
 {
-    public function __construct(
-        private readonly LogTrail $logTrail,
-        private readonly ManagerRegistry $managerRegistry,
-        private readonly TranslatorInterface $translator,
-        private readonly NodeTranslator $nodeTranslator,
-    ) {
+    public function __construct(private readonly NodeTranslator $nodeTranslator)
+    {
     }
 
     public function translateAction(Request $request, Node $nodeId): Response
@@ -34,10 +27,10 @@ final class TranslateController extends AbstractController
         $this->denyAccessUnlessGranted(NodeVoter::EDIT_CONTENT, $nodeId);
 
         $node = $nodeId;
-        $availableTranslations = $this->managerRegistry
+
+        $availableTranslations = $this->em()
             ->getRepository(Translation::class)
             ->findUnavailableTranslationsForNode($node);
-        $assignation = [];
 
         if (count($availableTranslations) > 0) {
             $form = $this->createForm(TranslateNodeType::class, null, [
@@ -54,18 +47,17 @@ final class TranslateController extends AbstractController
 
                 try {
                     $this->nodeTranslator->translateNode($sourceTranslation, $destinationTranslation, $node, $translateOffspring);
-                    $this->managerRegistry->getManagerForClass(NodesSources::class)->flush();
-                    $msg = $this->translator->trans('node.%name%.translated', [
+                    $this->em()->flush();
+                    $msg = $this->getTranslator()->trans('node.%name%.translated', [
                         '%name%' => $node->getNodeName(),
                     ]);
                     /** @var NodesSources|false $nodeSource */
                     $nodeSource = $node->getNodeSources()->first();
-                    $this->logTrail->publishConfirmMessage(
+                    $this->publishConfirmMessage(
                         $request,
                         $msg,
                         $nodeSource ?: null
                     );
-
                     return $this->redirectToRoute(
                         'nodesEditSourcePage',
                         ['nodeId' => $node->getId(), 'translationId' => $destinationTranslation->getId()]
@@ -74,17 +66,17 @@ final class TranslateController extends AbstractController
                     $form->addError(new FormError($e->getMessage()));
                 }
             }
-            $assignation['form'] = $form->createView();
+            $this->assignation['form'] = $form->createView();
         }
 
-        $assignation['node'] = $node;
-        $assignation['translation'] = $this->managerRegistry->getRepository(Translation::class)->findDefault();
-        $assignation['available_translations'] = [];
+        $this->assignation['node'] = $node;
+        $this->assignation['translation'] = $this->em()->getRepository(Translation::class)->findDefault();
+        $this->assignation['available_translations'] = [];
 
         foreach ($node->getNodeSources() as $ns) {
-            $assignation['available_translations'][] = $ns->getTranslation();
+            $this->assignation['available_translations'][] = $ns->getTranslation();
         }
 
-        return $this->render('@RoadizRozier/nodes/translate.html.twig', $assignation);
+        return $this->render('@RoadizRozier/nodes/translate.html.twig', $this->assignation);
     }
 }
