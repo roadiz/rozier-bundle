@@ -1,0 +1,107 @@
+{% set currentTitle = source.title|default(node.nodeName) %}
+
+{% extends '@RoadizRozier/layout.html.twig' %}
+
+{% block title %}{{ ("edit.nodeSource.%name%"|trans({'%name%': currentTitle}))|u.truncate(30, '[…]', false) }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+{# default(), not ??: the globals are '' (not null) when the env vars are empty #}
+{% set front_origin = custom_preview_scheme|default(custom_public_scheme) %}
+{# null on classic Roadiz, when disabled, without ROLE_ACCESS_LIVE_PREVIEW or the preview required role, and for node-sources with no reachable ancestor (menus, footers…) #}
+{% set live_preview_source = (live_preview.enabled and front_origin and is_granted('ROLE_ACCESS_LIVE_PREVIEW') and is_granted(preview_required_role)) ? source.firstReachableParent : null %}
+<section class="content-global">
+    <header class="content-header header-node header-node-edit-source">
+        {% include '@RoadizRozier/nodes/breadcrumb.html.twig' with {
+            "node": node,
+            "source": source,
+        } only %}
+        <h1 class="content-title node-edit-source-title"{% if source.translation.locale is rtl %} dir="rtl"{% endif %}>
+            {{ ("edit.nodeSource.%name%"|trans({'%name%': currentTitle}))|u.truncate(30, '[…]', false) }}
+            {% include '@RoadizRozier/nodes/nodeTypeCircle.html.twig' %}
+
+            {% if app.debug %}
+                <span class="uk-badge uk-badge-mini">NS #{{ source.id }}</span>
+            {% endif %}
+        </h1>
+        {% include '@RoadizRozier/nodes/navBack.html.twig' %}
+        {% include '@RoadizRozier/nodes/navBar.html.twig' with {"current": 'source'} %}
+        {% include '@RoadizRozier/nodes/translationBar.html.twig' with {"current": translation.getId} %}
+    </header>
+
+    <node-source-edit-page class="content content-node-edit-source">
+        {% if readOnly %}
+            <div class="uk-alert uk-alert-warning" data-uk-alert>
+                <a href="{{ path('nodesEditSourcePage', {
+                    nodeId: node.id,
+                    translationId: translation.id
+                }) }}" class="uk-alert-close uk-close"></a>
+                <h4>{% trans %}versions.viewing_a_previous_version{% endtrans %}</h4>
+                <p>{{ currentVersion.loggedAt|format_datetime('full', 'short', locale=app.request.locale) }} - {{ currentVersion.username }}</p>
+                {% if revertForm %}
+                    {{ form_start(revertForm, { attr: {id: 'revert-node-source-form'}}) }}
+                    {{ form_widget(revertForm) }}
+                    <div class="uk-button-group">
+                        <button class="uk-button uk-button-warning" type="submit">
+                            <span class="icon-container"><i class="uk-icon-rz-back-parent"></i></span>
+                            <span class="label"><span class="label-text">{% trans %}versions.revert_to_this_version{% endtrans %}</span></span>
+                        </button>
+                        <a class="uk-button" href="{{ path('nodesEditSourcePage', {
+                            nodeId: node.id,
+                            translationId: translation.id
+                        }) }}"><i class="uk-icon-rz-home"></i> {% trans %}versions.back_to_working_copy{% endtrans %}</a>
+                    </div>
+                    {{ form_end(revertForm) }}
+                {% endif %}
+            </div>
+        {% endif %}
+        {% form_theme form '@RoadizRozier/forms.html.twig' %}
+        {{ form_start(form, { attr: {id: 'edit-node-source-form'}}) }}
+        {{ form_widget(form) }}
+        {% if not readOnly %}
+            <button is="rz-save-button" data-action-save="#edit-node-source-form" class="uk-button uk-button-success" type="submit">
+                <span class="icon-container"><i class="uk-icon-rz-save-mini"></i></span>
+                <span class="label"><span class="label-text">{% trans %}save{% endtrans %}</span></span>
+            </button>
+        {% endif %}
+        {{ form_end(form) }}
+    </node-source-edit-page>
+
+    {% if live_preview_source %}
+        <rz-live-preview id="live-preview"
+                         class="rz-live-preview"
+                         data-src="{{ path('nodesSourcesPreviewRedirect', { nodeSourceId: live_preview_source.id }) }}"
+                         data-front-origin="{{ front_origin }}"
+                         {# Only a block is singled out in the preview: the page itself needs no target. #}
+                         {% if source.id != live_preview_source.id %}data-node-source-id="{{ source.id }}"{% endif %}>
+            <div class="rz-live-preview__toolbar">
+                <div class="rz-button-group" role="group" aria-label="{% trans %}live_preview.viewport{% endtrans %}">
+                    {% for width in live_preview.viewport_widths %}
+                        {% set icon = width < 600 ? 'smartphone-line' : (width < 1024 ? 'tablet-line' : 'computer-line') %}
+                        <button type="button"
+                                class="rz-button rz-button--emphasis-low rz-button--size-sm"
+                                data-width="{{ width }}"
+                                aria-pressed="false"
+                                aria-label="{{ width }} px"
+                                title="{{ width }} px">
+                            <span class="rz-button__icon rz-icon-ri--{{ icon }}"></span>
+                        </button>
+                    {% endfor %}
+                </div>
+                <span class="rz-badge rz-badge--size-xs rz-live-preview__scale"><span class="rz-badge__label">100 %</span></span>
+                <button type="button"
+                        class="rz-button rz-button--emphasis-low rz-button--size-sm"
+                        data-close
+                        aria-label="{% trans %}live_preview.close{% endtrans %}"
+                        title="{% trans %}live_preview.close{% endtrans %}">
+                    <span class="rz-button__icon rz-icon-ri--close-line"></span>
+                </button>
+            </div>
+            <div class="rz-live-preview__viewport">
+                <iframe title="{% trans %}live_preview{% endtrans %}"></iframe>
+            </div>
+        </rz-live-preview>
+    {% endif %}
+
+    {% include '@RoadizRozier/nodes/actionsMenu.html.twig' %}
+</section>
+{% endblock %}
